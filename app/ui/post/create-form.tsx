@@ -56,6 +56,7 @@ export default function PostForm() {
                                 <TagSelector />
                             </div>
 
+                            {/* Post Button */}
                             <div className="flex justify-end mt-2 absolute bottom-0 right-0 mb-4 mr-4">
                                 <button 
                                     type="submit" 
