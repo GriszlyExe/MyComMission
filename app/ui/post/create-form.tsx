@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import TagSelector from "./tags";
+import FileUpload from "./file-upload";
 
 export default function PostForm() {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,7 @@ export default function PostForm() {
             {/* Post Box Modal */}
             {isOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-4 rounded-lg shadow-lg w-1/2 h-3/4 relative overflow-hidden">
+                    <div className="bg-white p-4 rounded-lg shadow-lg w-[460px] h-4/5 relative overflow-auto">
                         {/* Close Button */}
                         <button 
                             onClick={() => setIsOpen(false)} 
@@ -32,7 +33,7 @@ export default function PostForm() {
                         {/* Post Form */}
                         <form>
                             <h1 className="text-lg font-bold mb-2 text-center">Create Post</h1>
-                            {/* Commission name section*/}
+                            {/* Name section*/}
                             <div className="flex my-4">
                                 <h2 className="mr-2">Commission name: </h2>
                                 <textarea 
@@ -41,8 +42,8 @@ export default function PostForm() {
                                 />
                             </div>
 
-                            {/* Commission description section */}
-                            <div className="my-4">
+                            {/* Description section */}
+                            <div className="mb-1">
                                 <h2 className="mr-2 mb-2">Commission description: </h2>
                                 <textarea 
                                     className="border flex-grow w-full h-32 resize-none rounded-md pl-3 pt-2"
@@ -50,14 +51,28 @@ export default function PostForm() {
                                 />
                             </div>
 
-                            {/* Commission tags section */}
-                            <div className="flex my-4">
+                            {/* Tags section */}
+                            <div className="flex mb-2">
                                 <h2 className="mr-1">Tags: </h2>
                                 <TagSelector />
                             </div>
 
+                            {/* Price section */}
+                            <div className="flex">
+                                <h2 className="mr-2">Price: </h2>
+                                <input 
+                                    className="border h-7 resize-none overflow-hidden rounded-md pl-2"
+                                    placeholder="Price..."
+                                    type="number"
+                                    min={0}
+                                />
+                            </div>
+
+                            {/* Sample image section */}
+                            <FileUpload />
+
                             {/* Post Button */}
-                            <div className="flex justify-end mt-2 absolute bottom-0 right-0 mb-4 mr-4">
+                            <div className="flex absolute justify-end mt-2 bottom-0 right-0 mb-4 mr-4">
                                 <button 
                                     type="submit" 
                                     className="bg-blue-600 text-white px-4 py-2 rounded-md"

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from "react";
-import { X, ChevronDown } from "lucide-react";
+import { X, ChevronDown, TagIcon } from "lucide-react";
 
 export default function TagSelector() {
     const availableTags = [
@@ -39,7 +39,7 @@ export default function TagSelector() {
     return (
         <div className="relative w-full" ref={dropdownRef}>
             {/* Selected Tags */}
-            <div className="flex items-center flex-wrap gap-2 p-2 rounded-md min-h-[40px]">
+            <div className="flex items-center flex-wrap gap-1 p-2 rounded-md min-h-[40px]">
                 {selectedTags.map(tag => (
                     <div key={tag} className="flex items-center bg-blue-500 text-white px-2 py-1 rounded-full">
                         {tag}
@@ -55,7 +55,11 @@ export default function TagSelector() {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
                     className="flex items-center px-2 py-1 bg-gray-200 rounded-md hover:bg-gray-300 transition"
                 >
-                    Choose Tags <ChevronDown className="ml-1" size={16} />
+                    <div className="gap-1 flex">
+                        <TagIcon/>
+                        Choose Tags
+                    </div>
+                    <ChevronDown className="ml-1" size={16} />
                 </button>
             </div>
 
