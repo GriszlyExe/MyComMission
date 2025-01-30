@@ -8,25 +8,32 @@ export default function TagSelector() {
         "Realism", "Semi-Realism", "Anime/Manga", "Chibi", "Portrait", "Fan Art", "OC", "Digital Art",
         "Traditional Art", "Watercolor", "Oil Painting", "Pencil Sketch", "Pixel Art",
     ];
-    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null); // Ref for detecting outside clicks
+    const dropdownRef = useRef<HTMLDivElement>(null); // Ref for detecting outside clicks
 
-    const toggleTag = (tag) => {
+    interface TagSelectorProps {
+        availableTags: string[];
+        selectedTags: string[];
+        isDropdownOpen: boolean;
+        dropdownRef: React.RefObject<HTMLDivElement>;
+    }
+
+    const toggleTag = (tag: string) => {
         if (!selectedTags.includes(tag)) {
             setSelectedTags([...selectedTags, tag]);
         }
     };
 
-    const removeTag = (tag) => {
+    const removeTag = (tag: string) => {
         setSelectedTags(selectedTags.filter(t => t !== tag));
     };
 
     // Handle clicks outside the dropdown to close it
     useEffect(() => {
-        function handleClickOutside(event) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsDropdownOpen(false);
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            setIsDropdownOpen(false);
             }
         }
 

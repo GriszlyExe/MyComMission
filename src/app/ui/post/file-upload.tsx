@@ -2,10 +2,15 @@ import { useState } from "react";
 import { Image01Icon } from "hugeicons-react";
 
 export default function FileUpload() {
-    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState<FilePreview[]>([]);
 
-    const handleFileChange = (event) => {
-        const files = Array.from(event.target.files); // Convert FileList to array
+    interface FilePreview {
+        file: File;
+        preview: string;
+    }
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const files: File[] = Array.from(event.target.files || []); // Convert FileList to array
 
         // Check file limit
         if (files.length + selectedFiles.length > 4) {
@@ -14,7 +19,7 @@ export default function FileUpload() {
         }
 
         // Convert file objects to previewable URLs
-        const filePreviews = files.map(file => ({
+        const filePreviews: FilePreview[] = files.map(file => ({
             file,
             preview: URL.createObjectURL(file), // Generate image preview URL
         }));
@@ -22,8 +27,8 @@ export default function FileUpload() {
         setSelectedFiles([...selectedFiles, ...filePreviews]);
     };
 
-    const removeFile = (index) => {
-        const updatedFiles = [...selectedFiles];
+    const removeFile = (index: number): void => {
+        const updatedFiles: FilePreview[] = [...selectedFiles];
         updatedFiles.splice(index, 1);
         setSelectedFiles(updatedFiles);
     };

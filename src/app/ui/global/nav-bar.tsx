@@ -18,7 +18,7 @@ export default function TopNav() {
 
         {/* User Account Icon Column */}
         <div className="flex justify-end px-5">
-          <UserAccountIcon />
+          <UserAccountIcon className="cursor-pointer w-1/2"/>
         </div>
       </div>
     </div>
