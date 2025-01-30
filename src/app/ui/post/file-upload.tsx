@@ -29,7 +29,7 @@ export default function FileUpload() {
     };
 
     return (
-        <div className="flex flex-col my-4">            
+        <div className="flex flex-col my-3">            
             <div className="flex gap-2">
                 <h2 className="mb-2">Sample artwork:</h2>
 
@@ -56,13 +56,13 @@ export default function FileUpload() {
             </div>
 
             {/* Image Previews */}
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-3 flex pl-2 flex-wrap gap-2 rounded-md h-[97px]">
                 {selectedFiles.map((fileObj, index) => (
                     <div key={index} className="relative w-24 h-24">
                         <img 
                             src={fileObj.preview} 
                             alt="Preview" 
-                            className="w-full h-full object-cover rounded-md border"
+                            className="w-full h-full object-cover rounded-md border-2 border-gray-300"
                         />
                         <button 
                             className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded-full" 
