@@ -4,9 +4,49 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import TagSelector from "./tags";
 import FileUpload from "./file-upload";
+import { FilePreview } from "./file-upload";
 
 export default function PostForm() {
     const [isOpen, setIsOpen] = useState(false);
+    
+    // Form state
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [tags, setTags] = useState<string[]>([]); // For <TagSelector/>
+    const [price, setPrice] = useState("");
+    const [samples, setSamples] = useState<FilePreview[]>([]); // For <FileUpload/>
+
+    // Handle form submission
+    interface PostData {
+        name: string;
+        description: string;
+        tags: string[];
+        price: string;
+        samples: FilePreview[];
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        // Create post data
+        const postData: PostData = {
+            name,
+            description,
+            tags,
+            price,
+            samples
+        };
+
+        console.log("Post Data:", postData);
+
+        // Close modal after submission
+        setName("");
+        setDescription("");
+        setTags([]);
+        setPrice("");
+        setSamples([]);
+        setIsOpen(false);
+    };
 
     return (
         <div>
@@ -31,14 +71,17 @@ export default function PostForm() {
                         </button>
 
                         {/* Post Form */}
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <h1 className="text-lg font-bold mb-2 text-center">Create Post</h1>
-                            {/* Name section*/}
+                            
+                            {/* Name section */}
                             <div className="flex my-4">
                                 <h2 className="mr-2">Commission name: </h2>
                                 <textarea 
                                     className="border flex-grow h-7 resize-none overflow-hidden rounded-md pl-2"
                                     placeholder="Name..."
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
                                 />
                             </div>
 
@@ -48,13 +91,15 @@ export default function PostForm() {
                                 <textarea 
                                     className="border flex-grow w-full h-32 resize-none rounded-md pl-3 pt-2"
                                     placeholder="Description..."
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
                                 />
                             </div>
 
                             {/* Tags section */}
                             <div className="flex mb-1">
                                 <h2 className="mr-1">Tags: </h2>
-                                <TagSelector />
+                                <TagSelector selectedTags={tags} setSelectedTags={setTags} />
                             </div>
 
                             {/* Price section */}
@@ -65,15 +110,17 @@ export default function PostForm() {
                                     placeholder="Price..."
                                     type="number"
                                     min={0}
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
                                 />
                                 <h2 className="ml-2">Baht</h2>
                             </div>
 
                             {/* Sample image section */}
-                            <FileUpload />
+                            <FileUpload selectedFiles={samples} setSelectedFiles={setSamples} />
 
                             {/* Post Button */}
-                            <div className="flex justify-end bottom-0 right-0 ">
+                            <div className="flex justify-end bottom-0 right-0">
                                 <button 
                                     type="submit" 
                                     className="bg-blue-600 text-white px-4 py-2 rounded-md"

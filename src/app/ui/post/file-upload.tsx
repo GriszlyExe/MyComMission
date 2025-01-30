@@ -1,13 +1,16 @@
-import { useState } from "react";
 import { Image01Icon } from "hugeicons-react";
 
-export default function FileUpload() {
-    const [selectedFiles, setSelectedFiles] = useState<FilePreview[]>([]);
+export interface FilePreview {
+    file: File;
+    preview: string;
+}
 
-    interface FilePreview {
-        file: File;
-        preview: string;
-    }
+interface FileUploadProps {
+    selectedFiles: FilePreview[];
+    setSelectedFiles: React.Dispatch<React.SetStateAction<FilePreview[]>>;
+}
+
+export default function FileUpload({ selectedFiles, setSelectedFiles }: FileUploadProps) {
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const files: File[] = Array.from(event.target.files || []); // Convert FileList to array
@@ -28,13 +31,12 @@ export default function FileUpload() {
     };
 
     const removeFile = (index: number): void => {
-        const updatedFiles: FilePreview[] = [...selectedFiles];
-        updatedFiles.splice(index, 1);
+        const updatedFiles = selectedFiles.filter((_, i) => i !== index);
         setSelectedFiles(updatedFiles);
     };
 
     return (
-        <div className="flex flex-col my-3">            
+        <div className="flex flex-col my-3">
             <div className="flex gap-2">
                 <h2 className="mb-2">Sample artwork:</h2>
 
@@ -44,7 +46,7 @@ export default function FileUpload() {
                     id="fileUpload" 
                     className="hidden" 
                     multiple 
-                    accept="image/*" // Accept only images
+                    accept="image/*" 
                     onChange={handleFileChange}
                 />
 
@@ -55,7 +57,7 @@ export default function FileUpload() {
                 >   
                     <div className="flex gap-1">
                         <Image01Icon />
-                        add artworks ({selectedFiles.length}/4)
+                        Add artworks ({selectedFiles.length}/4)
                     </div>
                 </label>    
             </div>

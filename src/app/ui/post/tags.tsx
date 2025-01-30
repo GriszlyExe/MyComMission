@@ -1,23 +1,20 @@
 'use client';
 
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { X, ChevronDown, TagIcon } from "lucide-react";
 
-export default function TagSelector() {
+interface TagSelectorProps {
+    selectedTags: string[];
+    setSelectedTags: (tags: string[]) => void;
+}
+
+export default function TagSelector({ selectedTags, setSelectedTags }: TagSelectorProps) {
     const availableTags = [
         "Realism", "Semi-Realism", "Anime/Manga", "Chibi", "Portrait", "Fan Art", "OC", "Digital Art",
         "Traditional Art", "Watercolor", "Oil Painting", "Pencil Sketch", "Pixel Art",
     ];
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null); // Ref for detecting outside clicks
-
-    interface TagSelectorProps {
-        availableTags: string[];
-        selectedTags: string[];
-        isDropdownOpen: boolean;
-        dropdownRef: React.RefObject<HTMLDivElement>;
-    }
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const toggleTag = (tag: string) => {
         if (!selectedTags.includes(tag)) {
@@ -29,18 +26,15 @@ export default function TagSelector() {
         setSelectedTags(selectedTags.filter(t => t !== tag));
     };
 
-    // Handle clicks outside the dropdown to close it
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-            setIsDropdownOpen(false);
+                setIsDropdownOpen(false);
             }
         }
 
         document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     return (
@@ -63,7 +57,7 @@ export default function TagSelector() {
                     className="flex items-center px-2 py-1 bg-gray-200 rounded-md hover:bg-gray-300 transition"
                 >
                     <div className="gap-1 flex">
-                        <TagIcon/>
+                        <TagIcon />
                         Choose Tags
                     </div>
                     <ChevronDown className="ml-1" size={16} />
