@@ -52,7 +52,7 @@ export default function PostForm() {
                             </div>
 
                             {/* Tags section */}
-                            <div className="flex mb-2">
+                            <div className="flex mb-1">
                                 <h2 className="mr-1">Tags: </h2>
                                 <TagSelector />
                             </div>
@@ -61,18 +61,19 @@ export default function PostForm() {
                             <div className="flex">
                                 <h2 className="mr-2">Price: </h2>
                                 <input 
-                                    className="border h-7 resize-none overflow-hidden rounded-md pl-2"
+                                    className="border h-7 w-40 resize-none overflow-hidden rounded-md pl-1"
                                     placeholder="Price..."
                                     type="number"
                                     min={0}
                                 />
+                                <h2 className="ml-2">Baht</h2>
                             </div>
 
                             {/* Sample image section */}
                             <FileUpload />
 
                             {/* Post Button */}
-                            <div className="flex absolute justify-end mt-2 bottom-0 right-0 mb-4 mr-4">
+                            <div className="flex justify-end bottom-0 right-0 ">
                                 <button 
                                     type="submit" 
                                     className="bg-blue-600 text-white px-4 py-2 rounded-md"
