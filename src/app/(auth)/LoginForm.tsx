@@ -1,21 +1,36 @@
 "use client";
 
+import { loginService } from "@/service/authService";
 import Link from "next/link";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 
+/* state */
+import { useAppDispatch } from "@/states/hook";
+import { setUser } from "@/states/features/userSlice";
+import { login } from "@/states/features/authSlice";
+
 export default function LoginForm() {
+
+  const dispatch = useAppDispatch();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
 
-    const data = {
-      email: formData.get("email"),
-      password: formData.get("password"),
-    };
+    // const data = {
+    //   email: formData.get("email"),
+    //   password: formData.get("password"),
+    // };
 
-    console.log(data);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    const { user, token } = await loginService({ email, password });
+
+    dispatch(login(token));
+    dispatch(setUser(user));
+
   };
 
   return (
