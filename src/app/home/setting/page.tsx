@@ -1,6 +1,6 @@
 'use client'
 import { SettingButton } from "@/app/ui/setting/button";
-import { CircleUserRound, CreditCard,SlidersHorizontal,LanguagesIcon} from "lucide-react";
+import { CircleUserRound, CreditCard, SlidersHorizontal, LanguagesIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 
