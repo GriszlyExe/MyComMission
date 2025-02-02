@@ -1,6 +1,6 @@
 "use client";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import { useRouter } from "next/navigation";
 import { loginService } from "@/service/authService";
 import Link from "next/link";
@@ -15,11 +15,35 @@ import { useAppDispatch } from "@/states/hook";
 import { setUser } from "@/states/features/userSlice";
 import { login } from "@/states/features/authSlice";
 
+interface loginSchema2 {
+  email: string;
+  password: string;
+}
+
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = async (values: loginSchema2, actions: FormikHelpers<loginSchema2>) => {
+    
+    try {
+      const { email, password } = values;
+      
+      const { user, token } = await loginService({ email, password });
+      
+      dispatch(login(token));
+      dispatch(setUser(user));
+  
+      actions.resetForm();
+      router.push("../home");
+    } catch (err) {
+      console.error(``)
+    }
   };
 
   const router = useRouter();
@@ -35,12 +59,13 @@ export default function LoginForm() {
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={loginSchema}
-          onSubmit={async (values, actions) => {
-            console.log("Logging in:", values);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            actions.resetForm();
-            router.push("../home");
-          }}
+          // onSubmit={async (values, actions) => {
+          //   console.log("Logging in:", values);
+          //   await new Promise((resolve) => setTimeout(resolve, 1000));
+          //   actions.resetForm();
+          //   router.push("../home");
+          // }}
+          onSubmit={handleSubmit}
         >
           {({ isSubmitting, errors, touched }) => (
             <Form className="space-y-4" autoComplete="off">
