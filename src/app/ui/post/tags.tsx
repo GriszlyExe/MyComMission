@@ -1,39 +1,40 @@
 'use client';
 
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { X, ChevronDown, TagIcon } from "lucide-react";
 
-export default function TagSelector() {
+interface TagSelectorProps {
+    selectedTags: string[];
+    setSelectedTags: (tags: string[]) => void;
+}
+
+export default function TagSelector({ selectedTags, setSelectedTags }: TagSelectorProps) {
     const availableTags = [
         "Realism", "Semi-Realism", "Anime/Manga", "Chibi", "Portrait", "Fan Art", "OC", "Digital Art",
         "Traditional Art", "Watercolor", "Oil Painting", "Pencil Sketch", "Pixel Art",
     ];
-    const [selectedTags, setSelectedTags] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null); // Ref for detecting outside clicks
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const toggleTag = (tag) => {
+    const toggleTag = (tag: string) => {
         if (!selectedTags.includes(tag)) {
             setSelectedTags([...selectedTags, tag]);
         }
     };
 
-    const removeTag = (tag) => {
+    const removeTag = (tag: string) => {
         setSelectedTags(selectedTags.filter(t => t !== tag));
     };
 
-    // Handle clicks outside the dropdown to close it
     useEffect(() => {
-        function handleClickOutside(event) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsDropdownOpen(false);
             }
         }
 
         document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     return (
@@ -41,7 +42,7 @@ export default function TagSelector() {
             {/* Selected Tags */}
             <div className="flex items-center flex-wrap gap-1 p-2 rounded-md min-h-[40px]">
                 {selectedTags.map(tag => (
-                    <div key={tag} className="flex items-center bg-blue-500 text-white px-2 py-1 rounded-full">
+                    <div key={tag} className="flex items-center bg-blue-500 text-white px-2 py-1 rounded-full mb-1">
                         {tag}
                         <button onClick={() => removeTag(tag)} className="ml-1 text-sm">
                             <X size={14} />
@@ -56,7 +57,7 @@ export default function TagSelector() {
                     className="flex items-center px-2 py-1 bg-gray-200 rounded-md hover:bg-gray-300 transition"
                 >
                     <div className="gap-1 flex">
-                        <TagIcon/>
+                        <TagIcon />
                         Choose Tags
                     </div>
                     <ChevronDown className="ml-1" size={16} />

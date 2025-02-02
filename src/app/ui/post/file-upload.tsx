@@ -1,11 +1,19 @@
-import { useState } from "react";
 import { Image01Icon } from "hugeicons-react";
 
-export default function FileUpload() {
-    const [selectedFiles, setSelectedFiles] = useState([]);
+export interface FilePreview {
+    file: File;
+    preview: string;
+}
 
-    const handleFileChange = (event) => {
-        const files = Array.from(event.target.files); // Convert FileList to array
+interface FileUploadProps {
+    selectedFiles: FilePreview[];
+    setSelectedFiles: React.Dispatch<React.SetStateAction<FilePreview[]>>;
+}
+
+export default function FileUpload({ selectedFiles, setSelectedFiles }: FileUploadProps) {
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const files: File[] = Array.from(event.target.files || []); // Convert FileList to array
 
         // Check file limit
         if (files.length + selectedFiles.length > 4) {
@@ -14,7 +22,7 @@ export default function FileUpload() {
         }
 
         // Convert file objects to previewable URLs
-        const filePreviews = files.map(file => ({
+        const filePreviews: FilePreview[] = files.map(file => ({
             file,
             preview: URL.createObjectURL(file), // Generate image preview URL
         }));
@@ -22,14 +30,13 @@ export default function FileUpload() {
         setSelectedFiles([...selectedFiles, ...filePreviews]);
     };
 
-    const removeFile = (index) => {
-        const updatedFiles = [...selectedFiles];
-        updatedFiles.splice(index, 1);
+    const removeFile = (index: number): void => {
+        const updatedFiles = selectedFiles.filter((_, i) => i !== index);
         setSelectedFiles(updatedFiles);
     };
 
     return (
-        <div className="flex flex-col my-4">            
+        <div className="flex flex-col my-3">
             <div className="flex gap-2">
                 <h2 className="mb-2">Sample artwork:</h2>
 
@@ -39,7 +46,7 @@ export default function FileUpload() {
                     id="fileUpload" 
                     className="hidden" 
                     multiple 
-                    accept="image/*" // Accept only images
+                    accept="image/*" 
                     onChange={handleFileChange}
                 />
 
@@ -50,19 +57,19 @@ export default function FileUpload() {
                 >   
                     <div className="flex gap-1">
                         <Image01Icon />
-                        add artworks ({selectedFiles.length}/4)
+                        Add artworks ({selectedFiles.length}/4)
                     </div>
                 </label>    
             </div>
 
             {/* Image Previews */}
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-3 flex pl-2 flex-wrap gap-2 rounded-md h-[97px]">
                 {selectedFiles.map((fileObj, index) => (
                     <div key={index} className="relative w-24 h-24">
                         <img 
                             src={fileObj.preview} 
                             alt="Preview" 
-                            className="w-full h-full object-cover rounded-md border"
+                            className="w-full h-full object-cover rounded-md border-2 border-gray-300"
                         />
                         <button 
                             className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded-full" 
