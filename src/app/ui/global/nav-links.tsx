@@ -2,7 +2,8 @@
 
 import {
   Home01Icon,
-  PaintBoardIcon
+  PaintBoardIcon,
+  Settings01Icon
 } from 'hugeicons-react';
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
@@ -13,6 +14,7 @@ import clsx from 'clsx';
 const links = [
   { name: 'Home', href: '/home', icon: Home01Icon },
   { name: 'Artist', href: '/artist', icon: PaintBoardIcon},
+  {name: 'Settings',href:'/home/setting',icon: Settings01Icon}
 ];
 
 export default function NavLinks() {
