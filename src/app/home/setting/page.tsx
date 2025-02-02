@@ -21,7 +21,7 @@ export default function SettingsPage() {
                     },
                 ]}
             />
-            <SettingButton href={pathname}><CircleUserRound className="w-6 h-6 text-gray-600" />
+            <SettingButton href={pathname+'/my-account'}><CircleUserRound className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">My Account</span></SettingButton>
             <SettingButton href={pathname}><SlidersHorizontal className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">Preferences</span></SettingButton>

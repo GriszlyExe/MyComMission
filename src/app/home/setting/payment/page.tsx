@@ -27,7 +27,7 @@ export default function PaymentPage() {
           { label: 'Payment', href: '/home/setting/payment', active: true },
         ]}
       />
-      <div className='items-center gap-3 w-full px-4 py-4 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition'>
+      <div className='items-center gap-3 w-full px-4 py-4 text-gray-700 bg-white border border-gray-300 rounded-lg'>
         <div className='items-center flex space-x-3'><CreditCardIcon className="w-6 h-6" />  <span>My Credit Card:</span></div>
         <div className='text-gray-500'>{hasCreditCard ? maskedCardNumber : 'You currently have no Credit Card'}
         </div></div>

@@ -31,7 +31,7 @@ export default function CreditCardForm() {
 
     return (
         <div>
-            <button className='flex items-center bg-white border border-gray-300 rounded-md p-3'
+            <button className='flex items-center bg-white border border-gray-300 rounded-md p-3 hover:bg-gray-100 transition'
                 onClick={() => setIsOpen(true)}
             >Edit Payment Method <ChevronRight/></button>
             {isOpen &&
