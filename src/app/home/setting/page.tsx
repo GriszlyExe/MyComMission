@@ -1,7 +1,7 @@
 'use client'
 import Breadcrumbs from "@/app/ui/setting/breadcrumbs";
 import { SettingButton } from "@/app/ui/setting/button";
-import { CircleUserRound, CreditCard, SlidersHorizontal, LanguagesIcon } from "lucide-react";
+import { CircleUserRound, CreditCard, SlidersHorizontal, BellIcon, LockIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 
@@ -21,7 +21,7 @@ export default function SettingsPage() {
                     },
                 ]}
             />
-            <SettingButton href={pathname+'/my-account'}><CircleUserRound className="w-6 h-6 text-gray-600" />
+            <SettingButton href={pathname + '/my-account'}><CircleUserRound className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">My Account</span></SettingButton>
             <SettingButton href={pathname}><SlidersHorizontal className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">Preferences</span></SettingButton>
@@ -30,10 +30,11 @@ export default function SettingsPage() {
             <SettingButton href={pathname + '/payment'}><CreditCard className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">Payment</span></SettingButton>
 
+            <SettingButton href={pathname}><LockIcon className="w-6 h-6 text-gray-600" />
+                <span className="text-sm font-medium">Privacy & Security</span></SettingButton>
 
-
-            <SettingButton href={pathname}><LanguagesIcon className="w-6 h-6 text-gray-600" />
-                <span className="text-sm font-medium">Languages</span></SettingButton>
+            <SettingButton href={pathname}><BellIcon className="w-6 h-6 text-gray-600" />
+                <span className="text-sm font-medium">Notifications</span></SettingButton>
 
         </div >
     </>
