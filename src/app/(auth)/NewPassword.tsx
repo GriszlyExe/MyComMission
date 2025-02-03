@@ -4,7 +4,8 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { newPasswordSchema } from "./Schemas";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { newPassword } from "@/service/forgetPassword";
 
 export default function NewPassword() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +20,10 @@ export default function NewPassword() {
   };
 
   const router = useRouter();
+
+  const searchParam = useSearchParams();
+  const token = searchParam.get('token')
+
 
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -39,7 +44,10 @@ export default function NewPassword() {
           validationSchema={newPasswordSchema}
           onSubmit={async (values, actions) => {
             console.log("Changing password:", values);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            const password = values.newPassword
+            if(token){
+              newPassword(token,password)
+            }
             actions.resetForm();
             router.push("../login");
           }}
