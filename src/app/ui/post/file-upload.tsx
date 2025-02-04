@@ -1,9 +1,5 @@
 import { Image01Icon } from "hugeicons-react";
-
-export interface FilePreview {
-    file: File;
-    preview: string;
-}
+import { FilePreview } from "@/common/interface";
 
 interface FileUploadProps {
     selectedFiles: FilePreview[];

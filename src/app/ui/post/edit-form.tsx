@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from "react";
 import { X } from "lucide-react";
@@ -6,21 +6,22 @@ import TagSelector from "./tags";
 import FileUpload from "./file-upload";
 import { PostData, FilePreview } from "@/common/interface";
 
-export default function PostForm() {
+interface EditPostProps {
+    post: PostData;
+}
+
+export default function EditPostForm({ post }: EditPostProps) {
     const [isOpen, setIsOpen] = useState(false);
-    
-    // Form state
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [tags, setTags] = useState<string[]>([]); // For <TagSelector/>
-    const [price, setPrice] = useState("");
-    const [samples, setSamples] = useState<FilePreview[]>([]); // For <FileUpload/>
+    const [name, setName] = useState(post.name);
+    const [description, setDescription] = useState(post.description);
+    const [tags, setTags] = useState<string[]>(post.tags);
+    const [price, setPrice] = useState(post.price);
+    const [samples, setSamples] = useState<FilePreview[]>(post.samples);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
 
-        // Create post data
-        const postData: PostData = {
+        const updatedPost = {
             name,
             description,
             tags,
@@ -28,30 +29,25 @@ export default function PostForm() {
             samples
         };
 
-        console.log("Post Data:", postData);
+        console.log("Updated Post Data:", updatedPost);
 
-        // Close modal after submission
-        setName("");
-        setDescription("");
-        setTags([]);
-        setPrice("");
-        setSamples([]);
+        // Close the modal after submission
         setIsOpen(false);
     };
 
     return (
         <div>
-            {/* Button to open post box */}
+            {/* Edit Post Button */}
             <button 
                 onClick={() => setIsOpen(true)} 
-                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-blue-500 active:bg-blue-400"
+                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-green-500 active:bg-green-400"
             >
-                Create Post
+                Edit Post
             </button>
 
             {/* Post Box Modal */}
             {isOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
                     <div className="bg-white p-4 rounded-lg shadow-lg w-[460px] h-4/5 relative overflow-auto">
                         {/* Close Button */}
                         <button 
@@ -63,7 +59,7 @@ export default function PostForm() {
 
                         {/* Post Form */}
                         <form onSubmit={handleSubmit}>
-                            <h1 className="text-lg font-bold mb-2 text-center">Create Post</h1>
+                            <h1 className="text-lg font-bold mb-2 text-center">Edit Post</h1>
                             
                             {/* Name section */}
                             <div className="flex my-4">
@@ -110,13 +106,13 @@ export default function PostForm() {
                             {/* Sample image section */}
                             <FileUpload selectedFiles={samples} setSelectedFiles={setSamples} />
 
-                            {/* Post Button */}
+                            {/* Save Changes Button */}
                             <div className="flex justify-end bottom-0 right-0">
                                 <button 
                                     type="submit" 
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                                    className="bg-green-600 text-white px-4 py-2 rounded-md"
                                 >
-                                    Post
+                                    Save Changes
                                 </button>
                             </div>
                         </form>
