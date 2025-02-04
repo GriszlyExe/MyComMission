@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { FaHeart, FaRegHeart, FaRegCommentDots } from "react-icons/fa";
 import Image from "next/image";
-import PostWidget from "../post/edit-form";
+import EditPostForm from "../post/edit-form";
 import { PostData } from "@/common/interface";
+import { Post } from "@/common/model";
 
 interface PostProps {
   user: {
@@ -24,7 +25,7 @@ const dummy_data: PostData = {
   samples: [],
 };
 
-export default function Post({ user, content, image, timestamp }: PostProps) {
+export default function PostWidget({ user, content, image, timestamp }: PostProps) {
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
 
@@ -33,8 +34,12 @@ export default function Post({ user, content, image, timestamp }: PostProps) {
     setLikes(likes + (liked ? -1 : 1));
   };
 
+  // const post: Post = {
+    
+  // }
+
   return (
-    <div className="card w-full max-w-lg bg-white p-4 shadow-xl border-2 border-purple-600">
+    <div className="card w-full max-w-lg bg-white p-4 shadow-xl border-2 border-primary">
       {/* Post Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -43,7 +48,7 @@ export default function Post({ user, content, image, timestamp }: PostProps) {
             alt="User Avatar"
             width={40}
             height={40}
-            className="rounded-full"
+            className="rounded-md"
           />
           <div>
             <p className="font-semibold">{user.name}</p>
@@ -51,7 +56,7 @@ export default function Post({ user, content, image, timestamp }: PostProps) {
           </div>
         </div>
         {/* <button className="btn btn-ghost btn-sm">⋮</button> */}
-        <PostWidget post={dummy_data} />
+        <EditPostForm post={dummy_data} />
       </div>
 
       {/* Post Content */}

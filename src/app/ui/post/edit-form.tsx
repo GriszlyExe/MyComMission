@@ -10,7 +10,7 @@ interface PostWidgetProps {
     post: PostData;
 }
 
-export default function PostWidget({ post }: PostWidgetProps) {
+export default function EditPostForm({ post }: PostWidgetProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState(post.name);
     const [description, setDescription] = useState(post.description);

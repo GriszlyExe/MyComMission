@@ -22,6 +22,7 @@ export type Post = {
     postId: string;
     artistId: string;
     postName: string;
+    likeCounts: number | 0,
     postDescription: string | null;
     picUrl1: string;
     picUrl2: string | null;
