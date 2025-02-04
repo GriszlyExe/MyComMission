@@ -10,11 +10,11 @@ export const loginSchema = yup.object().shape({
 });
 
 export const signupSchema = yup.object().shape({
-  firstname: yup.string().required("First name is required"),
+  firstName: yup.string().required("First name is required"),
 
-  lastname: yup.string().required("Last name is required"),
+  lastName: yup.string().required("Last name is required"),
 
-  birthdate: yup
+  birthDate: yup
     .date()
     .max(new Date(), "Birthdate cannot be in the future")
     .required("Birthdate is required"),
@@ -24,7 +24,7 @@ export const signupSchema = yup.object().shape({
     .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
     .required("Phone number is required"),
 
-  displayname: yup.string().required("Display name is required"),
+  displayName: yup.string().required("Display name is required"),
 
   email: yup
     .string()

@@ -21,7 +21,9 @@ interface loginSchema2 {
 }
 
 export default function LoginForm() {
+  
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -37,16 +39,15 @@ export default function LoginForm() {
       const { user, token } = await loginService({ email, password });
       
       dispatch(login(token));
-      dispatch(setUser(user));
+      dispatch(setUser({ user }));
   
       actions.resetForm();
       router.push("../home");
     } catch (err) {
-      console.error(``)
+      console.error(err);
     }
   };
 
-  const router = useRouter();
 
   return (
     <div className="flex min-h-screen items-center justify-center">

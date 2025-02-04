@@ -19,6 +19,7 @@ export const register = async (data: any) => {
             data: data,
         };
 
+        console.log(`Registering new user...`);        
         const { data: { user, token } } = await axios.request(options);
 
         return {
@@ -51,11 +52,11 @@ export const loginService = async ({ email, password }: LoginSchema) => {
             },
         };
 
-        const { data } = await axios.request(options);
+        const { data: { user, token } } = await axios.request(options);
 
         return {
-            user: data.user,
-            token: data.token,
+            user,
+            token,
         };
 
     } catch (err) {
