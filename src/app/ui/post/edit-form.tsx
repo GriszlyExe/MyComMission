@@ -6,11 +6,11 @@ import TagSelector from "./tags";
 import FileUpload from "./file-upload";
 import { PostData, FilePreview } from "@/common/interface";
 
-interface PostWidgetProps {
+interface EditPostProps {
     post: PostData;
 }
 
-export default function EditPostForm({ post }: PostWidgetProps) {
+export default function EditPostForm({ post }: EditPostProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState(post.name);
     const [description, setDescription] = useState(post.description);
@@ -40,7 +40,7 @@ export default function EditPostForm({ post }: PostWidgetProps) {
             {/* Edit Post Button */}
             <button 
                 onClick={() => setIsOpen(true)} 
-                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-green-500 active:bg-green-400 w-25"
+                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-green-500 active:bg-green-400"
             >
                 Edit Post
             </button>
