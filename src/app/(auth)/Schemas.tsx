@@ -64,3 +64,29 @@ export const newPasswordSchema = yup.object().shape({
     .oneOf([yup.ref("newPassword")], "Passwords must match")
     .required("Confirm password is required"),
 });
+
+export const accountSchema = yup.object().shape({
+  firstName: yup.string().required("First name is required"),
+
+  lastName: yup.string().required("Last name is required"),
+
+  birthDate: yup
+    .date()
+    .max(new Date(), "Birthdate cannot be in the future")
+    .required("Birthdate is required"),
+
+  phone: yup
+    .string()
+    .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
+    .required("Phone number is required"),
+
+  displayName: yup.string().required("Display name is required"),
+
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+
+  profilePic: yup
+    .string(),
+})
