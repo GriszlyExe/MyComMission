@@ -7,7 +7,7 @@ type Image = {
 
 const ImageCard = ({ img }: { img: Image }) => {
   return (
-    <div className="h-auto w-auto rounded-md">
+    <div className="h-min w-full rounded-md">
       <img src={img.src} alt="" className="rounded-md" />
     </div>
   );
@@ -17,7 +17,7 @@ const Images = ({ sources }: { sources: Array<Array<Image>> }) => {
   return (
     <div className="flex h-full w-full flex-col">
       {sources.map((row, idx) => (
-        <div className="flex h-full w-full gap-4 p-2" key={`row-${idx}`}>
+        <div className="flex h-full w-full gap-4" key={`row-${idx}`}>
           {row.map((img) => (
             <ImageCard key={img.id} img={img} />
           ))}
@@ -47,28 +47,28 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen bg-[#2F2F2F] p-10">
+    <div className="h-full bg-[#2F2F2F] p-10">
       <div className="flex h-full flex-row">
-        <div className="flex w-5/12 flex-col gap-16 p-10">
+        <div className="flex w-5/12 flex-col gap-7 p-10">
           {/* */}
-          <div className="flex flex-col justify-center gap-10 p-5
+          <div className="flex flex-col justify-center gap-7 p-5
                bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             {/* <span className="text-8xl font-bold text-[#6BDFDA]"> */}
-            <span className="text-8xl font-bold ">
+            <span className="text-7xl font-bold ">
               Design
             </span>
-            <span className="text-8xl font-bold">
+            <span className="text-7xl font-bold">
             {/* <h1 className="text-8xl font-bold text-[#9AD7F3]"> */}
               Create
             </span>
             {/* <h1 className="text-8xl font-bold text-[#FEC3C7]"> */}
-            <span className="text-8xl font-bold">
+            <span className="text-7xl font-bold">
               Inspire
             </span>
           </div>
 
           <div className="">
-            <p className="text-left text-3xl text-white">
+            <p className="text-left text-2xl text-white">
               Fusce pretium porttitor eleifend. Fusce interdum elit id erat
               mattis viverra. Morbi scelerisque hendrerit mauris sed consequat.
               Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
