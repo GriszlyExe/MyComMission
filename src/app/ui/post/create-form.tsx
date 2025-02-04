@@ -44,7 +44,7 @@ export default function PostForm() {
             {/* Button to open post box */}
             <button 
                 onClick={() => setIsOpen(true)} 
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 active:bg-blue-400"
+                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-blue-500 active:bg-blue-400"
             >
                 Create Post
             </button>
