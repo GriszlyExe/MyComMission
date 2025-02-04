@@ -40,14 +40,14 @@ export default function PostWidget({ post }: PostWidgetProps) {
             {/* Edit Post Button */}
             <button 
                 onClick={() => setIsOpen(true)} 
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-500 active:bg-green-400"
+                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-green-500 active:bg-green-400 w-25"
             >
                 Edit Post
             </button>
 
             {/* Post Box Modal */}
             {isOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
                     <div className="bg-white p-4 rounded-lg shadow-lg w-[460px] h-4/5 relative overflow-auto">
                         {/* Close Button */}
                         <button 

@@ -3,7 +3,7 @@ import PostWidget from "../ui/post/edit-form";
 import { PostData } from "@/common/interface";
 
 export default function Page() {
-    let dummy_data: PostData = {
+    const dummy_data: PostData = {
         name: "dummy name",
         description: "dummy description",
         tags: ['Realistic'],
