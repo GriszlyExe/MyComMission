@@ -3,11 +3,11 @@ export type User = {
     birthDate: Date | null;
     firstName: string | null;
     lastName: string | null;
-    artistFlag: boolean | null;
+    artistFlag: Boolean;
     email: string | null;
     displayName: string | null;
     phone: string | null;
-    regDate: Date | null;
+    profileUrl: string | "/default-profile-2.png";
     age: number | null;
     pdfUrl: string | null;
     artistRate: number | null;

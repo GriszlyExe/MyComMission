@@ -4,7 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MdEmail } from "react-icons/md";
-import { forgetPasswordSchema } from "./Schemas";
+import { forgetPasswordSchema } from "../../common/Schemas";
 
 export default function ForgetPassword() {
   const router = useRouter();

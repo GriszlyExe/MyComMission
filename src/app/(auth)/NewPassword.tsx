@@ -3,7 +3,7 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { newPasswordSchema } from "./Schemas";
+import { newPasswordSchema } from "../../common/Schemas";
 import { useRouter } from "next/navigation";
 
 export default function NewPassword() {

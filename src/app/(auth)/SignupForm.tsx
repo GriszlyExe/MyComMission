@@ -3,7 +3,7 @@
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signupSchema } from "./Schemas";
+import { signupSchema } from "../../common/Schemas";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useAppDispatch } from "@/states/hook";

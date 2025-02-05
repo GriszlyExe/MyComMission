@@ -6,7 +6,7 @@ import { loginService } from "@/service/authService";
 import Link from "next/link";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-import { loginSchema } from "./Schemas";
+import { loginSchema } from "../../common/Schemas";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
