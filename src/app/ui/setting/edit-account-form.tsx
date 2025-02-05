@@ -15,8 +15,8 @@ export default function EditAccountForm() {
         phone: '0888888888',
         displayName: 'gun the gui',
         profilePic: '/post.jpeg'
+
     }
-    
     const [previewPic, setPreviewPic] = useState(user.profilePic);
     const [showSubmitPopup, setshowSubmitPopup] = useState(false);
 
