@@ -1,12 +1,12 @@
 export interface PostData {
     name: string;
     description?: string | null;
-    tags: any[];
+    tags: (string | undefined)[];
     price: number;
-    samples: any[];
+    samples: (FilePreview | undefined)[];
 }
 
 export interface FilePreview {
-    file: File;
-    preview: string;
+    file: File | undefined;
+    preview: string | undefined;
 }

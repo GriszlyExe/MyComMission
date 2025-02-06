@@ -4,8 +4,8 @@ import { useRef, useEffect, useState } from "react";
 import { X, ChevronDown, TagIcon } from "lucide-react";
 
 interface TagSelectorProps {
-    selectedTags: string[];
-    setSelectedTags: (tags: string[]) => void;
+    selectedTags: (string | undefined)[];
+    setSelectedTags: (tags: (string | undefined)[]) => void;
 }
 
 export default function TagSelector({ selectedTags, setSelectedTags }: TagSelectorProps) {
@@ -45,7 +45,7 @@ export default function TagSelector({ selectedTags, setSelectedTags }: TagSelect
                 {selectedTags.map(tag => (
                     <div key={tag} className="flex items-center bg-blue-500 text-white px-2 py-1 rounded-full mb-1">
                         {tag}
-                        <button onClick={() => removeTag(tag)} className="ml-1 text-sm">
+                        <button onClick={() => tag && removeTag(tag)} className="ml-1 text-sm">
                             <X size={14} />
                         </button>
                     </div>

@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Flag, X } from "lucide-react";
+import { X } from "lucide-react";
 import TagSelector from "./tags";
 import FileUpload from "./file-upload";
-import { PostData } from "@/common/interface";
+import { PostData, FilePreview } from "@/common/interface";
 import { postSchema } from "@/app/(auth)/Schemas";
 
 export default function PostForm() {
@@ -120,7 +120,7 @@ export default function PostForm() {
                                 name="samples"
                                 control={control}
                                 render={({ field }) => (
-                                    <FileUpload selectedFiles={field.value} setSelectedFiles={field.onChange} />
+                                    <FileUpload selectedFiles={field.value.filter((file): file is FilePreview => file !== undefined)} setSelectedFiles={field.onChange} />
                                 )}
                             />
                             {errors.samples && <p className="text-red-500 text-sm">{errors.samples.message}</p>}

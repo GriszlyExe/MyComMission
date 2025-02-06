@@ -17,17 +17,22 @@ interface PostProps {
   timestamp: string;
 }
 
-const dummy_data: PostData = {
-  name: "",
-  description: "",
-  tags: [],
-  price: "",
-  samples: [],
-};
-
 export default function Post({ user, tags, content, image, timestamp }: PostProps) {
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
+
+  const dummy_data: PostData = {
+    name: user.name,
+    description: content,
+    tags: tags,
+    price: 0,
+    samples: [
+      {
+        file: undefined,
+        preview: image
+      }
+    ],
+  };
 
   const toggleLike = () => {
     setLiked(!liked);
