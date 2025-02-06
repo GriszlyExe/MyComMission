@@ -1,5 +1,7 @@
+import { LogOutIcon } from "lucide-react";
 import NavLinks from "./nav-links";
 import Search from "./search";
+import Link from "next/link";
 import { UserAccountIcon } from "hugeicons-react";
 
 export default function TopNav() {
@@ -17,8 +19,24 @@ export default function TopNav() {
         </div>
 
         {/* User Account Icon Column */}
-        <div className="flex justify-end px-5">
-          <UserAccountIcon className="cursor-pointer w-1/2"/>
+        <div className="flex justify-end pr-4">
+          {/* Profile */}
+          <Link
+            href={"profile/1"}
+            className="flex h-[64px] items-center justify-center gap-2 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:py-2 md:px-3"
+          >
+            <UserAccountIcon className="w-6"/>
+            <p className="block">Account</p>
+          </Link>
+
+          {/* Logout */}
+          <Link
+            href={"/"}
+            className="flex h-[64px] items-center justify-center gap-2 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:py-2 md:px-3"
+          >
+            <LogOutIcon className="w-6"/>
+            <p className="block">Logout</p>
+          </Link>
         </div>
       </div>
     </div>

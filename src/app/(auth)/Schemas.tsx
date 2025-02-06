@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { FilePreview } from "@/common/interface";
 
 export const loginSchema = yup.object().shape({
   email: yup
@@ -63,4 +64,42 @@ export const newPasswordSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref("newPassword")], "Passwords must match")
     .required("Confirm password is required"),
+});
+
+export const accountSchema = yup.object().shape({
+  firstName: yup.string().required("First name is required"),
+
+  lastName: yup.string().required("Last name is required"),
+
+  birthDate: yup
+    .date()
+    .max(new Date(), "Birthdate cannot be in the future")
+    .required("Birthdate is required"),
+
+  phone: yup
+    .string()
+    .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
+    .required("Phone number is required"),
+
+  displayName: yup.string().required("Display name is required"),
+
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+
+  profilePic: yup
+    .string(),
+})
+
+export const postSchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  description: yup.string().nullable(), // Optional description
+  tags: yup.array().of(yup.string()).min(1, "Please select at least one tag").default([]), // Ensure it's always an array
+  price: yup
+      .number()
+      .typeError("Price must be a number")
+      .positive("Price must be greater than zero")
+      .required("Price is required"),
+  samples: yup.array().of(yup.mixed<FilePreview>()).min(1, "Please upload at least one image").default([]),
 });
