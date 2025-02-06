@@ -1,9 +1,9 @@
 export interface PostData {
     name: string;
-    description: string;
-    tags: string[];
-    price: string;
-    samples: FilePreview[];
+    description?: string | null;
+    tags: any[];
+    price: number;
+    samples: any[];
 }
 
 export interface FilePreview {

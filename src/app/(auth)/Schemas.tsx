@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { FilePreview } from "@/common/interface";
 
 export const loginSchema = yup.object().shape({
   email: yup
@@ -90,3 +91,15 @@ export const accountSchema = yup.object().shape({
   profilePic: yup
     .string(),
 })
+
+export const postSchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  description: yup.string().nullable(), // Optional description
+  tags: yup.array().of(yup.string()).min(1, "Please select at least one tag").default([]), // Ensure it's always an array
+  price: yup
+      .number()
+      .typeError("Price must be a number")
+      .positive("Price must be greater than zero")
+      .required("Price is required"),
+  samples: yup.array().of(yup.mixed<FilePreview>()).min(1, "Please upload at least one image").default([]),
+});

@@ -13,6 +13,7 @@ export default function TagSelector({ selectedTags, setSelectedTags }: TagSelect
         "Realism", "Semi-Realism", "Anime/Manga", "Chibi", "Portrait", "Fan Art", "OC", "Digital Art",
         "Traditional Art", "Watercolor", "Oil Painting", "Pencil Sketch", "Pixel Art",
     ];
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
