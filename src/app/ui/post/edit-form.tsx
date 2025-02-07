@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 import TagSelector from "./tags";
 import FileUpload from "./file-upload";
 import { PostData, FilePreview } from "@/common/interface";
-import { postSchema } from "@/app/(auth)/Schemas";
+import { postSchema } from "@/common/Schemas";
 
 interface EditPostProps {
     post: PostData;

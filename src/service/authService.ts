@@ -19,7 +19,7 @@ export const register = async (data: any) => {
             data: data,
         };
 
-        console.log(`Registering new user...`);        
+        console.log(`Registering new user...`);
         const { data: { user, token } } = await axios.request(options);
 
         return {
@@ -58,6 +58,28 @@ export const loginService = async ({ email, password }: LoginSchema) => {
             user,
             token,
         };
+
+    } catch (err) {
+        throw err;
+    }
+
+}
+
+export const clearAuthToken = async () => {
+
+    try {
+        
+        const options = {
+            method: "POST",
+            url: `${serverAddr}/auth/logout`,
+            withCredentials: true,
+        }
+    
+        await axios.request(options);
+
+        console.log(`Cleared token finished..`);
+
+        return;
 
     } catch (err) {
         throw err;
