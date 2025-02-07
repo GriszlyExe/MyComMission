@@ -10,7 +10,7 @@ export default function EditAccount() {
                 breadcrumbs={[
                     { label: 'Home', href: '/home' },
                     { label: 'Settings', href: '/home/setting' },
-                    { label: 'Edit Profile', href: '/home/setting/my-account', active: true },
+                    { label: 'Edit Profile', href: '/home/setting/edit-profile', active: true },
                 ]}
             />
             <EditAccountForm />
