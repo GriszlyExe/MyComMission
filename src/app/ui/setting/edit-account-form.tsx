@@ -16,7 +16,7 @@ export default function EditAccountForm() {
 	const loggedInUser = useAppSelector((state) => state.user.user);
 	const dispatch = useAppDispatch();
 
-	const [previewPic, setPreviewPic] = useState(loggedInUser!.profileUrl);
+	const [previewPic, setPreviewPic] = useState(() => loggedInUser?.profileUrl ? loggedInUser?.profileUrl : "/default-profile-2.png");
 	const [showSubmitPopup, setshowSubmitPopup] = useState(false);
 
 	type formSchema = yup.InferType<typeof accountSchema>;
@@ -35,6 +35,7 @@ export default function EditAccountForm() {
 		actions: FormikHelpers<formSchema>,
 	) => {
 		try {
+			console.log(`Handle update called...`);
 			const { profilePic, ...others } = values;
 			const data = {
 				...others,
@@ -43,7 +44,7 @@ export default function EditAccountForm() {
 
 			const formData = new FormData();
 
-			if (!profilePic) {
+			if (profilePic) {
 				formData.append("picture", profilePic);
 			}
 

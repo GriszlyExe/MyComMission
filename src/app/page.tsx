@@ -14,6 +14,7 @@ const ImageCard = ({ img }: { img: Image }) => {
 };
 
 const Images = ({ sources }: { sources: Array<Array<Image>> }) => {
+  
   return (
     <div className="flex h-full w-full flex-col">
       {sources.map((row, idx) => (
@@ -36,7 +37,7 @@ export default function Home() {
       src: `/avatar.png`,
     })
     .map((val, idx) => {
-      return { id: idx + 1, src: val.src };
+      return { id: idx + 1, src: `${idx+1}.png` };
     });
 
   // console.log(`Number of images: ${tmp.length}`);
