@@ -30,7 +30,7 @@ export default function SettingsPage() {
             <SettingButton href={pathname + '/payment'}><CreditCard className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">Payment</span></SettingButton>
 
-            <SettingButton href={pathname}><LockIcon className="w-6 h-6 text-gray-600" />
+            <SettingButton href={pathname + '/privacy-security'}><LockIcon className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">Privacy & Security</span></SettingButton>
 
             <SettingButton href={pathname}><BellIcon className="w-6 h-6 text-gray-600" />
