@@ -1,43 +1,46 @@
 'use client'
 
 import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { X } from "lucide-react";
 import TagSelector from "./tags";
 import FileUpload from "./file-upload";
 import { PostData, FilePreview } from "@/common/interface";
+import { postSchema } from "@/app/(auth)/Schemas";
 
 export default function PostForm() {
     const [isOpen, setIsOpen] = useState(false);
-    
-    // Form state
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [tags, setTags] = useState<string[]>([]); // For <TagSelector/>
-    const [price, setPrice] = useState("");
-    const [samples, setSamples] = useState<FilePreview[]>([]); // For <FileUpload/>
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    // React Hook Form setup with correct types
+    const {
+        register,
+        handleSubmit,
+        control,
+        setValue,
+        reset,
+        formState: { errors },
+    } = useForm<PostData>({
+        resolver: yupResolver(postSchema),
+        defaultValues: {
+            name: "",
+            description: "",
+            tags: [],
+            price: 0,
+            samples: [],
+        },
+    });
 
-        // Create post data
-        const postData: PostData = {
-            name,
-            description,
-            tags,
-            price,
-            samples
-        };
-
-        console.log("Post Data:", postData);
-
-        // Close modal after submission
-        setName("");
-        setDescription("");
-        setTags([]);
-        setPrice("");
-        setSamples([]);
+    const onSubmit = (data: PostData) => {
+        console.log("Validated Post Data:", data);
         setIsOpen(false);
+        reset();
     };
+
+    const closeForm = () => {
+        setIsOpen(false);
+        reset();
+    }
 
     return (
         <div>
@@ -55,60 +58,72 @@ export default function PostForm() {
                     <div className="bg-white p-4 rounded-lg shadow-lg w-[460px] h-4/5 relative overflow-auto">
                         {/* Close Button */}
                         <button 
-                            onClick={() => setIsOpen(false)} 
+                            onClick={() => closeForm()} 
                             className="absolute top-2 right-2 text-gray-600 hover:text-black"
                         >
                             <X size={20} />
                         </button>
 
                         {/* Post Form */}
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit(onSubmit)}>
                             <h1 className="text-lg font-bold mb-2 text-center">Create Post</h1>
                             
                             {/* Name section */}
-                            <div className="flex my-4">
-                                <h2 className="mr-2">Commission name: </h2>
+                            <div className="flex flex-col my-4">
+                                <h2 className="mr-2">Commission name:</h2>
                                 <textarea 
                                     className="border flex-grow h-7 resize-none overflow-hidden rounded-md pl-2"
                                     placeholder="Name..."
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    {...register("name")}
                                 />
+                                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
                             </div>
 
                             {/* Description section */}
-                            <div className="mb-1">
-                                <h2 className="mr-2 mb-2">Commission description: </h2>
+                            <div className="mb-4">
+                                <h2 className="mr-2 mb-2">Commission description:</h2>
                                 <textarea 
                                     className="border flex-grow w-full h-32 resize-none rounded-md pl-3 pt-2"
                                     placeholder="Description..."
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
+                                    {...register("description")}
                                 />
                             </div>
 
                             {/* Tags section */}
-                            <div className="flex mb-1">
-                                <h2 className="mr-1">Tags: </h2>
-                                <TagSelector selectedTags={tags} setSelectedTags={setTags} />
+                            <div className="flex flex-col mb-4">
+                                <h2 className="mr-1">Tags:</h2>
+                                <Controller 
+                                    name="tags"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <TagSelector selectedTags={field.value} setSelectedTags={field.onChange} />
+                                    )}
+                                />
+                                {errors.tags && <p className="text-red-500 text-sm">{errors.tags.message}</p>}
                             </div>
 
                             {/* Price section */}
-                            <div className="flex">
-                                <h2 className="mr-2">Price: </h2>
+                            <div className="flex flex-col mb-4">
+                                <h2 className="mr-2">Price:</h2>
                                 <input 
                                     className="border h-7 w-40 resize-none overflow-hidden rounded-md pl-1"
                                     placeholder="Price..."
                                     type="number"
                                     min={0}
-                                    value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
+                                    {...register("price")}
                                 />
-                                <h2 className="ml-2">Baht</h2>
+                                {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
                             </div>
 
                             {/* Sample image section */}
-                            <FileUpload selectedFiles={samples} setSelectedFiles={setSamples} />
+                            <Controller 
+                                name="samples"
+                                control={control}
+                                render={({ field }) => (
+                                    <FileUpload selectedFiles={field.value.filter((file): file is FilePreview => file !== undefined)} setSelectedFiles={field.onChange} />
+                                )}
+                            />
+                            {errors.samples && <p className="text-red-500 text-sm">{errors.samples.message}</p>}
 
                             {/* Post Button */}
                             <div className="flex justify-end bottom-0 right-0">

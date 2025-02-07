@@ -1,21 +1,23 @@
 import PostForm from "../ui/post/create-form";
-import PostWidget from "../ui/post/edit-form";
+import EditPostForm from "../ui/post/edit-form";
 import { PostData } from "@/common/interface";
 
 export default function Page() {
     const dummy_data: PostData = {
         name: "dummy name",
         description: "dummy description",
-        tags: ['Realistic'],
-        price: "10000",
-        samples: []
+        tags: ['Fan Art', 'Chibi'],
+        price: 2500,
+        samples: [
+
+        ]
     };
 
     return (
         <>
             <div>Hello World!</div>
             <PostForm />
-            <PostWidget post={dummy_data} />
+            <EditPostForm post={dummy_data} />
         </>
     );
 }
