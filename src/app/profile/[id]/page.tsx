@@ -2,18 +2,57 @@
 
 import Feed from "@/app/ui/components/Feed";
 import TopNav from "@/app/ui/global/nav-bar";
+import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { setUser } from "@/states/features/userSlice";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendarDay } from "react-icons/fa6";
+import { getUserInfo } from "@/service/userService";
+import { User } from "@/common/model";
 
 export default function ProfilePage() {
-	const [activeTab, setActiveTab] = useState("posts"); // Initial active tab
+	const me = useAppSelector((state) => state.user.user!);
+	const [userInfo, setUserInfo] = useState<User>(me);
+	const userId = useAppSelector((state) => state.user.user?.userId);
+	const [activeTab, setActiveTab] = useState("posts");
+	const dispatch = useAppDispatch();
+	const { id } = useParams();
+	const month = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
+	];
 
 	const handleTabClick = (tab: string) => {
-		setActiveTab(tab); // Update active tab on click
+		setActiveTab(tab);
 	};
+
+	const fetchUserProfile = async () => {
+		const user = await getUserInfo(id as string);
+		return user;
+	};
+
+	useEffect(() => {
+		fetchUserProfile().then((user) => {
+			if (user.userId === userId) {
+				dispatch(setUser({ user }));
+			}
+			// console.log(user);
+			setUserInfo(user);
+		});
+	}, []);
 
 	return (
 		<div className="flex min-h-screen flex-col items-center bg-primary">
@@ -55,9 +94,9 @@ export default function ProfilePage() {
 							{/* Background profile */}
 							<div className="relative aspect-[3/1] w-full rounded-t-md bg-base-200"></div>
 							{/* User profile */}
-							<div className="absolute left-4 w-1/5 -translate-y-1/2 overflow-hidden rounded-full border-4 border-black bg-gray-300">
+							<div className="absolute left-4 w-1/5 -translate-y-1/2 overflow-hidden rounded-full border-4 border-primary bg-gray-300">
 								<Image
-									src="/avatar.png"
+									src={userInfo.profileUrl}
 									alt=""
 									width={100}
 									height={100}
@@ -67,9 +106,11 @@ export default function ProfilePage() {
 						{/* Information */}
 						<div className="flex flex-col gap-2 p-4">
 							<div>
-								<h1 className="text-2xl font-bold">John Doe</h1>
+								<h1 className="text-2xl font-bold">
+									{userInfo.displayName}
+								</h1>
 								<span className="text-textGray text-sm">
-									@johndoe
+									@{userInfo.displayName}
 								</span>
 							</div>
 							<p>Fighting 1 vs 1 only</p>
@@ -81,7 +122,10 @@ export default function ProfilePage() {
 								</div>
 								<div className="flex items-center gap-2">
 									<FaCalendarDay />
-									<span>Joined Jan 2077</span>
+									<span>
+										Joined{" "}
+										{`${month[new Date(userInfo.createdAt).getMonth()]} ${new Date(userInfo.createdAt).getFullYear()}`}
+									</span>
 								</div>
 							</div>
 							<div className="flex gap-4">
@@ -98,21 +142,24 @@ export default function ProfilePage() {
 							</div>
 						</div>
 
-						<div className="flex justify-center gap-36">
-							<button
-								className={`font-bold ${activeTab === "posts" ? "border-b-4 border-blue-500 text-base-200" : "text-gray-700"}`}
-								onClick={() => handleTabClick("posts")}
-							>
-								POSTS
-							</button>
-							<button
-								className={`font-bold ${activeTab === "artworks" ? "border-b-4 border-blue-500 text-base-200" : "text-gray-700"}`}
-								onClick={() => handleTabClick("artworks")}
-							>
-								ARTWORKS
-							</button>
+						<div className="flex flex-row justify-center p-2">
+							<div className={`w-1/2 pl-5`}>
+								<button
+									className={`font-bold ${activeTab === "posts" ? "border-b-4 border-base-200 text-base-200" : "text-gray-700"}`}
+									onClick={() => handleTabClick("posts")}
+								>
+									POSTS
+								</button>
+							</div>
+							<div className="w-1/2">
+								<button
+									className={`font-bold ${activeTab === "artworks" ? "border-b-4 border-base-200 text-base-200" : "text-gray-700"}`}
+									onClick={() => handleTabClick("artworks")}
+								>
+									ARTWORKS
+								</button>
+							</div>
 						</div>
-						<hr className="border-gray-700" />
 
 						{/* Feed */}
 						{activeTab === "posts" && <Feed />}

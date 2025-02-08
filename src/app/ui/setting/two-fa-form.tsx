@@ -1,6 +1,6 @@
 'use client'
 
-import { twoFactorCode } from '@/app/(auth)/Schemas';
+import { twoFactorCode } from '@/common/Schemas';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { TwoFactorAccessIcon } from 'hugeicons-react';
 import React, { useState } from 'react'
@@ -9,12 +9,14 @@ import { ToggleSwitch } from './button';
 
 
 export default function TwoFactorForm() {
+
     function maskEmail(email: string): string {
         const emailRegex = /^(.)(.*)(.@gmail\.com)$/; // Match first letter, hidden part, and domain
         return email.replace(emailRegex, (_, first, hidden, last) => {
             return `${first}${"*".repeat(hidden.length)}${last}`;
         });
     }
+    
     const [isSwitchOn, setIsSwitchOn] = useState(false);
 
     const [open2faForm, setOpen2faForm] = useState(false);

@@ -1,6 +1,6 @@
 'use client'
 
-import { changePasswordSchema } from '@/app/(auth)/Schemas';
+import { changePasswordSchema } from '@/common/Schemas';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { ResetPasswordIcon } from 'hugeicons-react';
 import React, { useState } from 'react'

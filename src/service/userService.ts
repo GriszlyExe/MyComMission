@@ -8,7 +8,7 @@ export const getUserInfo = async (userId: string) => {
 
         const options = {
             method: "GET",
-            url: `${serverAddr}/profile/${userId}`,
+            url: `${serverAddr}/user/profile/${userId}`,
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
         }
@@ -28,9 +28,8 @@ const changeProfilePicture = async (userId: string, picture: FormData) => {
     try {
 
         const options = {
-            method: "POST",
-            url: `${serverAddr}/account/profile-pic/${userId}`,
-            headers: { "Content-Type": "application/json" },
+            method: "PATCH",
+            url: `${serverAddr}/user/account/profile-pic/${userId}`,
             withCredentials: true,
             data: picture,
         }

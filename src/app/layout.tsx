@@ -13,7 +13,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        {/* <SessionProvider>{children}</SessionProvider> */}
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             {children}
