@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import { useState } from "react";
 import { accountSchema } from "@/common/Schemas";
 import * as yup from "yup";
-// import { ClipLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { updateUser } from "@/service/userService";
 
@@ -13,11 +13,14 @@ import { useAppSelector, useAppDispatch } from "@/states/hook";
 import { setUser } from "@/states/features/userSlice";
 
 export default function EditAccountForm() {
-	const loggedInUser = useAppSelector((state) => state.user.user);
+	
+	const loggedInUser = useAppSelector(state => state.user.user);
+	const router = useRouter();
+
 	const dispatch = useAppDispatch();
 
 	const [previewPic, setPreviewPic] = useState(() => loggedInUser?.profileUrl ? loggedInUser?.profileUrl : "/default-profile-2.png");
-	const [showSubmitPopup, setshowSubmitPopup] = useState(false);
+	const [showSubmitPopup] = useState(false);
 
 	type formSchema = yup.InferType<typeof accountSchema>;
 
@@ -25,7 +28,7 @@ export default function EditAccountForm() {
 		displayName: loggedInUser?.displayName,
 		firstName: loggedInUser?.firstName,
 		lastName: loggedInUser?.lastName,
-		birthDate: loggedInUser?.birthDate,
+		birthDate: (loggedInUser?.birthDate as string).split(`T`)[0],
 		phone: loggedInUser?.phone,
 		email: loggedInUser?.email,
 	};
@@ -34,8 +37,9 @@ export default function EditAccountForm() {
 		values: formSchema,
 		actions: FormikHelpers<formSchema>,
 	) => {
+
 		try {
-			console.log(`Handle update called...`);
+			
 			const { profilePic, ...others } = values;
 			const data = {
 				...others,
@@ -53,14 +57,14 @@ export default function EditAccountForm() {
 				picture: formData,
 			});
 
-			console.log(user);
+			dispatch(setUser({ user }));
 
-			dispatch(setUser(user));
-
-			actions.resetForm();
+			router.refresh();
+			
 		} catch (err) {
 			console.error(err);
 		}
+
 	};
 
 	return (

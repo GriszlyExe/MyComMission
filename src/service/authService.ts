@@ -77,8 +77,6 @@ export const clearAuthToken = async () => {
     
         await axios.request(options);
 
-        console.log(`Cleared token finished..`);
-
         return;
 
     } catch (err) {

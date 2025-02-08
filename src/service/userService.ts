@@ -4,20 +4,56 @@ const serverAddr = process.env.SERVER_ADDRESS;
 
 export const getUserInfo = async (userId: string) => {
 
+    try {
+
+        const options = {
+            method: "GET",
+            url: `${serverAddr}/profile/${userId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        }
+
+        const { data: { user } } = await axios.request(options);
+
+        return user;
+
+    } catch (err) {
+        throw err;
+    }
+
+}
+
+const changeProfilePicture = async (userId: string, picture: FormData) => {
+
+    try {
+
+        const options = {
+            method: "POST",
+            url: `${serverAddr}/account/profile-pic/${userId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            data: picture,
+        }
+
+        const { data: { profileUrl } } = await axios.request(options);
+
+        return profileUrl;
+
+    } catch (err) {
+        throw err;
+    }
 }
 
 export const updateUser = async (forms: any) => {
 
     try {
-        
-        if (!serverAddr) {
-            throw new Error(`Server error is not provided`)
-        }
-
-        console.log(`Updating user...`);
 
         const { user, picture } = forms;
         const userId = user.userId;
+        let profileUrl: string = user.profileUrl;
+
+        if (picture.has("picture"))
+            profileUrl = await changeProfilePicture(userId, picture);
 
         const options: AxiosRequestConfig = {
             method: "PATCH",
@@ -29,14 +65,15 @@ export const updateUser = async (forms: any) => {
 
         const { data } = await axios.request(options);
 
-        console.log(data);
-
         return {
-            user: data.user,
+            user: {
+                ...data.user,
+                profileUrl,
+            },
         }
 
-    } catch (error) {
-        throw error;
+    } catch (err) {
+        throw err;
     }
 
 }

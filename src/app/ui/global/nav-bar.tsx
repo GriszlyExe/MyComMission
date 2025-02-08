@@ -18,9 +18,9 @@ export default function TopNav() {
   const logout = async () => {
     
     try {
+      router.push("/");
       await clearAuthToken();
       dispatch(resetState());
-      router.push("../");
     } catch (err) {
       console.error(err);
     }
@@ -43,7 +43,7 @@ export default function TopNav() {
         <div className="flex justify-end pr-4">
           {/* Profile */}
           <Link
-            href={"profile/1"}
+            href={"/profile/1"}
             className="flex h-[64px] items-center justify-center gap-2 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:py-2 md:px-3"
           >
             <UserAccountIcon className="w-6"/>
