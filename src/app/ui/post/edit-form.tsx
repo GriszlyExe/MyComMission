@@ -79,9 +79,9 @@ export default function EditPostForm({ post, setPost }: EditPostProps) {
                                 <textarea 
                                     className="border flex-grow h-7 resize-none overflow-hidden rounded-md pl-2"
                                     placeholder="Name..."
-                                    {...register("name")}
+                                    {...register("postName")}
                                 />
-                                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                                {errors.postName && <p className="text-red-500 text-sm">{errors.postName.message}</p>}
                             </div>
 
                             {/* Description section */}
@@ -90,7 +90,7 @@ export default function EditPostForm({ post, setPost }: EditPostProps) {
                                 <textarea 
                                     className="border flex-grow w-full h-32 resize-none rounded-md pl-3 pt-2"
                                     placeholder="Description..."
-                                    {...register("description")}
+                                    {...register("postDescription")}
                                 />
                             </div>
 
@@ -98,13 +98,13 @@ export default function EditPostForm({ post, setPost }: EditPostProps) {
                             <div className="flex flex-col mb-4">
                                 <h2 className="mr-1">Tags:</h2>
                                 <Controller 
-                                    name="tags"
+                                    name="postTags"
                                     control={control}
                                     render={({ field }) => (
                                         <TagSelector selectedTags={field.value} setSelectedTags={field.onChange} />
                                     )}
                                 />
-                                {errors.tags && <p className="text-red-500 text-sm">{errors.tags.message}</p>}
+                                {errors.postTags && <p className="text-red-500 text-sm">{errors.postTags.message}</p>}
                             </div>
 
                             {/* Price section */}

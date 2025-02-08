@@ -126,9 +126,9 @@ export const accountSchema = yup.object().shape({
 })
 
 export const postSchema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-  description: yup.string().nullable(), // Optional description
-  tags: yup.array().of(yup.string()).min(1, "Please select at least one tag").default([]), // Ensure it's always an array
+  postName: yup.string().required("Name is required"),
+  postDescription: yup.string().nullable(), // Optional description
+  postTags: yup.array().of(yup.string()).min(1, "Please select at least one tag").default([]), // Ensure it's always an array
   price: yup
       .number()
       .typeError("Price must be a number")
