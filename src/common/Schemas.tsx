@@ -66,6 +66,39 @@ export const newPasswordSchema = yup.object().shape({
     .required("Confirm password is required"),
 });
 
+
+export const changePasswordSchema = yup.object().shape({ //for changing password in settings page
+  oldPassword: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+    .required("Old password is required"),
+
+  newPassword: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+    .required("New password is required"),
+
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("newPassword")], "Passwords must match")
+    .required("Confirm password is required"),
+});
+
+
+export const twoFactorCode = yup.object().shape({
+  code: yup
+    .string()
+    .matches(/^\d+$/, "Only digits are allowed")
+    .length(6, "Two-factor code must be exactly 6 digits")
+    .required("Two-factor code is required"),
+});
+
+
+
 export const accountSchema = yup.object().shape({
   firstName: yup.string().required("First name is required"),
 

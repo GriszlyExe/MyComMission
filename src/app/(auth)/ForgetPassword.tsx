@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MdEmail } from "react-icons/md";
 import { forgetPasswordSchema } from "../../common/Schemas";
+import { forgetPassword } from "@/service/forgetPassword";
 
 export default function ForgetPassword() {
   const router = useRouter();
@@ -22,11 +23,12 @@ export default function ForgetPassword() {
           You will receive a link to create a new password via email.
         </p>
         <Formik
+          //Todo : Change this part to send email.
           initialValues={{ email: "" }}
           validationSchema={forgetPasswordSchema}
           onSubmit={async (values, actions) => {
             console.log("Sending link:", values);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            forgetPassword(values.email)
             actions.resetForm();
             router.push("../login");
           }}
