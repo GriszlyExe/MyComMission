@@ -28,19 +28,18 @@ export default function Post({
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
 	const [hidden, setHidden] = useState(false);
-
-	const dummy_data: PostData = {
+	const [data, setData] = useState<PostData>({
 		name: user.name,
 		description: content,
 		tags: tags,
 		price: 0,
 		samples: [
-			{
-				file: undefined,
-				preview: image,
-			},
+		  {
+			file: undefined,
+			preview: image
+		  }
 		],
-	};
+	  })
 
 	const toggleLike = () => {
 		setLiked(!liked);
@@ -79,13 +78,13 @@ export default function Post({
 								className="my-3 cursor-pointer hover:text-red-600"
 								onClick={() => setHidden(true)}
 							/>
-							<EditPostForm post={dummy_data} />
+							<EditPostForm post={data} setPost={setData} />
 						</div>
 					</div>
 
 					{/* Tags */}
 					<div className="mt-3 flex flex-wrap gap-1">
-						{tags.map((tag) => (
+						{data.tags.map((tag) => (
 							<div
 								key={tag}
 								className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"
@@ -96,16 +95,20 @@ export default function Post({
 					</div>
 
 					{/* Post Content */}
-					<p className="mt-2 text-gray-800">{content}</p>
-					{image && (
-						<div className="mt-3 overflow-hidden rounded-lg">
-							<Image
-								src={image}
-								alt="Post Image"
+					<p className="mt-2 text-gray-800">{data.description}</p>
+					{/* Display multiple images */}
+					{data.samples.length > 0 && (
+						<div className={`mt-3 grid gap-3 ${data.samples.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>							{data.samples.map((sample, index) => (
+							<div key={index} className="overflow-hidden rounded-lg">
+								<Image
+								src={sample?.preview || '/path/to/default/image.jpg'}
+								alt={`Post Image ${index + 1}`}
 								width={500}
 								height={300}
 								className="rounded-lg"
-							/>
+								/>
+							</div>
+							))}
 						</div>
 					)}
 
