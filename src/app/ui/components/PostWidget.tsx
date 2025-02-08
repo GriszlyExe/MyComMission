@@ -28,11 +28,11 @@ export default function Post({
 }: PostProps) {
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
-	const [hidden, setHidden] = useState(false);
+	const [isHide, setHidden] = useState(false);
 	const [data, setData] = useState<PostData>({
-		name: user.name,
-		description: content,
-		tags: tags,
+		postName: user.name,
+		postDescription: content,
+		postTags: tags,
 		price: 0,
 		samples: [
 			{
@@ -73,8 +73,8 @@ export default function Post({
 					</div>
 					<div className="flex gap-6">
 						{/* Eyes off */}
-						{ 	hidden &&
-							<div className="flex gap-2 cursor-pointer hover:text-red-600" onClick={() => setHidden(!hidden)}> 
+						{ 	isHide &&
+							<div className="flex gap-2 cursor-pointer hover:text-red-600" onClick={() => setHidden(!isHide)}> 
 								<EyeOffIcon
 									className="my-3"
 								/>
@@ -83,8 +83,8 @@ export default function Post({
 						}
 
 						{/* Eyes on */}
-						{ 	!hidden &&
-							<div className="flex gap-2 cursor-pointer hover:text-red-600" onClick={() => setHidden(!hidden)}> 
+						{ 	!isHide &&
+							<div className="flex gap-2 cursor-pointer hover:text-red-600" onClick={() => setHidden(!isHide)}> 
 								<EyeIcon
 									className="my-3"
 								/>
@@ -98,7 +98,7 @@ export default function Post({
 
 				{/* Tags */}
 				<div className="mt-3 flex flex-wrap gap-1">
-					{data.tags.map((tag) => (
+					{data.postTags.map((tag) => (
 						<div
 							key={tag}
 							className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"
@@ -109,7 +109,7 @@ export default function Post({
 				</div>
 
 				{/* Post Content */}
-				<p className="mt-2 text-gray-800">{data.description}</p>
+				<p className="mt-2 text-gray-800">{data.postDescription}</p>
 				{/* Display multiple images */}
 				{data.samples.length > 0 && (
 					<div className={`mt-3 grid gap-3 ${data.samples.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>							{data.samples.map((sample, index) => (
