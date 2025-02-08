@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { X } from "lucide-react";
@@ -11,9 +11,10 @@ import { postSchema } from "@/app/(auth)/Schemas";
 
 interface EditPostProps {
     post: PostData;
+    setPost: (updatedPost: PostData) => void;
 }
 
-export default function EditPostForm({ post }: EditPostProps) {
+export default function EditPostForm({ post, setPost }: EditPostProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     // React Hook Form setup with correct types
@@ -26,17 +27,17 @@ export default function EditPostForm({ post }: EditPostProps) {
         formState: { errors },
     } = useForm<PostData>({
         resolver: yupResolver(postSchema),
-        defaultValues: {
-            name: post.name,
-            description: post.description,
-            tags: post.tags,
-            price: post.price,
-            samples: post.samples,
-        },
+        defaultValues: post
     });
+
+    // Reset form values when post data changes
+    useEffect(() => {
+        reset(post)
+    }, [post, reset])
 
     const onSubmit = (data: PostData) => {
         console.log("Validated Updated Data:", data);
+        setPost(data)
         setIsOpen(false);
         reset();
     };

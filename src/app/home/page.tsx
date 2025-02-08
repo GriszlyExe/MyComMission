@@ -17,7 +17,6 @@ export default function Page() {
         <>
             <div>Hello World!</div>
             <PostForm />
-            <EditPostForm post={dummy_data} />
         </>
     );
 }
