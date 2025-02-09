@@ -6,11 +6,6 @@ export const register = async (data: any) => {
 
     try {
 
-        if (!serverAddr) {
-            console.log(`Server address is not provided`);
-            return;
-        }
-
         const options = {
             method: "POST",
             url: `${serverAddr}/auth/register`,
@@ -23,7 +18,11 @@ export const register = async (data: any) => {
         const { data: { user, token } } = await axios.request(options);
 
         return {
-            user, token
+            user: {
+                ...user,
+                createdAt: new Date(user.createdAt),
+                updatedAt: new Date(user.updatedAt),
+            }, token
         };
 
     } catch (err) {

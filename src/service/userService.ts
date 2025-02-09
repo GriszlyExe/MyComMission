@@ -15,7 +15,11 @@ export const getUserInfo = async (userId: string) => {
 
         const { data: { user } } = await axios.request(options);
 
-        return user;
+        return {
+            ...user,
+            createdAt: new Date(user.createdAt),
+            updatedAt: new Date(user.updatedAt),
+        };
 
     } catch (err) {
         throw err;
@@ -70,6 +74,36 @@ export const updateUser = async (forms: any) => {
                 profileUrl,
             },
         }
+
+    } catch (err) {
+        throw err;
+    }
+
+}
+
+export const changePassword = async ({
+    userId,
+    oldPassword,
+    newPassword
+}: {
+    userId: string;
+    oldPassword: string;
+    newPassword: string;
+}) => {
+
+    try {
+
+        const options = {
+            method: "PATCH",
+            url: `${serverAddr}/user/change-password/${userId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            data: { oldPassword, newPassword },
+        }
+
+        const { data: { user } } = await axios.request(options);
+
+        return user;
 
     } catch (err) {
         throw err;

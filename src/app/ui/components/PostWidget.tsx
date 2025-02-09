@@ -6,49 +6,35 @@ import Image from "next/image";
 import EditPostForm from "../post/edit-form";
 import { PostData } from "@/common/interface";
 import { EyeOffIcon } from "lucide-react";
+import { Post, User } from "@/common/model";
 
 interface PostProps {
-	user: {
-		name: string;
-		avatar: string;
-	};
-	tags: string[];
-	content: string;
-	image?: string;
-	timestamp: string;
+	post: Post;
+	user: User;
 }
 
-export default function Post({
-	user,
-	tags,
-	content,
-	image,
-	timestamp,
-}: PostProps) {
+export default function PostWidget({ post, user }: PostProps) {
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
 	const [hidden, setHidden] = useState(false);
-	const [data, setData] = useState<PostData>({
-		name: user.name,
-		description: content,
-		tags: tags,
-		price: 0,
-		samples: [
-		  {
-			file: undefined,
-			preview: image
-		  }
-		],
-	  })
 
 	const toggleLike = () => {
 		setLiked(!liked);
 		setLikes(likes + (liked ? -1 : 1));
 	};
 
-	// const post: Post = {
-
-	// }
+	const images = [post.picUrl1, post.picUrl2, post.picUrl3, post.picUrl4]
+		.filter((imgUrl) => imgUrl !== null && imgUrl !== undefined)
+		.map((url) => {
+			return { file: undefined, preview: url };
+		});
+	
+	const editFormProps = {
+		postDescription: post.postDescription!,
+		images: images!,
+		price: post.price!,
+		postTags: post.postTags!,
+	}
 
 	return (
 		<>
@@ -57,17 +43,19 @@ export default function Post({
 					{/* Post Header */}
 					<div className="flex items-center justify-between">
 						<div className="flex items-center space-x-3">
-							<Image
-								src={user.avatar}
+							<img
+								src={user.profileUrl}
 								alt="User Avatar"
-								width={40}
-								height={40}
-								className="rounded-md"
+								width={50}
+								height={50}
+								className="rounded-full"
 							/>
 							<div>
-								<p className="font-semibold">{user.name}</p>
+								<p className="font-semibold">
+									{user.displayName}
+								</p>
 								<p className="text-xs text-gray-500">
-									{timestamp}
+									{`January`}
 								</p>
 							</div>
 						</div>
@@ -78,13 +66,13 @@ export default function Post({
 								className="my-3 cursor-pointer hover:text-red-600"
 								onClick={() => setHidden(true)}
 							/>
-							<EditPostForm post={data} setPost={setData} />
+							<EditPostForm post={editFormProps} />
 						</div>
 					</div>
 
 					{/* Tags */}
 					<div className="mt-3 flex flex-wrap gap-1">
-						{data.tags.map((tag) => (
+						{post.postTags.map((tag) => (
 							<div
 								key={tag}
 								className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"
@@ -95,19 +83,28 @@ export default function Post({
 					</div>
 
 					{/* Post Content */}
-					<p className="mt-2 text-gray-800">{data.description}</p>
+					<p className="mt-2 text-gray-800">{post.postDescription}</p>
 					{/* Display multiple images */}
-					{data.samples.length > 0 && (
-						<div className={`mt-3 grid gap-3 ${data.samples.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>							{data.samples.map((sample, index) => (
-							<div key={index} className="overflow-hidden rounded-lg">
-								<Image
-								src={sample?.preview || '/path/to/default/image.jpg'}
-								alt={`Post Image ${index + 1}`}
-								width={500}
-								height={300}
-								className="rounded-lg"
-								/>
-							</div>
+					{images.length > 0 && (
+						<div
+							className={`mt-3 grid gap-3 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}
+						>
+							{" "}
+							{images.map((src, index) => (
+								<div
+									key={index}
+									className="overflow-hidden rounded-lg"
+								>
+									<img
+										src={
+											src.preview || "/path/to/default/image.jpg"
+										}
+										alt={`Post Image ${index + 1}`}
+										width={500}
+										height={300}
+										className="rounded-lg"
+									/>
+								</div>
 							))}
 						</div>
 					)}

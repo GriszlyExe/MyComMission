@@ -20,8 +20,10 @@ export type Post = {
     createdAt: Date;
     updatedAt: Date;
     postId: string;
+    price: number;
     artistId: string;
     postName: string;
+    postTags: string[];
     likeCounts: number | 0,
     postDescription: string | null;
     picUrl1: string;

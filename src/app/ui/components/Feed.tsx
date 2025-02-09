@@ -1,4 +1,5 @@
-import Post from "./PostWidget";
+import { useAppSelector } from "@/states/hook";
+import PostWidget from "./PostWidget";
 
 const dummyPosts = [
 	{
@@ -35,10 +36,14 @@ const dummyPosts = [
 ];
 
 export default function Feed() {
+
+	const posts = useAppSelector(state => state.post.posts);
+	const user = useAppSelector(state => state.user.user)!;
+
 	return (
 		<div className="flex flex-col items-center space-y-4 p-4">
-			{dummyPosts.map((post) => (
-				<Post key={post.id} {...post} />
+			{posts.map((post) => (
+				<PostWidget key={post.postId} post={post} user={user} />
 			))}
 		</div>
 	);

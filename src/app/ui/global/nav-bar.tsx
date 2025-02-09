@@ -44,7 +44,7 @@ export default function TopNav() {
 					{/* Profile */}
 					<Link
 						href={`/profile/${userId}`}
-						className="flex h-[64px] items-center justify-center gap-2 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:px-3 md:py-2"
+						className="flex h-[64px] items-center justify-center gap-2 p-3 text-sm font-medium hover:bg-secondary hover:text-accent md:flex-none md:justify-start md:px-3 md:py-2"
 					>
 						<UserAccountIcon className="w-6" />
 						<p className="block">Account</p>
@@ -52,7 +52,7 @@ export default function TopNav() {
 
 					{/* Logout */}
 					<button
-						className="flex h-[64px] items-center justify-center gap-2 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:px-3 md:py-2"
+						className="flex h-[64px] items-center justify-center gap-2 p-3 text-sm font-medium hover:bg-secondary hover:text-accent md:flex-none md:justify-start md:px-3 md:py-2"
 						onClick={logout}
 					>
 						<LogOutIcon className="w-6" />

@@ -1,0 +1,1 @@
+export const serverAddr = process.env.SERVER_ADDRESS;

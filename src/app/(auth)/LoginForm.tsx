@@ -21,6 +21,8 @@ interface loginSchema2 {
 }
 
 export default function LoginForm() {
+	
+	const [isError, setError] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
 
@@ -43,9 +45,10 @@ export default function LoginForm() {
 			dispatch(setUser({ user }));
 
 			actions.resetForm();
-			router.push("../home");
+			router.push("/home");
 		} catch (err) {
-			console.error(err);
+			setError(true);
+			// console.error(err);
 		}
 	};
 
@@ -60,12 +63,6 @@ export default function LoginForm() {
 				<Formik
 					initialValues={{ email: "", password: "" }}
 					validationSchema={loginSchema}
-					// onSubmit={async (values, actions) => {
-					//   console.log("Logging in:", values);
-					//   await new Promise((resolve) => setTimeout(resolve, 1000));
-					//   actions.resetForm();
-					//   router.push("../home");
-					// }}
 					onSubmit={handleSubmit}
 				>
 					{({ isSubmitting, errors, touched }) => (
@@ -120,6 +117,10 @@ export default function LoginForm() {
 									component="p"
 									className="text-xs text-red-500"
 								/>
+							</div>
+							<div className="">
+							{isError && <span className="text-error font-bold">Wrong user name or password</span>}
+
 							</div>
 							<div className="flex w-full items-center justify-between text-sm">
 								<label className="flex items-center space-x-2">

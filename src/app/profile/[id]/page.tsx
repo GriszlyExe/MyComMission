@@ -51,6 +51,7 @@ export default function ProfilePage() {
 			}
 			// console.log(user);
 			setUserInfo(user);
+			// console.log(userInfo);
 		});
 	}, []);
 
@@ -63,7 +64,7 @@ export default function ProfilePage() {
 
 			<div className="mx-auto flex w-full max-w-7xl flex-row items-start">
 				{/* Left Sidebar */}
-				<div className="sticky top-20 w-1/3 rounded-md bg-base-300 p-4">
+				<div className="hidden md:block sticky top-20 w-1/3 rounded-md bg-base-300 p-4">
 					{/* <div className="sticky top-4"> */}
 					<h2 className="text-xl font-bold">Suggested Artist</h2>
 					<ul className="mt-4 space-y-2">
@@ -87,20 +88,24 @@ export default function ProfilePage() {
 				</div>
 
 				{/* Center Feed */}
-				<div className="mx-4 mt-20 flex w-1/2 max-w-2xl">
+				<div className="w-full p-3 md:mx-4 mt-20 flex md:w-1/2 md:max-w-2xl">
 					<div className="w-full max-w-2xl rounded-md bg-base-300">
 						{/* Profile */}
 						<div className="relative mb-12 w-full">
 							{/* Background profile */}
 							<div className="relative aspect-[3/1] w-full rounded-t-md bg-base-200"></div>
 							{/* User profile */}
-							<div className="absolute left-4 w-1/5 -translate-y-1/2 overflow-hidden rounded-full border-4 border-primary bg-gray-300">
-								<Image
-									src={userInfo.profileUrl}
-									alt=""
-									width={100}
-									height={100}
-								/>
+							<div className="absolute w-[120px] ml-4 aspect-square -translate-y-1/2 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
+								<div className="h-full w-full rounded-full bg-gray-300 overflow-hidden">
+									<img
+										src={userInfo.profileUrl}
+										alt=""
+										// layout="fill"
+										width={112}
+										height={112}
+										className="object-center rounded-full"
+									/>
+								</div>
 							</div>
 						</div>
 						{/* Information */}
@@ -167,7 +172,7 @@ export default function ProfilePage() {
 				</div>
 
 				{/* Right Sidebar */}
-				<div className="sticky top-20 w-1/3 rounded-md bg-base-300 p-4">
+				<div className="hidden md:block sticky top-20 w-1/3 rounded-md bg-base-300 p-4">
 					<h2 className="text-xl font-bold">Trending</h2>
 					<ul className="mt-4 space-y-2">
 						<li>
