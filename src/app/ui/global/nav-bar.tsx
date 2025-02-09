@@ -5,13 +5,13 @@ import NavLinks from "./nav-links";
 import Search from "./search";
 import Link from "next/link";
 import { UserAccountIcon } from "hugeicons-react";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
-import { resetState } from "@/states/store";
-import { clearAuthToken } from "@/service/authService";
+import { useAppSelector } from "@/states/hook";
 import { useRouter } from "next/navigation";
 
 export default function TopNav() {
-	const dispatch = useAppDispatch();
+	// const dispatch = useAppDispatch();
+	const user = useAppSelector(state => state.user.user!);
+	console.log(user);
 	const userId = useAppSelector((state) => state.user.user!.userId);
 	const router = useRouter();
 

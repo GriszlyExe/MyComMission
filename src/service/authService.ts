@@ -9,8 +9,8 @@ interface LoginSchema {
 }
 
 interface TwoFASchema {
-    email:string
-    token:string
+    email: string
+    token: string
 }
 
 export const register = async (data: any) => {
@@ -29,11 +29,8 @@ export const register = async (data: any) => {
         const { data: { user, token } } = await axios.request(options);
 
         return {
-            user: {
-                ...user,
-                createdAt: new Date(user.createdAt),
-                updatedAt: new Date(user.updatedAt),
-            }, token
+            user,
+            token,
         };
 
     } catch (err) {
@@ -58,12 +55,11 @@ export const loginService = async ({ email, password }: LoginSchema) => {
             },
         };
 
-        const { data: { user, token ,enabled2Fa} } = await axios.request(options);
+        const { data: { user, token } } = await axios.request(options);
 
         return {
             user,
             token,
-            enabled2Fa
         };
 
     } catch (err) {
@@ -75,13 +71,13 @@ export const loginService = async ({ email, password }: LoginSchema) => {
 export const clearAuthToken = async () => {
 
     try {
-        
+
         const options = {
             method: "POST",
             url: `${serverAddr}/auth/logout`,
             withCredentials: true,
         }
-    
+
         await axios.request(options);
 
         return;
@@ -92,10 +88,10 @@ export const clearAuthToken = async () => {
 
 }
 
-export const check2FA = async({
+export const check2FA = async ({
     email,
     token
-}:TwoFASchema) =>{
+}: TwoFASchema) => {
 
     try {
 
@@ -110,9 +106,9 @@ export const check2FA = async({
             },
         };
 
-        const {data: {user, authToken}} =  await axios.request(options);
-        
-        return{
+        const { data: { user, authToken } } = await axios.request(options);
+
+        return {
             user,
             authToken
         }
@@ -123,9 +119,9 @@ export const check2FA = async({
     }
 }
 
-export const sendEmail = async(
-    email:string
-) =>{
+export const sendEmail = async (
+    email: string
+) => {
 
     try {
 
@@ -139,14 +135,14 @@ export const sendEmail = async(
             },
         };
 
-        const {data: {user, authToken}} =  await axios.request(options);
-        
-        return{
+        const { data: { user, authToken } } = await axios.request(options);
+
+        return {
             user,
             authToken
         }
     }
-    catch(err){
+    catch (err) {
         throw err;
     }
 }

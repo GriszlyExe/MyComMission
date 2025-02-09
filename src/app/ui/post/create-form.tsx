@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { X } from "lucide-react";
+import * as yup from "yup";
 import TagSelector from "./tags";
 import FileUpload from "./file-upload";
 import { PostData, FilePreview } from "@/common/interface";
@@ -11,6 +12,8 @@ import { postSchema } from "@/common/Schemas";
 import { createPost } from "@/service/postService";
 import { useAppDispatch } from "@/states/hook";
 import { addPost } from "@/states/features/postSlice";
+
+// type FormSchema = yup.InferType<typeof >;
 
 export default function PostForm() {
 

@@ -12,12 +12,12 @@ export default {
     themes: [
       {
         myTheme: {
-          primary: "#9f86c0",
-          secondary: "#f4f4a1",
-          accent: "#1be885",
+          primary: "#5e548e",
+          secondary: "#5e548e",
+          accent: "#231942",
           neutral: "#272136",
           "base-100": "#ffffff",
-          "base-200": "#5e548e",
+          "base-200": "#231942",
           "base-300": "#ffffff",
           info: "#778ad4",
           success: "#23b893",

@@ -110,3 +110,45 @@ export const changePassword = async ({
     }
 
 }
+
+export const enable2Fa1 = async (userId: string) => {
+    try {
+
+        const options = {
+            method: "POST",
+            url: `${serverAddr}/user/enable-2fa/${userId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        };
+
+        await axios.request(options);
+
+        return;
+        
+    } catch (err) {
+        throw err;
+    }
+} 
+
+export const enable2Fa2 = async (email: string, token: string) => {
+    try {
+
+        const options = {
+            method: "POST",
+            url: `${serverAddr}/auth/two-factor-enable`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            data: {
+                email,
+                token,
+            }
+        };
+
+        await axios.request(options);
+
+        return;
+        
+    } catch (err) {
+        throw err;
+    }
+}

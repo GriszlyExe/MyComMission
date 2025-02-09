@@ -20,8 +20,13 @@ interface loginSchema2 {
 	password: string;
 }
 
-export default function LoginForm() {
-	
+export default function LoginForm({
+	toggleShowLogin,
+	setEmail,
+}: {
+	toggleShowLogin: () => void;
+	setEmail: any;
+}) {
 	const [isError, setError] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
@@ -38,19 +43,24 @@ export default function LoginForm() {
 	) => {
 		try {
 			const { email, password } = values;
-			const { user, token, enabled2Fa} = await loginService({ email, password });
-      console.log({user,token,enabled2Fa})
-      // if(!enabled2Fa){
-        dispatch(login(token));
-        dispatch(setUser({ user }));
+			const { user, token } = await loginService({
+				email,
+				password,
+			});
 
-			actions.resetForm();
-			router.push("/home");
+			if (token) {
+				dispatch(login(token));
+				dispatch(setUser({ user }));
+				actions.resetForm();
+				router.push("/home");
+			} else {
+				setEmail(email);
+				toggleShowLogin();
+			}
 		} catch (err) {
 			setError(true);
-			// console.error(err);
 		}
-	}; 
+	};
 
 	return (
 		<div className="flex min-h-screen items-center justify-center">
@@ -119,8 +129,11 @@ export default function LoginForm() {
 								/>
 							</div>
 							<div className="">
-							{isError && <span className="text-error font-bold">Wrong user name or password</span>}
-
+								{isError && (
+									<span className="font-bold text-error">
+										Wrong user name or password
+									</span>
+								)}
 							</div>
 							<div className="flex w-full items-center justify-between text-sm">
 								<label className="flex items-center space-x-2">
