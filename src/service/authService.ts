@@ -2,6 +2,17 @@ import axios from "axios";
 
 const serverAddr = process.env.SERVER_ADDRESS;
 
+
+interface LoginSchema {
+    email: string;
+    password: string;
+}
+
+interface TwoFASchema {
+    email:string
+    token:string
+}
+
 export const register = async (data: any) => {
 
     try {
@@ -32,10 +43,6 @@ export const register = async (data: any) => {
 
 }
 
-interface LoginSchema {
-    email: string;
-    password: string;
-}
 
 export const loginService = async ({ email, password }: LoginSchema) => {
 
@@ -52,11 +59,12 @@ export const loginService = async ({ email, password }: LoginSchema) => {
             },
         };
 
-        const { data: { user, token } } = await axios.request(options);
+        const { data: { user, token ,enabled2Fa} } = await axios.request(options);
 
         return {
             user,
             token,
+            enabled2Fa
         };
 
     } catch (err) {
@@ -83,4 +91,63 @@ export const clearAuthToken = async () => {
         throw err;
     }
 
+}
+
+export const check2FA = async({
+    email,
+    token
+}:TwoFASchema) =>{
+
+    try {
+
+        const options = {
+            method: "POST",
+            url: `${serverAddr}/auth/two-factor-enable`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            data: {
+                email,
+                token,
+            },
+        };
+
+        const {data: {user, authToken}} =  await axios.request(options);
+        
+        return{
+            user,
+            authToken
+        }
+
+
+    } catch (err) {
+        throw err;
+    }
+}
+
+export const sendEmail = async(
+    email:string
+) =>{
+
+    try {
+
+        const options = {
+            method: "POST",
+            url: `${serverAddr}/auth/send-email`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            data: {
+                email,
+            },
+        };
+
+        const {data: {user, authToken}} =  await axios.request(options);
+        
+        return{
+            user,
+            authToken
+        }
+    }
+    catch(err){
+        throw err;
+    }
 }
