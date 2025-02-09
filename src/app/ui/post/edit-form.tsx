@@ -8,6 +8,7 @@ import TagSelector from "./tags";
 import FileUpload from "./file-upload";
 import { PostData, FilePreview } from "@/common/interface";
 import { postSchema } from "@/app/(auth)/Schemas";
+import { EditIcon } from "lucide-react";
 
 interface EditPostProps {
     post: PostData;
@@ -50,12 +51,15 @@ export default function EditPostForm({ post, setPost }: EditPostProps) {
     return (
         <div>
             {/* Edit Post Button */}
-            <button 
+            {/* <button 
                 onClick={() => setIsOpen(true)} 
-                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-green-500 active:bg-green-400"
+                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-purple-400 active:bg-purple-500"
             >
                 Edit Post
-            </button>
+            </button> */}
+
+            <EditIcon className="mt-3 hover:text-green-500 cursor-pointer" onClick={() => setIsOpen(true)}/>
+
 
             {/* Post Box Modal */}
             {isOpen && (
@@ -74,7 +78,7 @@ export default function EditPostForm({ post, setPost }: EditPostProps) {
                             <h1 className="text-lg font-bold mb-2 text-center">Edit Post</h1>
                             
                             {/* Name section */}
-                            <div className="flex flex-col my-4">
+                            {/* <div className="flex flex-col my-4">
                                 <h2 className="mr-2">Commission name:</h2>
                                 <textarea 
                                     className="border flex-grow h-7 resize-none overflow-hidden rounded-md pl-2"
@@ -82,7 +86,7 @@ export default function EditPostForm({ post, setPost }: EditPostProps) {
                                     {...register("postName")}
                                 />
                                 {errors.postName && <p className="text-red-500 text-sm">{errors.postName.message}</p>}
-                            </div>
+                            </div> */}
 
                             {/* Description section */}
                             <div className="mb-4">
@@ -108,7 +112,7 @@ export default function EditPostForm({ post, setPost }: EditPostProps) {
                             </div>
 
                             {/* Price section */}
-                            <div className="flex flex-col mb-4">
+                            {/* <div className="flex flex-col mb-4">
                                 <h2 className="mr-2">Price:</h2>
                                 <input 
                                     className="border h-7 w-40 resize-none overflow-hidden rounded-md pl-1"
@@ -118,7 +122,7 @@ export default function EditPostForm({ post, setPost }: EditPostProps) {
                                     {...register("price")}
                                 />
                                 {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
-                            </div>
+                            </div> */}
 
                             {/* Sample image section */}
                             <Controller 
@@ -134,7 +138,7 @@ export default function EditPostForm({ post, setPost }: EditPostProps) {
                             <div className="flex justify-end bottom-0 right-0">
                                 <button 
                                     type="submit" 
-                                    className="bg-green-600 text-white px-4 py-2 rounded-md"
+                                    className="bg-purple-600 hover:bg-purple-500 active:bg-purple-600 text-white px-4 py-2 rounded-md"
                                 >
                                     Save Changes
                                 </button>

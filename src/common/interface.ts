@@ -1,8 +1,6 @@
 export interface PostData {
-    postName: string;
-    postDescription?: string | null;
+    postDescription: string;
     postTags: (string | undefined)[];
-    price: number;
     samples: (FilePreview | undefined)[];
 }
 

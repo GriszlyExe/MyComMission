@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendarDay } from "react-icons/fa6";
+import PostForm from "@/app/ui/post/create-form";
 
 export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState("posts"); // Initial active tab
@@ -113,7 +114,9 @@ export default function ProfilePage() {
 							</button>
 						</div>
 						<hr className="border-gray-700" />
-
+						<div className="mt-3 z-0">
+							{activeTab === "posts" && <PostForm />}
+						</div>
 						{/* Feed */}
 						{activeTab === "posts" && <Feed />}
 					</div>

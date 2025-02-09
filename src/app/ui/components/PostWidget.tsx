@@ -30,10 +30,8 @@ export default function Post({
 	const [liked, setLiked] = useState(false);
 	const [isHide, setHidden] = useState(false);
 	const [data, setData] = useState<PostData>({
-		postName: user.name,
 		postDescription: content,
 		postTags: tags,
-		price: 0,
 		samples: [
 			{
 				file: undefined,
@@ -71,7 +69,7 @@ export default function Post({
 							</p>
 						</div>
 					</div>
-					<div className="flex gap-6">
+					<div className="flex gap-4">
 						{/* Eyes off */}
 						{ 	isHide &&
 							<div className="flex gap-2 cursor-pointer hover:text-red-600" onClick={() => setHidden(!isHide)}> 

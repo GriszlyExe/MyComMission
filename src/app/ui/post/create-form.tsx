@@ -1,16 +1,15 @@
 'use client'
 
-import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { X } from "lucide-react";
 import TagSelector from "./tags";
 import FileUpload from "./file-upload";
-import { PostData, FilePreview } from "@/common/interface";
+import { FilePreview } from "@/common/interface";
 import { postSchema } from "@/app/(auth)/Schemas";
+import { PostData } from "@/common/interface";
 
 export default function PostForm() {
-    const [isOpen, setIsOpen] = useState(false);
+    // const [isOpen, setIsOpen] = useState(false);
 
     // React Hook Form setup with correct types
     const {
@@ -23,53 +22,56 @@ export default function PostForm() {
     } = useForm<PostData>({
         resolver: yupResolver(postSchema),
         defaultValues: {
-            postName: "",
             postDescription: "",
             postTags: [],
-            price: 0,
-            samples: [],
+            samples: [], // Ensure samples is always an array
         },
     });
 
     const onSubmit = (data: PostData) => {
+        console.log("Submit...")
         console.log("Validated Post Data:", data);
-        setIsOpen(false);
+        // setIsOpen(false);
         reset();
     };
 
     const closeForm = () => {
-        setIsOpen(false);
+        // setIsOpen(false);
         reset();
     }
+
+/*     useEffect(() => {
+        console.log("Errors:", errors);
+    }, [errors]); */
 
     return (
         <div>
             {/* Button to open post box */}
-            <button 
+            {/* <button 
                 onClick={() => setIsOpen(true)} 
                 className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-blue-500 active:bg-blue-400"
             >
                 Create Post
-            </button>
+            </button> */}
 
             {/* Post Box Modal */}
-            {isOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-4 rounded-lg shadow-lg w-[460px] h-4/5 relative overflow-auto">
+            {/* {isOpen && ( */}
+                {/* <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"> */}
+                    <div className="card mx-4 border-2 border-primary bg-white p-4 shadow-xl">
                         {/* Close Button */}
-                        <button 
+                        {/* <button 
                             onClick={() => closeForm()} 
                             className="absolute top-2 right-2 text-gray-600 hover:text-black"
                         >
                             <X size={20} />
-                        </button>
+                        </button> */}
 
                         {/* Post Form */}
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <h1 className="text-lg font-bold mb-2 text-center">Create Post</h1>
                             
                             {/* Name section */}
-                            <div className="flex flex-col my-4">
+                            {/* <div className="flex flex-col my-4">
                                 <h2 className="mr-2">Commission name:</h2>
                                 <textarea 
                                     className="border flex-grow h-7 resize-none overflow-hidden rounded-md pl-2"
@@ -77,7 +79,7 @@ export default function PostForm() {
                                     {...register("postName")}
                                 />
                                 {errors.postName && <p className="text-red-500 text-sm">{errors.postName.message}</p>}
-                            </div>
+                            </div> */}
 
                             {/* Description section */}
                             <div className="mb-4">
@@ -87,6 +89,7 @@ export default function PostForm() {
                                     placeholder="Description..."
                                     {...register("postDescription")}
                                 />
+                                {errors.postDescription && <p className="text-red-500 text-sm">{errors.postDescription.message}</p>}
                             </div>
 
                             {/* Tags section */}
@@ -103,7 +106,7 @@ export default function PostForm() {
                             </div>
 
                             {/* Price section */}
-                            <div className="flex flex-col mb-4">
+                            {/* <div className="flex flex-col mb-4">
                                 <h2 className="mr-2">Price:</h2>
                                 <input 
                                     className="border h-7 w-40 resize-none overflow-hidden rounded-md pl-1"
@@ -113,7 +116,7 @@ export default function PostForm() {
                                     {...register("price")}
                                 />
                                 {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
-                            </div>
+                            </div> */}
 
                             {/* Sample image section */}
                             <Controller 
@@ -126,10 +129,10 @@ export default function PostForm() {
                             {errors.samples && <p className="text-red-500 text-sm">{errors.samples.message}</p>}
 
                             {/* Post Button */}
-                            <div className="flex justify-end bottom-0 right-0">
+                            <div className="flex justify-end bottom-0 right-0 mt-4">
                                 <button 
                                     type="submit" 
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                                    className="bg-black hover:bg-gray-600 active:bg-black text-white px-4 py-2 rounded-md"
                                 >
                                     Post
                                 </button>
@@ -137,7 +140,6 @@ export default function PostForm() {
                         </form>
                     </div>
                 </div>
-            )}
-        </div>
+        /* </div> */
     );
 }
