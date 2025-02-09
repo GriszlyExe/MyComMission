@@ -38,11 +38,11 @@ export default function LoginForm() {
 	) => {
 		try {
 			const { email, password } = values;
-
-			const { user, token } = await loginService({ email, password });
-
-			dispatch(login(token));
-			dispatch(setUser({ user }));
+			const { user, token, enabled2Fa} = await loginService({ email, password });
+      console.log({user,token,enabled2Fa})
+      // if(!enabled2Fa){
+        dispatch(login(token));
+        dispatch(setUser({ user }));
 
 			actions.resetForm();
 			router.push("/home");
@@ -50,7 +50,7 @@ export default function LoginForm() {
 			setError(true);
 			// console.error(err);
 		}
-	};
+	}; 
 
 	return (
 		<div className="flex min-h-screen items-center justify-center">
