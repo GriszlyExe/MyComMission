@@ -11,7 +11,6 @@ import { PostData, FilePreview } from "@/common/interface";
 import { postSchema } from "@/common/Schemas";
 import { EditIcon } from "lucide-react";
 import { Post } from "@/common/model";
-import { EditIcon } from "lucide-react";
 
 type EditFormSchema = yup.InferType<typeof postSchema>;
 interface EditPostProps {
@@ -84,7 +83,7 @@ export default function EditPostForm({ post }: EditPostProps) {
                             <h1 className="text-lg font-bold mb-2 text-center">Edit Post</h1>
                             
                             {/* Name section */}
-                            <div className="flex flex-col my-4">
+                            {/* <div className="flex flex-col my-4">
                                 <h2 className="mr-2">Commission name:</h2>
                                 <textarea 
                                     className="border flex-grow h-7 resize-none overflow-hidden rounded-md pl-2"
@@ -92,7 +91,7 @@ export default function EditPostForm({ post }: EditPostProps) {
                                     {...register("name")}
                                 />
                                 {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-                            </div>
+                            </div> */}
 
                             {/* Description section */}
                             <div className="mb-4">
@@ -115,11 +114,11 @@ export default function EditPostForm({ post }: EditPostProps) {
                                         <TagSelector selectedTags={field.value} setSelectedTags={field.onChange} />
                                     )}
                                 />
-                                {errors.tags && <p className="text-red-500 text-sm">{errors.tags.message}</p>}
+                                {errors.postTags && <p className="text-red-500 text-sm">{errors.postTags.message}</p>}
                             </div>
 
                             {/* Price section */}
-                            <div className="flex flex-col mb-4">
+                            {/* <div className="flex flex-col mb-4">
                                 <h2 className="mr-2">Price:</h2>
                                 <input 
                                     className="border h-7 w-40 resize-none overflow-hidden rounded-md pl-1"
@@ -129,7 +128,7 @@ export default function EditPostForm({ post }: EditPostProps) {
                                     {...register("price")}
                                 />
                                 {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
-                            </div>
+                            </div> */}
 
                             {/* Sample image section */}
                             <Controller 

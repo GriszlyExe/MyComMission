@@ -148,6 +148,7 @@ export default function ProfilePage() {
 							</div>
 						</div>
 
+
 						<div className="flex flex-row justify-center p-2">
 							<div className={`w-1/2 pl-5`}>
 								<button
@@ -168,6 +169,7 @@ export default function ProfilePage() {
 						</div>
 
 						{/* Feed */}
+						
 						{activeTab === "posts" && <Feed />}
 					</div>
 				</div>

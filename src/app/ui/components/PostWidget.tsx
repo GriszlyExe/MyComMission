@@ -8,6 +8,8 @@ import { PostData } from "@/common/interface";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { Post, User } from "@/common/model";
 import clsx from "clsx";
+import Link from "next/link";
+import { string } from "yup";
 
 interface PostProps {
 	post: Post;
@@ -18,16 +20,6 @@ export default function PostWidget({ post, user }: PostProps) {
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
 	const [isHide, setHidden] = useState(false);
-	const [data, setData] = useState<PostData>({
-		postDescription: content,
-		postTags: tags,
-		samples: [
-			{
-				file: undefined,
-				preview: image
-			}
-		],
-	})
 
 	const toggleLike = () => {
 		setLiked(!liked);
@@ -39,13 +31,13 @@ export default function PostWidget({ post, user }: PostProps) {
 		.map((url) => {
 			return { file: undefined, preview: url };
 		});
-	
+
 	const editFormProps = {
 		postDescription: post.postDescription!,
 		images: images!,
 		price: post.price!,
 		postTags: post.postTags!,
-	}
+	};
 
 	return (
 		<>
@@ -61,34 +53,36 @@ export default function PostWidget({ post, user }: PostProps) {
 							className="rounded-full"
 						/>
 						<div>
-							<p className="font-semibold">
+							<Link href={`/profile/${post.artistId}`}>
+								<p className="font-semibold">
 									{user.displayName}
 								</p>
-							<p className="text-xs text-gray-500">
-								{`January`}
-							</p>
+							</Link>
+							<p className="text-xs text-gray-500">{`January`}</p>
 						</div>
 					</div>
 					<div className="flex gap-4">
 						{/* Eyes off */}
-						{ 	isHide &&
-							<div className="flex gap-2 cursor-pointer hover:text-red-600" onClick={() => setHidden(!isHide)}> 
-								<EyeOffIcon
-									className="my-3"
-								/>
-								<p className="font-semibold py-3">hidden</p>
+						{isHide && (
+							<div
+								className="flex cursor-pointer gap-2 hover:text-red-600"
+								onClick={() => setHidden(!isHide)}
+							>
+								<EyeOffIcon className="my-3" />
+								<p className="py-3 font-semibold">hidden</p>
 							</div>
-						}
+						)}
 
 						{/* Eyes on */}
-						{ 	!isHide &&
-							<div className="flex gap-2 cursor-pointer hover:text-red-600" onClick={() => setHidden(!isHide)}> 
-								<EyeIcon
-									className="my-3"
-								/>
-								<p className="font-semibold py-3">public</p>
-						</div>
-						}
+						{!isHide && (
+							<div
+								className="flex cursor-pointer gap-2 hover:text-red-600"
+								onClick={() => setHidden(!isHide)}
+							>
+								<EyeIcon className="my-3" />
+								<p className="py-3 font-semibold">public</p>
+							</div>
+						)}
 						{/* Edit Post Button */}
 						{/* <button className="btn btn-ghost btn-sm">⋮</button> */}
 						<div className="flex gap-6">
@@ -111,23 +105,27 @@ export default function PostWidget({ post, user }: PostProps) {
 							</div>
 						))}
 					</div>
+				</div>
 
-					{/* Post Content */}
-					<p className="mt-2 text-gray-800">{post.postDescription}</p>
-					{/* Display multiple images */}
-					{images.length > 0 && (
-						<div
-							className={`mt-3 grid gap-3 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}
-						>
-							{" "}
-							{images.map((src, index) => (
+				{/* Post Content */}
+				<p className="mt-2 text-gray-800">{post.postDescription}</p>
+				{/* Display multiple images */}
+				{images.length > 0 && (
+					<div
+						className={`mt-3 grid gap-3 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}
+					>
+						{" "}
+						{images.map((src, index) => {
+							console.log(src.preview);
+							return (
 								<div
 									key={index}
 									className="overflow-hidden rounded-lg"
 								>
 									<img
 										src={
-											src.preview || "/path/to/default/image.jpg"
+											src.preview ||
+											"/path/to/default/image.jpg"
 										}
 										alt={`Post Image ${index + 1}`}
 										width={500}
@@ -135,9 +133,10 @@ export default function PostWidget({ post, user }: PostProps) {
 										className="rounded-lg"
 									/>
 								</div>
-							))}
-						</div>
-					)}
+							);
+						})}
+					</div>
+				)}
 
 				{/* Post Actions */}
 				<div className="mt-3 flex items-center space-x-4">

@@ -33,7 +33,7 @@ export default function Page() {
 
 	return (
 		<>
-			<div>Hello World!</div>
+			{/* <div>Hello World!</div> */}
 			<PostForm />
 			{/* <EditPostForm post={dummy_data} /> */}
 		</>

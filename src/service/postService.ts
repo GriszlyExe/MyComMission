@@ -39,7 +39,7 @@ export const updatePostImages = async (postId: string, images: FormData) => {
 export const createPost = async ({ data }: { data: any }) => {
     try {
 
-        const { samples, images, ...others } = data;
+        const { images, ...others } = data;
 
         /* JSON part */
         const options = {
@@ -56,7 +56,9 @@ export const createPost = async ({ data }: { data: any }) => {
         /* image part */
         const sentImages = new FormData();
 
-        samples.map((img: any, idx: number) => {
+        console.log(images);
+
+        images.map((img: any, idx: number) => {
             sentImages.append(`picUrl${idx + 1}`, img.file);
         })
 
@@ -76,7 +78,7 @@ export const createPost = async ({ data }: { data: any }) => {
 export const getPostByUserId = async (userId: string) => {
 
     try {
-        
+
         const options = {
             method: "GET",
             url: `${serverAddr}/post/from/${userId}`,
@@ -86,7 +88,7 @@ export const getPostByUserId = async (userId: string) => {
 
         const { data: { posts } } = await axios.request(options);
 
-        return posts ? posts: [];
+        return posts ? posts : [];
 
     } catch (err) {
         throw err;

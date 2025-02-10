@@ -10,13 +10,15 @@ import { postSchema } from "@/common/Schemas";
 import { createPost } from "@/service/postService";
 import { useAppDispatch } from "@/states/hook";
 import { addPost } from "@/states/features/postSlice";
+import { PostData } from "@/common/interface";
+import { useState } from "react";
+
 
 type FormSchema = yup.InferType<typeof postSchema>;
-import { PostData } from "@/common/interface";
 
 export default function PostForm() {
 
-	// const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
     const dispatch = useAppDispatch();
 
     // React Hook Form setup with correct types
@@ -27,16 +29,16 @@ export default function PostForm() {
         setValue,
         reset,
         formState: { errors },
-    } = useForm<PostData>({
+    } = useForm<FormSchema>({
         resolver: yupResolver(postSchema),
         defaultValues: {
             postDescription: "",
             postTags: [],
-            samples: [], // Ensure samples is always an array
+            images: [], // Ensure samples is always an array
         },
     });
 
-	const onSubmit = async (data: PostData) => {
+	const onSubmit = async (data: FormSchema) => {
         console.log("Submit...")
 		// console.log("Validated Post Data:", data);
         const post = await createPost({ data });
@@ -94,10 +96,10 @@ export default function PostForm() {
 
                             {/* Description section */}
                             <div className="mb-4">
-                                <h2 className="mr-2 mb-2">Commission description:</h2>
+                                {/* <h2 className="mr-2 mb-2">Commission description:</h2> */}
                                 <textarea 
                                     className="border flex-grow w-full h-32 resize-none rounded-md pl-3 pt-2"
-                                    placeholder="Description..."
+                                    placeholder="What's on your mind..."
                                     {...register("postDescription")}
                                 />
                                 {errors.postDescription && <p className="text-red-500 text-sm">{errors.postDescription.message}</p>}
@@ -131,7 +133,7 @@ export default function PostForm() {
 
 							{/* Sample image section */}
 							<Controller
-								name="samples"
+								name="images"
 								control={control}
 								render={({ field }) => (
 									<FileUpload
@@ -143,9 +145,9 @@ export default function PostForm() {
 									/>
 								)}
 							/>
-							{errors.samples && (
+							{errors.images && (
 								<p className="text-sm text-red-500">
-									{errors.samples.message}
+									{errors.images.message}
 								</p>
 							)}
 
@@ -161,6 +163,6 @@ export default function PostForm() {
                         </form>
                     </div>
                 </div>
-        /* </div> */
+        // </ div>
     );
 }
