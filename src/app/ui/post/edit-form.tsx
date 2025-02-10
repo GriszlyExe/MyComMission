@@ -11,6 +11,7 @@ import { PostData, FilePreview } from "@/common/interface";
 import { postSchema } from "@/common/Schemas";
 import { EditIcon } from "lucide-react";
 import { Post } from "@/common/model";
+import { EditIcon } from "lucide-react";
 
 type EditFormSchema = yup.InferType<typeof postSchema>;
 interface EditPostProps {
@@ -55,8 +56,16 @@ export default function EditPostForm({ post }: EditPostProps) {
 
     return (
         <div>
+            {/* Edit Post Button */}
+            {/* <button 
+                onClick={() => setIsOpen(true)} 
+                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-purple-400 active:bg-purple-500"
+            >
+                Edit Post
+            </button> */}
 
             <EditIcon className="mt-3 hover:text-green-500 cursor-pointer" onClick={() => setIsOpen(true)}/>
+
 
             {/* Post Box Modal */}
             {isOpen && (
@@ -73,13 +82,25 @@ export default function EditPostForm({ post }: EditPostProps) {
                         {/* Post Form */}
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <h1 className="text-lg font-bold mb-2 text-center">Edit Post</h1>
-                        
+                            
+                            {/* Name section */}
+                            <div className="flex flex-col my-4">
+                                <h2 className="mr-2">Commission name:</h2>
+                                <textarea 
+                                    className="border flex-grow h-7 resize-none overflow-hidden rounded-md pl-2"
+                                    placeholder="Name..."
+                                    {...register("name")}
+                                />
+                                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                            </div>
+
                             {/* Description section */}
                             <div className="mb-4">
                                 <h2 className="mr-2 mb-2">Commission description:</h2>
                                 <textarea 
                                     className="border flex-grow w-full h-32 resize-none rounded-md pl-3 pt-2"
                                     placeholder="Description..."
+                                    {...register("postDescription")}
                                     {...register("postDescription")}
                                 />
                             </div>
@@ -94,7 +115,20 @@ export default function EditPostForm({ post }: EditPostProps) {
                                         <TagSelector selectedTags={field.value} setSelectedTags={field.onChange} />
                                     )}
                                 />
-                                {errors.postTags && <p className="text-red-500 text-sm">{errors.postTags.message}</p>}
+                                {errors.tags && <p className="text-red-500 text-sm">{errors.tags.message}</p>}
+                            </div>
+
+                            {/* Price section */}
+                            <div className="flex flex-col mb-4">
+                                <h2 className="mr-2">Price:</h2>
+                                <input 
+                                    className="border h-7 w-40 resize-none overflow-hidden rounded-md pl-1"
+                                    placeholder="Price..."
+                                    type="number"
+                                    min={0}
+                                    {...register("price")}
+                                />
+                                {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
                             </div>
 
                             {/* Sample image section */}

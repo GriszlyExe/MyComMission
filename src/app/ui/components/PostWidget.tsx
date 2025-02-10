@@ -5,8 +5,9 @@ import { FaHeart, FaRegHeart, FaRegCommentDots } from "react-icons/fa";
 import Image from "next/image";
 import EditPostForm from "../post/edit-form";
 import { PostData } from "@/common/interface";
-import { EyeOffIcon } from "lucide-react";
+import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { Post, User } from "@/common/model";
+import clsx from "clsx";
 
 interface PostProps {
 	post: Post;
@@ -16,7 +17,17 @@ interface PostProps {
 export default function PostWidget({ post, user }: PostProps) {
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
-	const [hidden, setHidden] = useState(false);
+	const [isHide, setHidden] = useState(false);
+	const [data, setData] = useState<PostData>({
+		postDescription: content,
+		postTags: tags,
+		samples: [
+			{
+				file: undefined,
+				preview: image
+			}
+		],
+	})
 
 	const toggleLike = () => {
 		setLiked(!liked);
@@ -38,27 +49,46 @@ export default function PostWidget({ post, user }: PostProps) {
 
 	return (
 		<>
-			{!hidden && (
-				<div className="card w-full max-w-lg border-2 border-primary bg-white p-4 shadow-xl">
-					{/* Post Header */}
-					<div className="flex items-center justify-between">
-						<div className="flex items-center space-x-3">
-							<img
-								src={user.profileUrl}
-								alt="User Avatar"
-								width={50}
-								height={50}
-								className="rounded-full"
-							/>
-							<div>
-								<p className="font-semibold">
+			<div className="card w-full max-w-lg border-2 border-primary bg-white p-4 shadow-xl">
+				{/* Post Header */}
+				<div className="flex items-center justify-between">
+					<div className="flex items-center space-x-3">
+						<img
+							src={user.profileUrl}
+							alt="User Avatar"
+							width={50}
+							height={50}
+							className="rounded-full"
+						/>
+						<div>
+							<p className="font-semibold">
 									{user.displayName}
 								</p>
-								<p className="text-xs text-gray-500">
-									{`January`}
-								</p>
-							</div>
+							<p className="text-xs text-gray-500">
+								{`January`}
+							</p>
 						</div>
+					</div>
+					<div className="flex gap-4">
+						{/* Eyes off */}
+						{ 	isHide &&
+							<div className="flex gap-2 cursor-pointer hover:text-red-600" onClick={() => setHidden(!isHide)}> 
+								<EyeOffIcon
+									className="my-3"
+								/>
+								<p className="font-semibold py-3">hidden</p>
+							</div>
+						}
+
+						{/* Eyes on */}
+						{ 	!isHide &&
+							<div className="flex gap-2 cursor-pointer hover:text-red-600" onClick={() => setHidden(!isHide)}> 
+								<EyeIcon
+									className="my-3"
+								/>
+								<p className="font-semibold py-3">public</p>
+						</div>
+						}
 						{/* Edit Post Button */}
 						{/* <button className="btn btn-ghost btn-sm">⋮</button> */}
 						<div className="flex gap-6">
@@ -109,26 +139,25 @@ export default function PostWidget({ post, user }: PostProps) {
 						</div>
 					)}
 
-					{/* Post Actions */}
-					<div className="mt-3 flex items-center space-x-4">
-						<button
-							className="btn btn-ghost btn-sm flex items-center space-x-2"
-							onClick={toggleLike}
-						>
-							{liked ? (
-								<FaHeart className="h-5 w-5 text-red-500" />
-							) : (
-								<FaRegHeart className="h-5 w-5 text-gray-600" />
-							)}
-							<span>{likes}</span>
-						</button>
-						<button className="btn btn-ghost btn-sm flex items-center space-x-2">
-							<FaRegCommentDots className="h-5 w-5 text-gray-600" />
-							<span>Comment</span>
-						</button>
-					</div>
+				{/* Post Actions */}
+				<div className="mt-3 flex items-center space-x-4">
+					<button
+						className="btn btn-ghost btn-sm flex items-center space-x-2"
+						onClick={toggleLike}
+					>
+						{liked ? (
+							<FaHeart className="h-5 w-5 text-red-500" />
+						) : (
+							<FaRegHeart className="h-5 w-5 text-gray-600" />
+						)}
+						<span>{likes}</span>
+					</button>
+					<button className="btn btn-ghost btn-sm flex items-center space-x-2">
+						<FaRegCommentDots className="h-5 w-5 text-gray-600" />
+						<span>Comment</span>
+					</button>
 				</div>
-			)}
+			</div>
 		</>
 	);
 }

@@ -12,6 +12,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendarDay } from "react-icons/fa6";
 import { getUserInfo } from "@/service/userService";
 import { User } from "@/common/model";
+import PostForm from "@/app/ui/post/create-form";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
