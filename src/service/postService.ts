@@ -86,7 +86,7 @@ export const getPostByUserId = async (userId: string) => {
 
         const { data: { posts } } = await axios.request(options);
 
-        return posts;
+        return posts ? posts: [];
 
     } catch (err) {
         throw err;

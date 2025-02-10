@@ -13,7 +13,7 @@ import { createPost } from "@/service/postService";
 import { useAppDispatch } from "@/states/hook";
 import { addPost } from "@/states/features/postSlice";
 
-// type FormSchema = yup.InferType<typeof >;
+type FormSchema = yup.InferType<typeof postSchema>;
 
 export default function PostForm() {
 
@@ -28,14 +28,12 @@ export default function PostForm() {
 		setValue,
 		reset,
 		formState: { errors },
-	} = useForm<PostData>({
+	} = useForm<FormSchema>({
 		resolver: yupResolver(postSchema),
 		defaultValues: {
-			postName: "",
 			postDescription: "",
 			postTags: [],
-			price: 0,
-			samples: [],
+			images: [],
 		},
 	});
 

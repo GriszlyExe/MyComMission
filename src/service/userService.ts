@@ -15,11 +15,7 @@ export const getUserInfo = async (userId: string) => {
 
         const { data: { user } } = await axios.request(options);
 
-        return {
-            ...user,
-            createdAt: new Date(user.createdAt),
-            updatedAt: new Date(user.updatedAt),
-        };
+        return user;
 
     } catch (err) {
         throw err;
