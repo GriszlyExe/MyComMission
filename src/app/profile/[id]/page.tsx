@@ -104,7 +104,7 @@ export default function ProfilePage() {
 										// layout="fill"
 										width={112}
 										height={112}
-										className="object-center rounded-full"
+										className="object-cover h-full w-full overflow-hidden rounded-full"
 									/>
 								</div>
 							</div>

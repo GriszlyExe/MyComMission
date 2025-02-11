@@ -11,16 +11,24 @@ import { PostData, FilePreview } from "@/common/interface";
 import { postSchema } from "@/common/Schemas";
 import { EditIcon } from "lucide-react";
 import { Post } from "@/common/model";
+import { updatePostInfoById } from "@/service/postService";
+import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { editPagePost, editUserPost } from "@/states/features/postSlice";
+import { useParams } from "next/navigation";
 
 type EditFormSchema = yup.InferType<typeof postSchema>;
 interface EditPostProps {
+    postId: string;
     post: EditFormSchema;
 }
 
-export default function EditPostForm({ post }: EditPostProps) {
+export default function EditPostForm({ postId, post }: EditPostProps) {
 
     
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useAppDispatch();
+    const { id } = useParams();
+    const userId = useAppSelector(state => state.user.user!.userId);
 
     // React Hook Form setup with correct types
     const {
@@ -42,10 +50,21 @@ export default function EditPostForm({ post }: EditPostProps) {
         reset(post)
     }, [post, reset])
 
-    const onSubmit = (data: EditFormSchema) => {
-        console.log("Validated Updated Data:", data);
-        setIsOpen(false);
-        reset();
+    const onSubmit = async (data: EditFormSchema) => {
+        
+        try {
+            console.log("Validated Updated Data:", data);
+            const updatedPost = await updatePostInfoById(postId, data);
+            // console.log(updatedPost);
+            dispatch(editUserPost(updatedPost));
+            dispatch(editPagePost(updatedPost));
+            // console.log(updatedPost);
+            setIsOpen(false);
+            reset();
+        } catch (err) {
+            
+        }
+
     };
 
     const closeForm = () => {
@@ -138,10 +157,10 @@ export default function EditPostForm({ post }: EditPostProps) {
                                     <FileUpload selectedFiles={field.value.filter((file): file is FilePreview => file !== undefined)} setSelectedFiles={field.onChange} />
                                 )}
                             />
-                            {errors.images && <p className="text-red-500 text-sm">{errors.images.message}</p>}
+                            {/* {errors.images && <p className="text-red-500 text-sm">{errors.images.message}</p>} */}
 
                             {/* Save Changes Button */}
-                            <div className="flex justify-end bottom-0 right-0">
+                            <div className="flex justify-end bottom-0 right-0 mt-3">
                                 <button 
                                     type="submit" 
                                     className="bg-purple-600 hover:bg-purple-500 active:bg-purple-600 text-white px-4 py-2 rounded-md"

@@ -14,20 +14,20 @@ export default function Page() {
 	const userId = useAppSelector((state) => state.user.user!.userId);
 	const dispatch = useAppDispatch();
 
-	const fetchUserInfo = async () => {
-		const user = await getUserInfo(userId);
-		console.log(user);
-		dispatch(setUser({ user }));
-	};
-
+	// const fetchUserInfo = async () => {
+	// 	const user = await getUserInfo(userId);
+	// 	console.log(user);
+	// };
+	
 	const fetchPostInfo = async () => {
-		const posts = await getPostByUserId(userId);
-		console.log(posts);
+		const { posts, user } = await getPostByUserId(userId);
+		// console.log(posts);
+		dispatch(setUser({ user }));
 		dispatch(setLoggedInUserPosts(posts));
 	};
 
 	useEffect(() => {
-		fetchUserInfo();
+		// fetchUserInfo();
         fetchPostInfo();
 	}, []);
 

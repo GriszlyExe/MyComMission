@@ -29,6 +29,14 @@ const postSlice = createSlice({
                 return post;
             })
         },
+        editPagePost: (state, action: PayloadAction<Post>) => {
+            state.pagePosts = state.pagePosts.map((post, idx) => {
+                if (post.postId === action.payload.postId) {
+                    return action.payload;
+                }
+                return post;
+            })
+        },
         removePost: (state, action: PayloadAction<string>) => {
             state.posts = state.posts.filter((post) => post.postId !== action.payload);
         },
@@ -41,5 +49,5 @@ const postSlice = createSlice({
     },
 });
 
-export const { addPost, removePost, setLoggedInUserPosts, setPagePosts, editUserPost, clearPagePosts } = postSlice.actions;
+export const { addPost, removePost, setLoggedInUserPosts, setPagePosts, editUserPost, clearPagePosts, editPagePost } = postSlice.actions;
 export const postReducer = postSlice.reducer;

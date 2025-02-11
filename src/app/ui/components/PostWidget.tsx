@@ -45,13 +45,15 @@ export default function PostWidget({ post, user }: PostProps) {
 				{/* Post Header */}
 				<div className="flex items-center justify-between">
 					<div className="flex items-center space-x-3">
-						<img
-							src={user.profileUrl}
-							alt="User Avatar"
-							width={50}
-							height={50}
-							className="rounded-full"
-						/>
+						<div className="aspect-square">
+							<img
+								src={user.profileUrl}
+								alt="User Avatar"
+								width={50}
+								height={50}
+								className="object-cover overflow-hidden rounded-full h-full"
+							/>
+						</div>
 						<div>
 							<Link href={`/profile/${post.artistId}`}>
 								<p className="font-semibold">
@@ -90,21 +92,21 @@ export default function PostWidget({ post, user }: PostProps) {
 								className="my-3 cursor-pointer hover:text-red-600"
 								onClick={() => setHidden(true)}
 							/>
-							<EditPostForm post={editFormProps} />
+							<EditPostForm post={editFormProps} postId={post.postId} />
 						</div>
 					</div>
+				</div>
 
-					{/* Tags */}
-					<div className="mt-3 flex flex-wrap gap-1">
-						{post.postTags.map((tag) => (
-							<div
-								key={tag}
-								className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"
-							>
-								{tag}
-							</div>
-						))}
-					</div>
+				{/* Tags */}
+				<div className="mt-3 flex flex-wrap gap-1">
+					{post.postTags.map((tag) => (
+						<div
+							key={tag}
+							className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"
+						>
+							{tag}
+						</div>
+					))}
 				</div>
 
 				{/* Post Content */}
@@ -116,7 +118,7 @@ export default function PostWidget({ post, user }: PostProps) {
 					>
 						{" "}
 						{images.map((src, index) => {
-							console.log(src.preview);
+							// console.log(src);
 							return (
 								<div
 									key={index}

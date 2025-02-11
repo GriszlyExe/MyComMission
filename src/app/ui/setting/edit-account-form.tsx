@@ -82,7 +82,7 @@ export default function EditAccountForm() {
 									Profile Picture
 								</label>
 								<div className="h-24 w-24 overflow-hidden rounded-full border border-gray-300">
-									<Image
+									<img
 										src={
 											previewPic ||
 											"/default-profile-2.png"

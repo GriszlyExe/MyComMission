@@ -29,8 +29,11 @@ export default function FileUpload({ selectedFiles, setSelectedFiles }: FileUplo
 
     // Remove selected image
     const removeImage = (index: number) => {
-        const updatedFiles = selectedFiles.filter((_, i) => i !== index);
-        setSelectedFiles(updatedFiles);
+        // console.log(selectedFiles);
+        // const updatedFiles = selectedFiles.filter((_, i) => i !== index);
+        /* @ts-ignore */
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+        // console.log(selectedFiles);
     };
 
     return (
