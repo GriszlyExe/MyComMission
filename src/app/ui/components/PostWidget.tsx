@@ -10,6 +10,9 @@ import { Post, User } from "@/common/model";
 import clsx from "clsx";
 import Link from "next/link";
 import { string } from "yup";
+import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { hidePost } from "@/service/postService";
+import { editPagePost, editUserPost } from "@/states/features/postSlice";
 
 interface PostProps {
 	post: Post;
@@ -17,9 +20,12 @@ interface PostProps {
 }
 
 export default function PostWidget({ post, user }: PostProps) {
+
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
-	const [isHide, setHidden] = useState(false);
+	const userId = useAppSelector((state) => state.user.user!.userId);
+	const isHide = post.isHide;
+	const dispatch = useAppDispatch();
 
 	const toggleLike = () => {
 		setLiked(!liked);
@@ -32,12 +38,24 @@ export default function PostWidget({ post, user }: PostProps) {
 			return { file: undefined, preview: url };
 		});
 
+	const toggleHidePost = async () => {
+		try {
+			await hidePost(post.postId, !isHide);
+			dispatch(editUserPost({ ...post, isHide: !isHide }));
+			dispatch(editPagePost({ ...post, isHide: !isHide }));
+		} catch (err) {
+			
+		}
+	}
+
 	const editFormProps = {
 		postDescription: post.postDescription!,
 		images: images!,
 		price: post.price!,
 		postTags: post.postTags!,
 	};
+
+	console.log(user);
 
 	return (
 		<>
@@ -47,28 +65,28 @@ export default function PostWidget({ post, user }: PostProps) {
 					<div className="flex items-center space-x-3">
 						<div className="aspect-square">
 							<img
-								src={user.profileUrl}
+								src={user ? user.profileUrl : "/default-profile-2.png"}
 								alt="User Avatar"
 								width={50}
 								height={50}
-								className="object-cover overflow-hidden rounded-full h-full"
+								className="h-full overflow-hidden rounded-full object-cover"
 							/>
 						</div>
 						<div>
 							<Link href={`/profile/${post.artistId}`}>
 								<p className="font-semibold">
-									{user.displayName}
+									{user ? user.displayName : "display name"}
 								</p>
 							</Link>
 							<p className="text-xs text-gray-500">{`January`}</p>
 						</div>
 					</div>
-					<div className="flex gap-4">
+					{(userId === post.artistId) && <div className="flex gap-4">
 						{/* Eyes off */}
 						{isHide && (
 							<div
 								className="flex cursor-pointer gap-2 hover:text-red-600"
-								onClick={() => setHidden(!isHide)}
+								onClick={toggleHidePost}
 							>
 								<EyeOffIcon className="my-3" />
 								<p className="py-3 font-semibold">hidden</p>
@@ -79,27 +97,26 @@ export default function PostWidget({ post, user }: PostProps) {
 						{!isHide && (
 							<div
 								className="flex cursor-pointer gap-2 hover:text-red-600"
-								onClick={() => setHidden(!isHide)}
+								onClick={toggleHidePost}
 							>
 								<EyeIcon className="my-3" />
 								<p className="py-3 font-semibold">public</p>
 							</div>
 						)}
-						{/* Edit Post Button */}
-						{/* <button className="btn btn-ghost btn-sm">⋮</button> */}
-						<div className="flex gap-6">
-							<EyeOffIcon
-								className="my-3 cursor-pointer hover:text-red-600"
-								onClick={() => setHidden(true)}
-							/>
-							<EditPostForm post={editFormProps} postId={post.postId} />
-						</div>
-					</div>
+						{userId == post.artistId && (
+							<div className="flex gap-6">
+								<EditPostForm
+									post={editFormProps}
+									postId={post.postId}
+								/>
+							</div>
+						)}
+					</div>}
 				</div>
 
 				{/* Tags */}
 				<div className="mt-3 flex flex-wrap gap-1">
-					{post.postTags.map((tag) => (
+					{post.postTags && post.postTags.map((tag) => (
 						<div
 							key={tag}
 							className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"

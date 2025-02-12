@@ -6,7 +6,7 @@ import { TwoFactorAccessIcon } from "hugeicons-react";
 import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { ToggleSwitch } from "./button";
-import { enable2Fa1, enable2Fa2 } from "@/service/userService";
+import { enable2Fa1, enable2Fa2, updateUser } from "@/service/userService";
 import { maskEmail } from "@/utils/helper";
 import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { toggle2Fa } from "@/states/features/userSlice";
@@ -14,7 +14,6 @@ import { toggle2Fa } from "@/states/features/userSlice";
 type FormSchema = yup.InferType<typeof twoFactorCode>;
 
 export default function TwoFactorForm() {
-    
 	const dispatch = useAppDispatch();
 	const enabled = useAppSelector((state) => state.user.user!.enabled2FA);
 	const [open2faForm, setOpen2faForm] = useState<boolean>(false);
@@ -28,26 +27,36 @@ export default function TwoFactorForm() {
 		actions: FormikHelpers<FormSchema>,
 	) => {
 		try {
-
-            const { code } = values;
-            await enable2Fa2(email, code);
-            setOpen2faForm(false);
-            dispatch(toggle2Fa());
-
-		} catch (err) {
-
-        }
+			const { code } = values;
+			await enable2Fa2({ email, token: code, userId });
+			setOpen2faForm(false);
+			dispatch(toggle2Fa());
+		} catch (err) {}
 	};
 
 	const getEmail = async () => {
 		await enable2Fa1(userId);
 	};
 
+	const disable2FA = async () => {
+		try {
+			await updateUser({
+				user: {
+					userId,
+					enabled2FA: false,
+				}
+			});
+			dispatch(toggle2Fa());
+		} catch (error) {
+			
+		}
+	}
+
 	useEffect(() => {
-        if (open2faForm) {
-            getEmail();
-        }
-    }, [open2faForm]);
+		if (open2faForm) {
+			getEmail();
+		}
+	}, [open2faForm]);
 
 	return (
 		<div>
@@ -60,8 +69,8 @@ export default function TwoFactorForm() {
 					</span>
 					<div className="flex">
 						<ToggleSwitch
-							onToggle={() => {
-								if (enabled) dispatch(toggle2Fa());
+							onToggle={async () => {
+								if (enabled) await disable2FA();
 								else if (!enabled) setOpen2faForm(true);
 							}}
 							isOn={enabled}

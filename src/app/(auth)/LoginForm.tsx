@@ -7,25 +7,23 @@ import Link from "next/link";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { loginSchema } from "../../common/Schemas";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import * as yup from "yup";
 
 /* state */
 import { useAppDispatch } from "@/states/hook";
 import { setUser } from "@/states/features/userSlice";
 import { login } from "@/states/features/authSlice";
 
-interface loginSchema2 {
-	email: string;
-	password: string;
-}
+type FormSchema = yup.InferType<typeof loginSchema>;
 
 export default function LoginForm({
 	toggleShowLogin,
 	setEmail,
 }: {
 	toggleShowLogin: () => void;
-	setEmail: any;
+	setEmail: Dispatch<SetStateAction<string>>;
 }) {
 	const [isError, setError] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
@@ -38,8 +36,8 @@ export default function LoginForm({
 	const dispatch = useAppDispatch();
 
 	const handleSubmit = async (
-		values: loginSchema2,
-		actions: FormikHelpers<loginSchema2>,
+		values: FormSchema,
+		actions: FormikHelpers<FormSchema>,
 	) => {
 		try {
 			const { email, password } = values;
@@ -131,7 +129,7 @@ export default function LoginForm({
 							<div className="">
 								{isError && (
 									<span className="font-bold text-error">
-										Wrong user name or password
+										Wrong email or password
 									</span>
 								)}
 							</div>
