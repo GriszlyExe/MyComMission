@@ -180,3 +180,7 @@ export const updatePostInfoById = async (postId: string, payload: any) => {
     }
 
 }
+
+export const hidePost = async (postId: string) => {
+    
+}
