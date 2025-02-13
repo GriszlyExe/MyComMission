@@ -9,10 +9,10 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendarDay } from "react-icons/fa6";
 
 export default function ProfilePage() {
-	const [activeTab, setActiveTab] = useState("posts"); // Initial active tab
+	const [activeTab, setActiveTab] = useState("posts");
 
 	const handleTabClick = (tab: string) => {
-		setActiveTab(tab); // Update active tab on click
+		setActiveTab(tab);
 	};
 
 	return (
@@ -25,7 +25,6 @@ export default function ProfilePage() {
 			<div className="mx-auto flex w-full max-w-7xl flex-row items-start">
 				{/* Left Sidebar */}
 				<div className="sticky top-20 w-1/3 rounded-md bg-base-300 p-4">
-					{/* <div className="sticky top-4"> */}
 					<h2 className="text-xl font-bold">Suggested Artist</h2>
 					<ul className="mt-4 space-y-2">
 						<li>
@@ -44,7 +43,6 @@ export default function ProfilePage() {
 							</Link>
 						</li>
 					</ul>
-					{/* </div> */}
 				</div>
 
 				{/* Center Feed */}
