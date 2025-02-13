@@ -17,8 +17,11 @@ const userSlice = createSlice({
             return action.payload;
         },
         clearUser: () => initialState,
+        toggle2Fa: (state) => {
+            state.user!.enabled2FA = !(state.user!.enabled2FA);
+        }
     },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, toggle2Fa } = userSlice.actions;
 export const userReducer = userSlice.reducer;

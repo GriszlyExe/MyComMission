@@ -1,82 +1,87 @@
-import { Image01Icon } from "hugeicons-react";
+import { useRef } from "react";
+import { X } from "lucide-react"; // Import close icon
 import { FilePreview } from "@/common/interface";
 
 interface FileUploadProps {
     selectedFiles: FilePreview[];
-    setSelectedFiles: React.Dispatch<React.SetStateAction<FilePreview[]>>;
+    setSelectedFiles: (files: FilePreview[]) => void;
 }
 
 export default function FileUpload({ selectedFiles, setSelectedFiles }: FileUploadProps) {
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        const files: File[] = Array.from(event.target.files || []); // Convert FileList to array
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+            const newFiles = Array.from(event.target.files).map(file => ({
+                file,
+                preview: URL.createObjectURL(file),
+            }));
 
-        // Check file limit
-        if (files.length + selectedFiles.length > 4) {
-            alert("You can only upload up to 4 images.");
-            return;
+            // Prevent exceeding 4 files
+            if (selectedFiles.length + newFiles.length > 4) {
+                alert("You can upload a maximum of 4 images.");
+                return;
+            }
+
+            setSelectedFiles([...selectedFiles, ...newFiles]);
         }
-
-        // Convert file objects to previewable URLs
-        const filePreviews: FilePreview[] = files.map(file => ({
-            file,
-            preview: URL.createObjectURL(file), // Generate image preview URL
-        }));
-
-        setSelectedFiles([...selectedFiles, ...filePreviews]);
     };
 
-    const removeFile = (index: number): void => {
-        const updatedFiles = selectedFiles.filter((_, i) => i !== index);
-        setSelectedFiles(updatedFiles);
+    // Remove selected image
+    const removeImage = (index: number) => {
+        // console.log(selectedFiles);
+        // const updatedFiles = selectedFiles.filter((_, i) => i !== index);
+        /* @ts-ignore */
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+        // console.log(selectedFiles);
     };
 
     return (
-        <div className="flex flex-col my-3">
-            <div className="flex gap-2">
-                <h2 className="mb-2">Sample artwork:</h2>
+        <div className="flex flex-col items-center">
+            {/* Hidden File Input */}
+            <input 
+                type="file" 
+                ref={fileInputRef} 
+                className="hidden" 
+                accept="image/*" 
+                onChange={handleFileChange} 
+                multiple 
+            />
 
-                {/* Hidden file input */}
-                <input 
-                    type="file" 
-                    id="fileUpload" 
-                    className="hidden" 
-                    multiple 
-                    accept="image/*" 
-                    onChange={handleFileChange}
-                />
-
-                {/* Custom upload button */}
-                <label 
-                    htmlFor="fileUpload" 
-                    className="cursor-pointer bg-blue-500 text-white px-2 py-2 rounded-lg hover:bg-blue-600 transition"
-                >   
-                    <div className="flex gap-1">
-                        <Image01Icon />
-                        Add artworks ({selectedFiles.length}/4)
-                    </div>
-                </label>    
+            {/* Clickable Upload Area */}
+            <div 
+                className={`border-2 border-dashed p-4 rounded-md text-center cursor-pointer 
+                            ${selectedFiles.length >= 4 ? "border-gray-300 cursor-not-allowed" : "hover:border-blue-500"}`} 
+                onClick={() => {
+                    if (selectedFiles.length < 4) {
+                        fileInputRef.current?.click();
+                    }
+                }}
+            >
+                {selectedFiles.length < 4 ? "Click to upload files (Max: 4)" : "Maximum limit reached"}
             </div>
 
             {/* Image Previews */}
-            <div className="mt-3 flex pl-2 flex-wrap gap-2 rounded-md h-[97px]">
-                {selectedFiles.map((fileObj, index) => (
-                    <div key={index} className="relative w-24 h-24">
-                        <img 
-                            src={fileObj.preview} 
-                            alt="Preview" 
-                            className="w-full h-full object-cover rounded-md border-2 border-gray-300"
-                        />
-                        <button 
-                            className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded-full" 
-                            onClick={() => removeFile(index)}
-                            type="button"
-                        >
-                            ✕
-                        </button>
-                    </div>
-                ))}
-            </div>
+            {selectedFiles.length > 0 && (
+                <div className="grid grid-cols-4 gap-4 mt-4">
+                    {selectedFiles.map((file, index) => (
+                        <div key={index} className="relative group">
+                            <img 
+                                src={file.preview} 
+                                alt="preview" 
+                                className="w-24 h-24 object-cover rounded-md border shadow-md"
+                            />
+                            {/* Remove Button */}
+                            <button 
+                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+                                onClick={() => removeImage(index)}
+                            >
+                                <X size={14} />
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

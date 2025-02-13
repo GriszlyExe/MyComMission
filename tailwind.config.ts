@@ -12,13 +12,13 @@ export default {
     themes: [
       {
         myTheme: {
-          primary: "#f0abfc",
-          secondary: "#f4f4a1",
-          accent: "#1be885",
+          primary: "#5e548e",
+          secondary: "#5e548e",
+          accent: "#231942",
           neutral: "#272136",
           "base-100": "#ffffff",
-          "base-200": "#8b5cf6",
-          "base-300": "#fce7f3",
+          "base-200": "#231942",
+          "base-300": "#ffffff",
           info: "#778ad4",
           success: "#23b893",
           warning: "#f79926",

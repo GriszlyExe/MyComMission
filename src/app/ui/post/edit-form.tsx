@@ -1,20 +1,34 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { X } from "lucide-react";
 import TagSelector from "./tags";
 import FileUpload from "./file-upload";
 import { PostData, FilePreview } from "@/common/interface";
-import { postSchema } from "@/app/(auth)/Schemas";
+import { postSchema } from "@/common/Schemas";
+import { EditIcon } from "lucide-react";
+import { Post } from "@/common/model";
+import { updatePostInfoById } from "@/service/postService";
+import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { editPagePost, editUserPost } from "@/states/features/postSlice";
+import { useParams } from "next/navigation";
 
+type EditFormSchema = yup.InferType<typeof postSchema>;
 interface EditPostProps {
-    post: PostData;
+    postId: string;
+    post: EditFormSchema;
 }
 
-export default function EditPostForm({ post }: EditPostProps) {
+export default function EditPostForm({ postId, post }: EditPostProps) {
+
+    
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useAppDispatch();
+    const { id } = useParams();
+    const userId = useAppSelector(state => state.user.user!.userId);
 
     // React Hook Form setup with correct types
     const {
@@ -24,21 +38,33 @@ export default function EditPostForm({ post }: EditPostProps) {
         setValue,
         reset,
         formState: { errors },
-    } = useForm<PostData>({
+    } = useForm<EditFormSchema>({
         resolver: yupResolver(postSchema),
         defaultValues: {
-            name: post.name,
-            description: post.description,
-            tags: post.tags,
-            price: post.price,
-            samples: post.samples,
-        },
+            ...post,
+        }
     });
 
-    const onSubmit = (data: PostData) => {
-        console.log("Validated Updated Data:", data);
-        setIsOpen(false);
-        reset();
+    // Reset form values when post data changes
+    useEffect(() => {
+        reset(post)
+    }, [post, reset])
+
+    const onSubmit = async (data: EditFormSchema) => {
+        
+        try {
+            console.log("Validated Updated Data:", data);
+            const updatedPost = await updatePostInfoById(postId, data);
+            // console.log(updatedPost);
+            dispatch(editUserPost(updatedPost));
+            dispatch(editPagePost(updatedPost));
+            // console.log(updatedPost);
+            setIsOpen(false);
+            reset();
+        } catch (err) {
+            
+        }
+
     };
 
     const closeForm = () => {
@@ -49,12 +75,15 @@ export default function EditPostForm({ post }: EditPostProps) {
     return (
         <div>
             {/* Edit Post Button */}
-            <button 
+            {/* <button 
                 onClick={() => setIsOpen(true)} 
-                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-green-500 active:bg-green-400"
+                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-purple-400 active:bg-purple-500"
             >
                 Edit Post
-            </button>
+            </button> */}
+
+            <EditIcon className="mt-3 hover:text-green-500 cursor-pointer" onClick={() => setIsOpen(true)}/>
+
 
             {/* Post Box Modal */}
             {isOpen && (
@@ -73,7 +102,7 @@ export default function EditPostForm({ post }: EditPostProps) {
                             <h1 className="text-lg font-bold mb-2 text-center">Edit Post</h1>
                             
                             {/* Name section */}
-                            <div className="flex flex-col my-4">
+                            {/* <div className="flex flex-col my-4">
                                 <h2 className="mr-2">Commission name:</h2>
                                 <textarea 
                                     className="border flex-grow h-7 resize-none overflow-hidden rounded-md pl-2"
@@ -81,7 +110,7 @@ export default function EditPostForm({ post }: EditPostProps) {
                                     {...register("name")}
                                 />
                                 {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-                            </div>
+                            </div> */}
 
                             {/* Description section */}
                             <div className="mb-4">
@@ -89,7 +118,8 @@ export default function EditPostForm({ post }: EditPostProps) {
                                 <textarea 
                                     className="border flex-grow w-full h-32 resize-none rounded-md pl-3 pt-2"
                                     placeholder="Description..."
-                                    {...register("description")}
+                                    {...register("postDescription")}
+                                    {...register("postDescription")}
                                 />
                             </div>
 
@@ -97,17 +127,17 @@ export default function EditPostForm({ post }: EditPostProps) {
                             <div className="flex flex-col mb-4">
                                 <h2 className="mr-1">Tags:</h2>
                                 <Controller 
-                                    name="tags"
+                                    name="postTags"
                                     control={control}
                                     render={({ field }) => (
                                         <TagSelector selectedTags={field.value} setSelectedTags={field.onChange} />
                                     )}
                                 />
-                                {errors.tags && <p className="text-red-500 text-sm">{errors.tags.message}</p>}
+                                {errors.postTags && <p className="text-red-500 text-sm">{errors.postTags.message}</p>}
                             </div>
 
                             {/* Price section */}
-                            <div className="flex flex-col mb-4">
+                            {/* <div className="flex flex-col mb-4">
                                 <h2 className="mr-2">Price:</h2>
                                 <input 
                                     className="border h-7 w-40 resize-none overflow-hidden rounded-md pl-1"
@@ -117,23 +147,23 @@ export default function EditPostForm({ post }: EditPostProps) {
                                     {...register("price")}
                                 />
                                 {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
-                            </div>
+                            </div> */}
 
                             {/* Sample image section */}
                             <Controller 
-                                name="samples"
+                                name="images"
                                 control={control}
                                 render={({ field }) => (
                                     <FileUpload selectedFiles={field.value.filter((file): file is FilePreview => file !== undefined)} setSelectedFiles={field.onChange} />
                                 )}
                             />
-                            {errors.samples && <p className="text-red-500 text-sm">{errors.samples.message}</p>}
+                            {/* {errors.images && <p className="text-red-500 text-sm">{errors.images.message}</p>} */}
 
                             {/* Save Changes Button */}
-                            <div className="flex justify-end bottom-0 right-0">
+                            <div className="flex justify-end bottom-0 right-0 mt-3">
                                 <button 
                                     type="submit" 
-                                    className="bg-green-600 text-white px-4 py-2 rounded-md"
+                                    className="bg-purple-600 hover:bg-purple-500 active:bg-purple-600 text-white px-4 py-2 rounded-md"
                                 >
                                     Save Changes
                                 </button>

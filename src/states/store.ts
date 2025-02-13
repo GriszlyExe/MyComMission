@@ -3,7 +3,7 @@ import { authReducer } from "./features/authSlice";
 import { userReducer } from "./features/userSlice";
 import { postReducer } from "./features/postSlice";
 
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { configureStore, combineReducers, createAction } from '@reduxjs/toolkit';
 import {
     persistReducer,
     persistStore,
@@ -16,11 +16,21 @@ import {
 } from "redux-persist"
 import storage from 'redux-persist/lib/storage';
 
-const rootReducer = combineReducers({
+export const resetState = createAction("resetState");
+
+const appReducer = combineReducers({
     auth: authReducer,
     user: userReducer,
     post: postReducer,
 });
+
+const rootReducer = (state: any, action: any) => {
+    if (action.type === resetState.type) {
+        storage.removeItem("persist:root"); 
+        return appReducer(undefined, action);  
+    }
+    return appReducer(state, action);
+};
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);

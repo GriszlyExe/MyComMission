@@ -43,7 +43,7 @@ export default function TagSelector({ selectedTags, setSelectedTags }: TagSelect
             {/* Selected Tags */}
             <div className="flex items-center flex-wrap gap-1 p-2 rounded-md min-h-[40px]">
                 {selectedTags.map(tag => (
-                    <div key={tag} className="flex items-center bg-blue-500 text-white px-2 py-1 rounded-full mb-1">
+                    <div key={tag} className="flex items-center bg-black text-white px-2 py-1 rounded-full mb-1">
                         {tag}
                         <button onClick={() => tag && removeTag(tag)} className="ml-1 text-sm">
                             <X size={14} />

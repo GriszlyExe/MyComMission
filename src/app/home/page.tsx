@@ -1,23 +1,41 @@
+"use client";
+
+import { useAppDispatch, useAppSelector } from "@/states/hook";
 import PostForm from "../ui/post/create-form";
 import EditPostForm from "../ui/post/edit-form";
 import { PostData } from "@/common/interface";
+import { getUserInfo } from "@/service/userService";
+import { setUser } from "@/states/features/userSlice";
+import { setLoggedInUserPosts } from "@/states/features/postSlice";
+import { useEffect } from "react";
+import { getPostByUserId } from "@/service/postService";
 
 export default function Page() {
-    const dummy_data: PostData = {
-        name: "dummy name",
-        description: "dummy description",
-        tags: ['Fan Art', 'Chibi'],
-        price: 2500,
-        samples: [
+	const userId = useAppSelector((state) => state.user.user!.userId);
+	const dispatch = useAppDispatch();
 
-        ]
-    };
+	// const fetchUserInfo = async () => {
+	// 	const user = await getUserInfo(userId);
+	// 	console.log(user);
+	// };
+	
+	const fetchPostInfo = async () => {
+		const { posts, user } = await getPostByUserId(userId);
+		// console.log(posts);
+		dispatch(setUser({ user }));
+		dispatch(setLoggedInUserPosts(posts));
+	};
 
-    return (
-        <>
-            <div>Hello World!</div>
-            <PostForm />
-            <EditPostForm post={dummy_data} />
-        </>
-    );
+	useEffect(() => {
+		// fetchUserInfo();
+        fetchPostInfo();
+	}, []);
+
+	return (
+		<>
+			{/* <div>Hello World!</div> */}
+			<PostForm />
+			{/* <EditPostForm post={dummy_data} /> */}
+		</>
+	);
 }

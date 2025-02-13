@@ -1,27 +1,29 @@
 export type User = {
-    userId: string | null;
-    birthDate: Date | null;
-    firstName: string | null;
-    lastName: string | null;
-    artistFlag: boolean | null;
-    email: string | null;
-    displayName: string | null;
-    phone: string | null;
-    regDate: Date | null;
-    age: number | null;
-    pdfUrl: string | null;
-    artistRate: number | null;
-    enabled2FA: boolean | null;
-    createdAt: Date | null,
-    updatedAt: Date | null,
+    userId: string;
+    birthDate: Date | string;
+    firstName: string;
+    lastName: string;
+    artistFlag: Boolean;
+    email: string;
+    displayName: string;
+    phone: string;
+    profileUrl: string | "/default-profile-2.png";
+    age: number;
+    pdfUrl: string;
+    artistRate: number;
+    enabled2FA: boolean;
+    createdAt: Date,
+    updatedAt: Date,
 }
 
 export type Post = {
     createdAt: Date;
     updatedAt: Date;
     postId: string;
+    price: number;
     artistId: string;
     postName: string;
+    postTags: string[];
     likeCounts: number | 0,
     postDescription: string | null;
     picUrl1: string;

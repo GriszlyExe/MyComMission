@@ -1,15 +1,34 @@
 "use client";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signupSchema } from "./Schemas";
+import { signupSchema } from "../../common/Schemas";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAppDispatch } from "@/states/hook";
+import { login } from "@/states/features/authSlice"
+import { register } from "@/service/authService";
+import { setUser } from "@/states/features/userSlice";
+import { User } from "@/common/model";
+
+type RegisterSchema = {
+  firstName: string;
+  lastName: string;
+  birthDate: Date;
+  phone: string;
+  displayName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -19,7 +38,27 @@ export default function SignupForm() {
     setShowConfirmPassword((prev) => !prev);
   };
 
-  const router = useRouter();
+  const handleSubmit = async (
+    values: RegisterSchema,
+    actions: FormikHelpers<RegisterSchema>,
+  ) => {
+    // console.log("Signing up:", values);
+
+    try {
+      console.log(values);
+      const { confirmPassword, ...registerBody } = values;
+
+      const { user, token } = await register(registerBody) as { user: User, token: string };
+
+      dispatch(login(token));
+      dispatch(setUser({ user }));
+
+      actions.resetForm();
+      router.push("../home");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -31,22 +70,17 @@ export default function SignupForm() {
         </h1>
         <Formik
           initialValues={{
-            firstname: "",
-            lastname: "",
-            birthdate: "",
+            firstName: "",
+            lastName: "",
+            birthDate: new Date(Date.now()),
             phone: "",
-            displayname: "",
+            displayName: "",
             email: "",
             password: "",
             confirmPassword: "",
           }}
           validationSchema={signupSchema}
-          onSubmit={async (values, actions) => {
-            console.log("Signing up:", values);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            actions.resetForm();
-            router.push("../login");
-          }}
+          onSubmit={handleSubmit}
         >
           {({ isSubmitting, errors, touched }) => (
             <Form className="space-y-3" autoComplete="off">
@@ -57,16 +91,16 @@ export default function SignupForm() {
                   </label>
                   <Field
                     type="text"
-                    name="firstname"
+                    name="firstName"
                     required
                     className={`input input-bordered w-full ${
-                      errors.firstname && touched.firstname
+                      errors.firstName && touched.firstName
                         ? "input-error"
                         : "input-primary"
                     }`}
                   />
                   <ErrorMessage
-                    name="firstname"
+                    name="firstName"
                     component="p"
                     className="text-xs text-red-500"
                   />
@@ -77,16 +111,16 @@ export default function SignupForm() {
                   </label>
                   <Field
                     type="text"
-                    name="lastname"
+                    name="lastName"
                     required
                     className={`input input-bordered w-full ${
-                      errors.lastname && touched.lastname
+                      errors.lastName && touched.lastName
                         ? "input-error"
                         : "input-primary"
                     }`}
                   />
                   <ErrorMessage
-                    name="lastname"
+                    name="lastName"
                     component="p"
                     className="text-xs text-red-500"
                   />
@@ -99,16 +133,16 @@ export default function SignupForm() {
                   </label>
                   <Field
                     type="date"
-                    name="birthdate"
+                    name="birthDate"
                     required
                     className={`input input-bordered w-full ${
-                      errors.birthdate && touched.birthdate
+                      errors.birthDate && touched.birthDate
                         ? "input-error"
                         : "input-primary"
                     }`}
                   />
                   <ErrorMessage
-                    name="birthdate"
+                    name="birthDate"
                     component="p"
                     className="text-xs text-red-500"
                   />
@@ -140,16 +174,16 @@ export default function SignupForm() {
                 </label>
                 <Field
                   type="text"
-                  name="displayname"
+                  name="displayName"
                   required
                   className={`input input-bordered w-full ${
-                    errors.displayname && touched.displayname
+                    errors.displayName && touched.displayName
                       ? "input-error"
                       : "input-primary"
                   }`}
                 />
                 <ErrorMessage
-                  name="displayname"
+                  name="displayName"
                   component="p"
                   className="text-xs text-red-500"
                 />
