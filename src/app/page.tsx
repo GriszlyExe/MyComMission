@@ -70,22 +70,21 @@ export default function Home() {
 						{/* */}
 						<div className="flex flex-col justify-center gap-7 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text p-5 text-transparent">
 							{/* <span className="text-8xl font-bold text-[#6BDFDA]"> */}
-							<span className="text-7xl font-bold">Design</span>
+							<span className="text-7xl font-bold">Wealth</span>
 							<span className="text-7xl font-bold">
 								{/* <h1 className="text-8xl font-bold text-[#9AD7F3]"> */}
-								Create
+								Fame
 							</span>
 							{/* <h1 className="text-8xl font-bold text-[#FEC3C7]"> */}
-							<span className="text-7xl font-bold">Inspire</span>
+							<span className="text-7xl font-bold">Power</span>
 						</div>
 
 						<div className="">
 							<p className="text-left text-2xl text-white">
-								Fusce pretium porttitor eleifend. Fusce interdum
-								elit id erat mattis viverra. Morbi scelerisque
-								hendrerit mauris sed consequat. Vestibulum ante
-								ipsum primis in faucibus orci luctus et ultrices
-								posuere cubilia curae;
+							"You want my treasure? You can have it. 
+							I left everything I gathered together in one place, now you just have to find it".
+							These words lured men to the Grand Line in pursuit of dreams greater than they'd ever dared to imagine. 
+							This is the time known as the great pirate era.
 							</p>
 						</div>
 
