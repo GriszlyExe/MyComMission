@@ -173,7 +173,7 @@ export default function TwoFactorAuthPage({ email }: { email: string }) {
 				</div>
 
 				{error && (
-					<p className="mt-2 text-center text-sm text-red-600">
+					<p className="mt-2 text-center text-sm text-error">
 						{error}
 					</p>
 				)}

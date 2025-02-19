@@ -102,7 +102,8 @@ export default function SignupForm() {
                   <ErrorMessage
                     name="firstName"
                     component="p"
-                    className="text-xs text-red-500"
+                    // className="text-xs text-red-500"
+                    className="text-xs text-error"
                   />
                 </div>
                 <div className="w-1/2">
@@ -122,6 +123,7 @@ export default function SignupForm() {
                   <ErrorMessage
                     name="lastName"
                     component="p"
+                    // className="text-xs text-red-500"
                     className="text-xs text-red-500"
                   />
                 </div>
@@ -144,7 +146,8 @@ export default function SignupForm() {
                   <ErrorMessage
                     name="birthDate"
                     component="p"
-                    className="text-xs text-red-500"
+                    // className="text-xs text-red-500"
+                    className="text-xs text-error"
                   />
                 </div>
                 <div className="w-1/2">
@@ -164,7 +167,8 @@ export default function SignupForm() {
                   <ErrorMessage
                     name="phone"
                     component="p"
-                    className="text-xs text-red-500"
+                    // className="text-xs text-red-500"
+                    className="text-xs text-error"
                   />
                 </div>
               </div>
@@ -185,7 +189,8 @@ export default function SignupForm() {
                 <ErrorMessage
                   name="displayName"
                   component="p"
-                  className="text-xs text-red-500"
+                  // className="text-xs text-red-500"
+                  className="text-xs text-error"
                 />
               </div>
               <div>
@@ -205,7 +210,8 @@ export default function SignupForm() {
                 <ErrorMessage
                   name="email"
                   component="p"
-                  className="text-xs text-red-500"
+                  // className="text-xs text-red-500"
+                  className="text-xs text-error"
                 />
               </div>
               <div>
@@ -234,7 +240,8 @@ export default function SignupForm() {
                 <ErrorMessage
                   name="password"
                   component="p"
-                  className="text-xs text-red-500"
+                  // className="text-xs text-red-500"
+                  className="text-xs text-error"
                 />
               </div>
               <div>
@@ -263,7 +270,8 @@ export default function SignupForm() {
                 <ErrorMessage
                   name="confirmPassword"
                   component="p"
-                  className="text-xs text-red-500"
+                  // className="text-xs text-red-500"
+                  className="text-xs text-error"
                 />
               </div>
               <div className="flex items-center justify-center">

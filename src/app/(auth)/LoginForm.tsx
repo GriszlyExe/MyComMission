@@ -92,7 +92,8 @@ export default function LoginForm({
 								<ErrorMessage
 									name="email"
 									component="p"
-									className="text-xs text-red-500"
+									// className="text-xs text-red-500"
+									className="text-xs text-error"
 								/>
 							</div>
 							<div>
@@ -125,7 +126,8 @@ export default function LoginForm({
 								<ErrorMessage
 									name="password"
 									component="p"
-									className="text-xs text-red-500"
+									// className="text-xs text-red-500"
+									className="text-xs text-error"
 								/>
 							</div>
 							<div className="">

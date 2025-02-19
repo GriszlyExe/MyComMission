@@ -14,6 +14,7 @@ import { User } from "@/common/model";
 import FeedProfile from "@/app/ui/components/FeedProfile";
 import SuggestedBar from "@/app/ui/components/SuggestedBar";
 import PostForm from "@/app/ui/post/create-form";
+import ReviewForm from "@/app/ui/components/ReviewForm";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
@@ -157,6 +158,10 @@ export default function ProfilePage() {
 								</button>
 							</div>
 						</div>
+
+						{/* Test Review */}
+						<ReviewForm />
+
 
 						{/* Feed */}
 

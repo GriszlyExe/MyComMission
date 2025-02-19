@@ -49,7 +49,8 @@ export default function ForgetPassword() {
                 <ErrorMessage
                   name="email"
                   component="p"
-                  className="text-xs text-red-500"
+                  // className="text-xs text-red-500"
+                  className="text-xs text-error"
                 />
               </div>
               <div className="flex items-center justify-center">
