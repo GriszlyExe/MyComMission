@@ -9,6 +9,7 @@ import { setUser } from "@/states/features/userSlice";
 import { setLoggedInUserPosts } from "@/states/features/postSlice";
 import { useEffect } from "react";
 import { getPostByUserId } from "@/service/postService";
+import Feed from "../ui/components/Feed";
 
 export default function Page() {
 	const userId = useAppSelector((state) => state.user.user!.userId);
@@ -18,7 +19,7 @@ export default function Page() {
 	// 	const user = await getUserInfo(userId);
 	// 	console.log(user);
 	// };
-	
+
 	const fetchPostInfo = async () => {
 		const { posts, user } = await getPostByUserId(userId);
 		// console.log(posts);
@@ -28,13 +29,18 @@ export default function Page() {
 
 	useEffect(() => {
 		// fetchUserInfo();
-        fetchPostInfo();
+		fetchPostInfo();
 	}, []);
 
 	return (
 		<>
 			{/* <div>Hello World!</div> */}
-			<PostForm />
+			<div className="flex justify-center">
+				<div className="flex w-1/3 flex-col gap-3">
+					<PostForm />
+					<Feed />
+				</div>
+			</div>
 			{/* <EditPostForm post={dummy_data} /> */}
 		</>
 	);

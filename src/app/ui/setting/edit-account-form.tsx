@@ -20,7 +20,7 @@ export default function EditAccountForm() {
 	const dispatch = useAppDispatch();
 
 	const [previewPic, setPreviewPic] = useState(() => loggedInUser?.profileUrl ? loggedInUser?.profileUrl : "/default-profile-2.png");
-	const [showSubmitPopup] = useState(false);
+	const [showSubmitPopup, setShowSubmitPopup] = useState(false);
 
 	type formSchema = yup.InferType<typeof accountSchema>;
 
@@ -58,8 +58,12 @@ export default function EditAccountForm() {
 			});
 
 			dispatch(setUser({ user }));
+			setShowSubmitPopup(true);
+			setTimeout(() => {
+				setShowSubmitPopup(false);
+			}, 3000);
 
-			router.refresh();
+			// router.refresh();
 			
 		} catch (err) {
 			console.error(err);

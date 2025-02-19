@@ -21,6 +21,7 @@ export type Post = {
     updatedAt: Date;
     postId: string;
     price: number;
+    isHide: boolean;
     artistId: string;
     postName: string;
     postTags: string[];
@@ -30,4 +31,5 @@ export type Post = {
     picUrl2: string | null;
     picUrl3: string | null;
     picUrl4: string | null;
+    artist: User;
 }

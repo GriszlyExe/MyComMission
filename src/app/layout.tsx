@@ -12,6 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head><title>MyCommision</title></head>
       <body className={`antialiased`}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>

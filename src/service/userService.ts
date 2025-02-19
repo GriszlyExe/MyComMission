@@ -47,13 +47,17 @@ export const updateUser = async (forms: any) => {
 
     try {
 
+        console.log(`update user called`);
+        // console.log(forms);
+
         const { user, picture } = forms;
         const userId = user.userId;
         let profileUrl: string = user.profileUrl;
 
-        if (picture.has("picture"))
+        if (picture && picture.has("picture"))
             profileUrl = await changeProfilePicture(userId, picture);
 
+        // console.log(user);
         const options: AxiosRequestConfig = {
             method: "PATCH",
             url: `${serverAddr}/user/account/${userId}`,
@@ -61,6 +65,8 @@ export const updateUser = async (forms: any) => {
             withCredentials: true,
             data: user,
         }
+
+        // console.log(options.data);
 
         const { data } = await axios.request(options);
 
@@ -120,13 +126,13 @@ export const enable2Fa1 = async (userId: string) => {
         await axios.request(options);
 
         return;
-        
+
     } catch (err) {
         throw err;
     }
-} 
+}
 
-export const enable2Fa2 = async (email: string, token: string) => {
+export const enable2Fa2 = async ({email, token, userId}: { email: string, token: string, userId: string }) => {
     try {
 
         const options = {
@@ -141,9 +147,15 @@ export const enable2Fa2 = async (email: string, token: string) => {
         };
 
         await axios.request(options);
+        await updateUser({
+            user: {
+                userId,
+                enabled2FA: true,
+            }
+        })
 
         return;
-        
+
     } catch (err) {
         throw err;
     }

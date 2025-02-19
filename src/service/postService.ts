@@ -180,3 +180,50 @@ export const updatePostInfoById = async (postId: string, payload: any) => {
     }
 
 }
+
+export const hidePost = async (postId: string, state: boolean) => {
+
+    try {
+
+        const options = {
+            method: "PATCH",
+            url: `${serverAddr}/post/${postId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            data: {
+                isHide: state,
+            },
+        }
+
+        // console.log(options.data);
+
+        const { data: { post } } = await axios.request(options);
+
+        return post;
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+export const getRandomPosts = async () => {
+
+    try {
+
+        const options = {
+            method: "GET",
+            url: `${serverAddr}/post/random/feed`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        }
+
+        const { data: { posts }} = await axios.request(options);
+
+        return posts;
+
+    } catch (err) {
+        throw err;
+    }
+
+}

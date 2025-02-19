@@ -29,11 +29,8 @@ export default function FileUpload({ selectedFiles, setSelectedFiles }: FileUplo
 
     // Remove selected image
     const removeImage = (index: number) => {
-        // console.log(selectedFiles);
-        // const updatedFiles = selectedFiles.filter((_, i) => i !== index);
         /* @ts-ignore */
         setSelectedFiles(prev => prev.filter((_, i) => i !== index));
-        // console.log(selectedFiles);
     };
 
     return (
@@ -62,18 +59,19 @@ export default function FileUpload({ selectedFiles, setSelectedFiles }: FileUplo
             </div>
 
             {/* Image Previews */}
-            {selectedFiles.length > 0 && (
+            {selectedFiles && selectedFiles.length > 0 && (
                 <div className="grid grid-cols-4 gap-4 mt-4">
                     {selectedFiles.map((file, index) => (
                         <div key={index} className="relative group">
                             <img 
                                 src={file.preview} 
                                 alt="preview" 
-                                className="w-24 h-24 object-cover rounded-md border shadow-md"
+                                className="w-36 h-36 object-cover rounded-md border shadow-md"
                             />
                             {/* Remove Button */}
                             <button 
                                 className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+                                type="button"
                                 onClick={() => removeImage(index)}
                             >
                                 <X size={14} />
