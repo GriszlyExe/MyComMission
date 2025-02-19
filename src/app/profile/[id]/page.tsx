@@ -89,8 +89,8 @@ export default function ProfilePage() {
 				</div>
 
 				{/* Center Feed */}
-				<div className="w-full p-3 md:mx-4 mt-20 flex md:w-1/2 md:max-w-2xl">
-					<div className="w-full max-w-2xl rounded-md bg-base-300">
+				<div className="w-full p-3 md:mx-4 mt-20 flex md:w-full">
+					<div className="w-full rounded-md bg-base-300">
 						{/* Profile */}
 						<div className="relative mb-12 w-full">
 							{/* Background profile */}
@@ -175,7 +175,7 @@ export default function ProfilePage() {
 				</div>
 
 				{/* Right Sidebar */}
-				<div className="hidden md:block sticky top-20 w-1/3 rounded-md bg-base-300 p-4">
+				<div className="hidden md:hidden sticky top-20 w-1/3 rounded-md bg-base-300 p-4">
 					<h2 className="text-xl font-bold">Trending</h2>
 					<ul className="mt-4 space-y-2">
 						<li>

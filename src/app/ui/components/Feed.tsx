@@ -35,7 +35,7 @@ export default function Feed() {
 	}, []);
 
 	return (
-		<div className="flex flex-col items-center space-y-4 p-4">
+		<div className="flex flex-col items-center space-y-4 p-4 w-full">
 			{id && posts.map((post) =><PostWidget key={post.postId} post={post} user={user} />)}
 			{!id && posts.map((post) =><PostWidget key={post.postId} post={post} user={post.artist} />)}
 		</div>

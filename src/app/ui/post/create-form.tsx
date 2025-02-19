@@ -12,6 +12,8 @@ import { useAppDispatch } from "@/states/hook";
 import { addPost } from "@/states/features/postSlice";
 import { PostData } from "@/common/interface";
 import { useState } from "react";
+import PostModal from "./post-modal";
+import { Link02Icon } from "hugeicons-react";
 
 
 type FormSchema = yup.InferType<typeof postSchema>;
@@ -25,6 +27,7 @@ export default function PostForm() {
     const {
         register,
         handleSubmit,
+        watch,
         control,
         setValue,
         reset,
@@ -39,7 +42,7 @@ export default function PostForm() {
     });
 
 	const onSubmit = async (data: FormSchema) => {
-        console.log("Submit...")
+        // console.log("Submit...")
 		// console.log("Validated Post Data:", data);
         const post = await createPost({ data });
         console.log(post);
@@ -59,110 +62,51 @@ export default function PostForm() {
 
     return (
         <div>
-            {/* Button to open post box */}
-            {/* <button 
-                onClick={() => setIsOpen(true)} 
-                className="btn btn-primary text-white px-4 py-2 rounded-lg hover:bg-blue-500 active:bg-blue-400"
-            >
-                Create Post
-            </button> */}
-
-            {/* Post Box Modal */}
-            {/* {isOpen && ( */}
-                {/* <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"> */}
-                    <div className="card mx-4 border-2 border-primary bg-white p-4 shadow-xl">
-                        {/* Close Button */}
-                        {/* <button 
-                            onClick={() => closeForm()} 
-                            className="absolute top-2 right-2 text-gray-600 hover:text-black"
-                        >
-                            <X size={20} />
-                        </button> */}
-
-                        {/* Post Form */}
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <h1 className="text-lg font-bold mb-2 text-center">Create Post</h1>
-                            
-                            {/* Name section */}
-                            {/* <div className="flex flex-col my-4">
-                                <h2 className="mr-2">Commission name:</h2>
-                                <textarea 
-                                    className="border flex-grow h-7 resize-none overflow-hidden rounded-md pl-2"
-                                    placeholder="Name..."
-                                    {...register("postName")}
-                                />
-                                {errors.postName && <p className="text-red-500 text-sm">{errors.postName.message}</p>}
-                            </div> */}
-
-                            {/* Description section */}
-                            <div className="mb-4">
-                                {/* <h2 className="mr-2 mb-2">Commission description:</h2> */}
-                                <textarea 
-                                    className="border flex-grow w-full h-32 resize-none rounded-md pl-3 pt-2"
-                                    placeholder="What's on your mind..."
-                                    {...register("postDescription")}
-                                />
-                                {errors.postDescription && <p className="text-red-500 text-sm">{errors.postDescription.message}</p>}
-                            </div>
-
-                            {/* Tags section */}
-                            <div className="flex flex-col mb-4">
-                                <h2 className="mr-1">Tags:</h2>
-                                <Controller 
-                                    name="postTags"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TagSelector selectedTags={field.value} setSelectedTags={field.onChange} />
-                                    )}
-                                />
-                                {errors.postTags && <p className="text-red-500 text-sm">{errors.postTags.message}</p>}
-                            </div>
-
-                            {/* Price section */}
-                            {/* <div className="flex flex-col mb-4">
-                                <h2 className="mr-2">Price:</h2>
-                                <input 
-                                    className="border h-7 w-40 resize-none overflow-hidden rounded-md pl-1"
-                                    placeholder="Price..."
-                                    type="number"
-                                    min={0}
-                                    {...register("price")}
-                                />
-                                {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
-                            </div> */}
-
-							{/* Sample image section */}
-							<Controller
-								name="images"
-								control={control}
-								render={({ field }) => (
-									<FileUpload
-										selectedFiles={field.value.filter(
-											(file): file is FilePreview =>
-												file !== undefined,
-										)}
-										setSelectedFiles={field.onChange}
-									/>
-								)}
-							/>
-							{errors.images && (
-								<p className="text-sm text-red-500">
-									{errors.images.message}
-								</p>
-							)}
-
-                            {/* Post Button */}
-                            <div className="flex justify-end bottom-0 right-0 mt-4">
-                                <button 
-                                    type="submit" 
-                                    className="bg-black hover:bg-gray-600 active:bg-black text-white px-4 py-2 rounded-md"
-                                >
-                                    Post
-                                </button>
-                            </div>
-                        </form>
+            <div className="card mx-4 border-2 border-primary bg-white p-4 shadow-xl">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <h1 className="text-lg font-bold mb-2 text-center">Create Post</h1>
+                    
+                    {/* Description section */}
+                    <div className="mb-4">
+                        <h2 className="mr-2 mb-2">Commission description:</h2>
+                        <textarea 
+                            className="border flex-grow w-full h-32 resize-none rounded-md px-3 pt-2"
+                            placeholder="Description..."
+                            {...register("postDescription")}
+                        />
+                        {errors.postDescription && <p className="text-red-500 text-sm">{errors.postDescription.message}</p>}
                     </div>
-                </div>
-        // </ div>
+
+                    {/* Open Modal via Link Icon */}
+                    <div className="flex justify-end bottom-0 right-0 mt-4">
+                        <Link02Icon 
+                            className="mt-2 mr-4 scale-125 hover:opacity-60 cursor-pointer" 
+                            onClick={() => setIsOpen(true)}
+                        />
+                        <button 
+                            type="submit" 
+                            className="bg-black hover:bg-gray-600 active:bg-black text-white px-4 py-2 rounded-md"
+                        >
+                            Post
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            {/* PostModal with shared form state */}
+            {isOpen && (
+                <PostModal 
+                    isOpen={isOpen} 
+                    setIsOpen={setIsOpen} 
+                    initialData={{
+                        postDescription: watch("postDescription"), // Get the current value
+                        postTags: [],
+                        images: [],
+                    }}
+                    resetForm={reset} // Pass reset function to modal
+                    setDescription={(value: string) => setValue("postDescription", value)} // Sync modal changes
+                />
+            )}
+        </div>
     );
 }

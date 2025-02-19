@@ -55,11 +55,9 @@ export default function PostWidget({ post, user }: PostProps) {
 		postTags: post.postTags!,
 	};
 
-	console.log(user);
-
 	return (
 		<>
-			<div className="card w-full max-w-lg border-2 border-primary bg-white p-4 shadow-xl">
+			<div className="card w-full border-2 border-primary bg-white p-4 shadow-xl">
 				{/* Post Header */}
 				<div className="flex items-center justify-between">
 					<div className="flex items-center space-x-3">
