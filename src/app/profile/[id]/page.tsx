@@ -60,21 +60,16 @@ export default function ProfilePage() {
 
 	return (
 		<div className="flex min-h-screen flex-col items-center bg-gray-300">
-		<div className="flex min-h-screen flex-col items-center bg-gray-300">
 			{/* Nav Bar */}
 			<div className="fixed top-0 z-50 mb-3 w-full flex-none bg-white">
 				<TopNav />
 			</div>
 
 			<div className="mx-auto flex w-full flex-row items-start justify-center">
-			<div className="mx-auto flex w-full flex-row items-start justify-center">
 				{/* Left Sidebar */}
-				<SuggestedBar />
 				<SuggestedBar />
 
 				{/* Center Feed */}
-				<div className="mt-20 flex w-full max-w-3xl md:mx-4">
-					<div className="w-full rounded-md bg-base-300">
 				<div className="mt-20 flex w-full max-w-3xl md:mx-4">
 					<div className="w-full rounded-md bg-base-300">
 						{/* Profile */}
@@ -106,66 +101,7 @@ export default function ProfilePage() {
 										</span>
 									</div>
 									<p>I'm gonna be king of pirate</p>
-						<div className="mb-10 flex flex-row">
-							<div>
-								{/* User profile */}
-								<div className="ml-16 mt-16 aspect-square w-40 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
-									<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
-										<img
-											src={userInfo.profileUrl}
-											alt=""
-											width={112}
-											height={112}
-											className="h-full w-full overflow-hidden rounded-full object-cover"
-										/>
-									</div>
-								</div>
-							</div>
 
-							{/* Information */}
-							<div className="w-full">
-								<div className="m-16 flex flex-col gap-2">
-									<div>
-										<h1 className="text-2xl font-bold">
-											{userInfo.displayName}
-										</h1>
-										<span className="text-textGray text-sm">
-											@{userInfo.displayName}
-										</span>
-									</div>
-									<p>I'm gonna be king of pirate</p>
-
-									<div className="flex gap-4 text-base">
-										<div className="flex items-center gap-2">
-											<FaLocationDot />
-											<span>Laugh Tale</span>
-										</div>
-										<div className="flex items-center gap-2">
-											<FaCalendarDay />
-											<span>
-												Joined{" "}
-												{`${month[new Date(userInfo.createdAt).getMonth()]} ${new Date(userInfo.createdAt).getFullYear()}`}
-											</span>
-										</div>
-									</div>
-									<div className="flex gap-4">
-										<div className="flex items-center gap-2">
-											<span className="font-bold">
-												100k
-											</span>
-											<span className="text-base">
-												Followers
-											</span>
-										</div>
-										<div className="flex items-center gap-2">
-											<span className="font-bold">
-												100k
-											</span>
-											<span className="text-base">
-												Followings
-											</span>
-										</div>
-									</div>
 									<div className="flex gap-4 text-base">
 										<div className="flex items-center gap-2">
 											<FaLocationDot />
@@ -202,9 +138,7 @@ export default function ProfilePage() {
 						</div>
 
 						{/* <PostForm /> */}
-						{/* <PostForm /> */}
 
-						{/* Switch Tab */}
 						{/* Switch Tab */}
 						<div className="flex flex-row justify-center p-2">
 							<div className={`w-1/2 pl-5`}>
@@ -223,17 +157,20 @@ export default function ProfilePage() {
 									ARTWORKS
 								</button>
 							</div>
+							<div className="w-1/2">
+								<button
+									className={`font-bold ${activeTab === "reviews" ? "border-b-4 border-base-200 text-base-200" : "text-gray-700"}`}
+									onClick={() => handleTabClick("reviews")}
+								>
+									REVIEWS
+								</button>
+							</div>
 						</div>
 
-						{/* Test Review */}
-						<ReviewForm />
-
-
 						{/* Feed */}
-
-						{activeTab === "posts" && <Feed />}
+						{activeTab === "posts" && <FeedProfile />}
 						{activeTab === "artworks" && <FeedProfile />}
-						{/* {activeTab === "posts" && <FeedProfile />} */}
+						{activeTab === "reviews" && <ReviewForm />}
 					</div>
 				</div>
 			</div>
