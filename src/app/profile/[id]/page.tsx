@@ -13,6 +13,8 @@ import { FaCalendarDay } from "react-icons/fa6";
 import { getUserInfo } from "@/service/userService";
 import { User } from "@/common/model";
 import PostForm from "@/app/ui/post/create-form";
+import FeedProfile from "@/app/ui/components/FeedProfile";
+import SuggestedBar from "@/app/ui/components/SuggestedBar";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
@@ -57,98 +59,87 @@ export default function ProfilePage() {
 	}, []);
 
 	return (
-		<div className="flex min-h-screen flex-col items-center bg-primary">
+		<div className="flex min-h-screen flex-col items-center bg-gray-300">
 			{/* Nav Bar */}
 			<div className="fixed top-0 z-50 mb-3 w-full flex-none bg-white">
 				<TopNav />
 			</div>
 
-			<div className="mx-auto flex w-full max-w-7xl flex-row items-start">
+			<div className="mx-auto flex w-full flex-row items-start justify-center">
 				{/* Left Sidebar */}
-				<div className="hidden md:block sticky top-20 w-1/3 rounded-md bg-base-300 p-4">
-					{/* <div className="sticky top-4"> */}
-					<h2 className="text-xl font-bold">Suggested Artist</h2>
-					<ul className="mt-4 space-y-2">
-						<li>
-							<Link href="#" className="hover:text-blue-500">
-								<span className="text-base">Artist1</span>
-							</Link>
-						</li>
-						<li>
-							<Link href="#" className="hover:text-blue-500">
-								<span className="text-base">Artist2</span>
-							</Link>
-						</li>
-						<li>
-							<Link href="#" className="hover:text-blue-500">
-								<span className="text-base">Artist3</span>
-							</Link>
-						</li>
-					</ul>
-					{/* </div> */}
-				</div>
+				<SuggestedBar />
 
 				{/* Center Feed */}
-				<div className="w-full p-3 md:mx-4 mt-20 flex md:w-full">
+				<div className="mt-20 flex w-full max-w-3xl md:mx-4">
 					<div className="w-full rounded-md bg-base-300">
 						{/* Profile */}
-						<div className="relative mb-12 w-full">
-							{/* Background profile */}
-							<div className="relative aspect-[3/1] w-full rounded-t-md bg-base-200"></div>
-							{/* User profile */}
-							<div className="absolute w-[120px] ml-4 aspect-square -translate-y-1/2 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
-								<div className="h-full w-full rounded-full bg-gray-300 overflow-hidden">
-									<img
-										src={userInfo.profileUrl}
-										alt=""
-										// layout="fill"
-										width={112}
-										height={112}
-										className="object-cover h-full w-full overflow-hidden rounded-full"
-									/>
-								</div>
-							</div>
-						</div>
-						{/* Information */}
-						<div className="flex flex-col gap-2 p-4">
+						<div className="mb-10 flex flex-row">
 							<div>
-								<h1 className="text-2xl font-bold">
-									{userInfo.displayName}
-								</h1>
-								<span className="text-textGray text-sm">
-									@{userInfo.displayName}
-								</span>
+								{/* User profile */}
+								<div className="ml-16 mt-16 aspect-square w-40 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
+									<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
+										<img
+											src={userInfo.profileUrl}
+											alt=""
+											width={112}
+											height={112}
+											className="h-full w-full overflow-hidden rounded-full object-cover"
+										/>
+									</div>
+								</div>
 							</div>
-							<p>Fighting 1 vs 1 only</p>
 
-							<div className="flex gap-4 text-base">
-								<div className="flex items-center gap-2">
-									<FaLocationDot />
-									<span>Los Alamos</span>
-								</div>
-								<div className="flex items-center gap-2">
-									<FaCalendarDay />
-									<span>
-										Joined{" "}
-										{`${month[new Date(userInfo.createdAt).getMonth()]} ${new Date(userInfo.createdAt).getFullYear()}`}
-									</span>
-								</div>
-							</div>
-							<div className="flex gap-4">
-								<div className="flex items-center gap-2">
-									<span className="font-bold">100k</span>
-									<span className="text-base">Followers</span>
-								</div>
-								<div className="flex items-center gap-2">
-									<span className="font-bold">100k</span>
-									<span className="text-base">
-										Followings
-									</span>
+							{/* Information */}
+							<div className="w-full">
+								<div className="m-16 flex flex-col gap-2">
+									<div>
+										<h1 className="text-2xl font-bold">
+											{userInfo.displayName}
+										</h1>
+										<span className="text-textGray text-sm">
+											@{userInfo.displayName}
+										</span>
+									</div>
+									<p>I'm gonna be king of pirate</p>
+
+									<div className="flex gap-4 text-base">
+										<div className="flex items-center gap-2">
+											<FaLocationDot />
+											<span>Laugh Tale</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<FaCalendarDay />
+											<span>
+												Joined{" "}
+												{`${month[new Date(userInfo.createdAt).getMonth()]} ${new Date(userInfo.createdAt).getFullYear()}`}
+											</span>
+										</div>
+									</div>
+									<div className="flex gap-4">
+										<div className="flex items-center gap-2">
+											<span className="font-bold">
+												100k
+											</span>
+											<span className="text-base">
+												Followers
+											</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<span className="font-bold">
+												100k
+											</span>
+											<span className="text-base">
+												Followings
+											</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 
+						{/* <PostForm /> */}
 
+						{/* Switch Tab */}
 						<div className="flex flex-row justify-center p-2">
 							<div className={`w-1/2 pl-5`}>
 								<button
@@ -169,31 +160,11 @@ export default function ProfilePage() {
 						</div>
 
 						{/* Feed */}
-						
-						{activeTab === "posts" && <Feed />}
-					</div>
-				</div>
 
-				{/* Right Sidebar */}
-				<div className="hidden md:hidden sticky top-20 w-1/3 rounded-md bg-base-300 p-4">
-					<h2 className="text-xl font-bold">Trending</h2>
-					<ul className="mt-4 space-y-2">
-						<li>
-							<Link href="#" className="hover:text-blue-500">
-								<span className="text-base">#Trending1</span>
-							</Link>
-						</li>
-						<li>
-							<Link href="#" className="hover:text-blue-500">
-								<span className="text-base">#Trending2</span>
-							</Link>
-						</li>
-						<li>
-							<Link href="#" className="hover:text-blue-500">
-								<span className="text-base">#Trending3</span>
-							</Link>
-						</li>
-					</ul>
+						{activeTab === "posts" && <FeedProfile />}
+						{activeTab === "artworks" && <FeedProfile />}
+						{/* {activeTab === "posts" && <FeedProfile />} */}
+					</div>
 				</div>
 			</div>
 		</div>

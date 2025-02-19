@@ -128,16 +128,14 @@ export default function PostWidget({ post, user }: PostProps) {
 				<p className="mt-2 text-gray-800">{post.postDescription}</p>
 				{/* Display multiple images */}
 				{images.length > 0 && (
-					<div
-						className={`mt-3 grid gap-3 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}
-					>
+					<div className="carousel w-full mt-2 h-[380px] rounded-box">
 						{" "}
 						{images.map((src, index) => {
 							// console.log(src);
 							return (
 								<div
 									key={index}
-									className="overflow-hidden rounded-lg"
+									className="carousel-item h-full w-full overflow-hidden rounded-lg"
 								>
 									<img
 										src={
@@ -145,8 +143,8 @@ export default function PostWidget({ post, user }: PostProps) {
 											"/path/to/default/image.jpg"
 										}
 										alt={`Post Image ${index + 1}`}
-										width={500}
-										height={300}
+										width={800}
+										height={400}
 										className="rounded-lg"
 									/>
 								</div>
