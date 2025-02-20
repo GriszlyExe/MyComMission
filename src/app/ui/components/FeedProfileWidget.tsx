@@ -14,6 +14,8 @@ export default function FeedProfileWidget({ post, user }: PostProps) {
 			return { file: undefined, preview: url };
 		});
 
+	console.log(images);
+
 	return (
 		<div
 			className="group cursor-pointer"
@@ -26,7 +28,7 @@ export default function FeedProfileWidget({ post, user }: PostProps) {
 			}
 		>
 			{/* Image */}
-			<div className="relative h-64 overflow-hidden">
+			{images.length > 0 && <div className="relative h-64 overflow-hidden">
 				<img
 					src={images[0].preview || "/path/to/default/image.jpg"}
 					alt=""
@@ -35,7 +37,7 @@ export default function FeedProfileWidget({ post, user }: PostProps) {
 				{images.length > 1 && (
 					<RiCheckboxMultipleBlankLine className="absolute right-2 top-2 text-3xl text-white" />
 				)}
-			</div>
+			</div>}
 
 			{/* Modal */}
 			<dialog id={`post-modal-${post.postId}`} className="modal">
