@@ -24,6 +24,7 @@ export default function ReviewForm({ userId }: { userId: string | undefined }) {
 						description: values.review
 					}
 					const review = await createReview({ data })
+					console.log(review)
 					actions.resetForm();
 				}}
 			>
