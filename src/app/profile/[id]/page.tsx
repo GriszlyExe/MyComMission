@@ -15,6 +15,7 @@ import FeedProfile from "@/app/ui/components/FeedProfile";
 import SuggestedBar from "@/app/ui/components/SuggestedBar";
 import PostForm from "@/app/ui/post/create-form";
 import ReviewForm from "@/app/ui/components/ReviewForm";
+import Review from "@/app/ui/components/Review";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
@@ -170,7 +171,7 @@ export default function ProfilePage() {
 						{/* Feed */}
 						{activeTab === "posts" && <FeedProfile />}
 						{activeTab === "artworks" && <FeedProfile />}
-						{activeTab === "reviews" && <ReviewForm />}
+						{activeTab === "reviews" && <Review />}
 					</div>
 				</div>
 			</div>
