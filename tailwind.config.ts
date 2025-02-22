@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui"
+import plugin from "tailwindcss/plugin";
 
 export default {
   content: [
@@ -7,7 +8,19 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  plugins: [daisyui],
+  plugins: [daisyui, plugin(({ addUtilities }) => {
+    addUtilities({
+      /* Chrome, Safari and Opera */
+      ".scrollbar-hidden::-webkit-scrollbar": {
+        display: "none",
+      },
+
+      ".scrollbar-hidden": {
+        "scrollbar-width": "none" /* Firefox */,
+        "-ms-overflow-style": "none" /* IE and Edge */,
+      },
+    })
+  }),],
   daisyui: {
     themes: [
       {

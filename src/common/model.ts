@@ -33,3 +33,18 @@ export type Post = {
     picUrl4: string | null;
     artist: User;
 }
+
+export type Message = {
+    messageId: string;
+    roomId: string;
+    senderId: string;
+    type: "MESSAGE" | "BRIEF" | "PROPOSAL" | "IMAGE";
+    content: string;
+    createdAt: string;
+}
+
+export type ChatRoom = {
+    roomId: string;
+    user1: User;
+    user2: User;
+}

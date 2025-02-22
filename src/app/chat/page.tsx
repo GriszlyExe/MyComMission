@@ -6,6 +6,21 @@ import TopNav from "@/app/ui/global/nav-bar";
 /* redux */
 import { useAppSelector } from "@/states/hook";
 import ChatRoomItem from "@/app/ui/chat/ChatRoomItem";
+import ChatWindow from "../ui/chat/ChatWindow";
+
+const rooms = [
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+]
 
 const page = () => {
 
@@ -20,16 +35,19 @@ const page = () => {
 			</div>
 
             {/* content */}
-			<div className="mt-24 flex flex-row bg-gray-100 w-8/12 justify-around gap-3 p-3">
+			
+			<div className="mt-24 flex max-h-[600px] flex-row bg-gray-100 w-9/12 justify-around gap-3 p-3 overflow-hidden">
+				
 				{/* Chat rooms list */}
-				<div className="flex flex-col w-1/3">
-					<ChatRoomItem />
+				<div className="flex flex-col w-1/4 gap-2 overflow-y-auto scrollbar-hidden">
+					{rooms.map((_, idx) => <ChatRoomItem key={`room-${idx}`}/>)}
 				</div>
 
 				{/* Chat window */}
-				<div className="w-2/3 min-h-[640px]">
-
+				<div className="flex flex-col-reverse w-3/4">
+					<ChatWindow />
 				</div>
+
 			</div>
 		</div>
 	);
