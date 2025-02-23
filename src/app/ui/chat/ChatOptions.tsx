@@ -3,6 +3,7 @@ import { XSquareIcon, TextSelect, SendIcon, AlarmClockIcon } from "lucide-react"
 import { OptionButton } from './Button';
 import "daisyui";
 import { BriefForm } from './BriefForm';
+import { SendArtworkForm } from './SendArtworkForm';
 export default function ChatOptions() {
 
     const [isBriefCreated, setisBriefCreated] = useState(false);
@@ -30,13 +31,14 @@ export default function ChatOptions() {
                 <OptionButton >
                     <XSquareIcon size={24} /> <span>Reject</span>
                 </OptionButton>
-                <OptionButton >
+                <OptionButton onClick={()=>openForm('SendArtworkForm')} >
                     <SendIcon size={24} /> <span>Send Artwork</span>
                 </OptionButton>
 
 
             </div>
             <BriefForm id='BriefForm'></BriefForm>
+            <SendArtworkForm id='SendArtworkForm'/>
         </div>
     )
 }
