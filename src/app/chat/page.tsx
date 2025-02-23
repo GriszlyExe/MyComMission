@@ -1,30 +1,33 @@
 "use client"
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TopNav from "@/app/ui/global/nav-bar";
 
 /* redux */
 import { useAppSelector } from "@/states/hook";
 import ChatRoomItem from "@/app/ui/chat/ChatRoomItem";
 import ChatWindow from "../ui/chat/ChatWindow";
+import { getChatrooms } from "@/service/chat";
 
-const rooms = [
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-]
-
-const page = () => {
+const Page = () => {
 
     const userId = useAppSelector(state => state.user.user!.userId);
+	const [rooms, setRooms] = useState<any[]>([]);
+	const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
+
+	useEffect(() =>{
+		//Fetch Chatroom
+		const fetchChatrooms = async () => {
+			const chatrooms = await getChatrooms(userId);
+			console.log({chatrooms}); // Or update your state with the chatrooms
+			setRooms(chatrooms)
+		};
+		fetchChatrooms()
+	},[userId])
+
+	useEffect(() =>{
+		console.log(`Now Chatroom = ${selectedRoom}`)
+	},[selectedRoom])
 
 	return (
 		<div className="flex min-h-screen flex-col items-center bg-gray-300">
@@ -40,12 +43,14 @@ const page = () => {
 				
 				{/* Chat rooms list */}
 				<div className="flex flex-col w-1/4 gap-2 overflow-y-auto scrollbar-hidden">
-					{rooms.map((_, idx) => <ChatRoomItem key={`room-${idx}`}/>)}
+					{rooms.map((chatroom)=>(
+						<ChatRoomItem key={chatroom.chatRoomId} chatroom={chatroom} onSelect={setSelectedRoom}/>
+					))}
 				</div>
 
 				{/* Chat window */}
-				<div className="flex flex-col-reverse w-3/4">
-					<ChatWindow />
+				<div className="flex flex-col-reverse w-3/4 justify-center">
+					{selectedRoom ? <ChatWindow chatRoomId={selectedRoom} senderId={userId}/> : <p>Select a chatroom</p>}
 				</div>
 
 			</div>
@@ -53,4 +58,4 @@ const page = () => {
 	);
 };
 
-export default page;
+export default Page;

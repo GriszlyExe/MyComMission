@@ -36,7 +36,7 @@ export type Post = {
 
 export type Message = {
     messageId: string;
-    roomId: string;
+    chatRoomId: string;
     senderId: string;
     type: "MESSAGE" | "BRIEF" | "PROPOSAL" | "IMAGE";
     content: string;
@@ -44,7 +44,7 @@ export type Message = {
 }
 
 export type ChatRoom = {
-    roomId: string;
+    chatRoomId: string;
     user1: User;
     user2: User;
 }

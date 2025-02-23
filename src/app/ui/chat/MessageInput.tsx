@@ -1,15 +1,35 @@
+import { Message } from "@/common/model";
+import { createMessage } from "@/service/chat";
 import React, { useState } from "react";
+import { io } from "socket.io-client";
 
-const MessageInput = () => {
+const socket = io("http://localhost:12345");
+
+const MessageInput = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) => {
 	const [message, setMessage] = useState<string>("");
-
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
+		if (!message.trim()) return;
 
-		if (message.trim()) {
-			console.log("Message sent:", message);
-			setMessage("");
+		const CM = async () => {
+			const res = await createMessage({
+				chatRoomId,
+				senderId,
+				content:message,
+				messageType:"MESSAGE"
+			})
+			// setNewMessage(res.newMessage)
+			const newMessage = res.newMessage
+			if(newMessage){
+				socket.emit("send_message", { newMessage });
+			}
+			console.log(newMessage)
 		}
+
+		CM()
+
+
+		setMessage("")
 	};
 
 	return (

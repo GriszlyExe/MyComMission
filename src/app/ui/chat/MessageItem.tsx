@@ -5,8 +5,7 @@ import React from "react";
 
 const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: User}) => {
 
-    // const userId = useAppSelector(state => state.user.user!.userId);
-    const userId = '1';
+    const userId = useAppSelector(state => state.user.user!.userId);
 
 	return (
 		<div className={clsx(`chat`, {
@@ -23,7 +22,7 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
 			</div>
 			<div className="chat-header">
                 {/*  */}
-				Obi-Wan Kenobi
+				{messageItem.senderId}
 				<time className="mx-1 text-xs opacity-50">12:45</time>
 			</div>
 			<div className="chat-bubble bg-accent text-white">{messageItem.content}</div>
