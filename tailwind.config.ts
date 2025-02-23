@@ -39,6 +39,9 @@ export default {
           body: {
             "background-color": "#ffffff",
           },
+          chat:{
+            
+          }
         },
       },
     ],
