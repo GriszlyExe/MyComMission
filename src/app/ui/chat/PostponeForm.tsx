@@ -1,33 +1,30 @@
 'use client'
 import 'daisyui'
-import { briefSchema } from './FormSchemas';
+import { postPoneSchema } from './FormSchemas';
 import { Formik, Form } from 'formik';
 import * as yup from "yup";
-import { FormikInput, FormikCheckbox, FormikFileInput } from './FormikInput';
+import { FormikInput } from './FormikInput';
 
 interface ModalProps {
     id: string
 }
 
 
-export const BriefForm = ({ id }: ModalProps) => {
-    type formSchema = yup.InferType<typeof briefSchema>;
-    const brief = {
-        name: 'mona-lisa',
-        details: 'monalisa fanart',
-        deadline: '2025-04-16',
-        price: 450,
-        commercialUse: true
+export const PostponeForm = ({ id }: ModalProps) => {
+    type formSchema = yup.InferType<typeof postPoneSchema>;
+    const date = {
+        oldDeadline: '2025-04-16',
+        newDeadline: '',
+
     }
     const initialValues = {
-        name: brief.name,
-        details: brief.details,
-        deadline: brief.deadline,
-        price: brief.price,
-        commercialUse: brief.commercialUse,
-        file: null
+        newDeadline: ''
     };
-
+    const formattedDate = new Date(date.oldDeadline).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    });
     const handleSubmit = async (
         values: formSchema,
         { resetForm }: { resetForm: () => void } // Accept resetForm from Formik
@@ -48,26 +45,25 @@ export const BriefForm = ({ id }: ModalProps) => {
                 <div className="modal-box">
                     {/* <div className="flex min-h-screen items-center justify-center"> */}
                     <div className="m-auto w-full max-w-lg rounded-md p-2 bg-white">
-                        <h1 className="font-bold text-3xl flex justify-center">Brief</h1>
+                        <h1 className="font-bold text-3xl flex justify-center">Postpone Artwork</h1>
                         <Formik
                             initialValues={initialValues}
-                            validationSchema={briefSchema}
+                            validationSchema={postPoneSchema}
                             onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
                         >
-                            {({ isSubmitting, errors, touched, resetForm, setFieldValue }) => (
+                            {({ isSubmitting, errors, touched, resetForm }) => (
                                 <Form className="space-y-4" autoComplete="off">
-                                    <FormikInput label='Name' type='text' name='name' errors={errors.name} touched={touched.name}
-                                        placeholder='Name of your artwork'
-                                    />
-                                    <FormikInput label='Details' type='textarea' name='details' errors={errors.details} touched={touched.details}
-                                        placeholder='what do you want your artwork to be?' />
-                                    <FormikInput label='deadline' type='date' name='deadline' errors={errors.deadline} touched={touched.deadline}
+                                    <div>
+                                        <label className="mb-2 block text-sm font-bold text-gray-700">
+                                            Old Deadline
+                                        </label>
+                                        <div className='shadow-sm rounded-lg p-3'>
+                                            {formattedDate}
+                                        </div>
+                                    </div>
+                                    <FormikInput label='New deadline' type='date' name='newDeadline' errors={errors.newDeadline} touched={touched.newDeadline}
                                         placeholder='Deadline of your artwork.'
                                     />
-                                    <FormikInput label='Price' type='text' name='price' errors={errors.price} touched={touched.price}
-                                        placeholder='Price of your artwork (THB)' />
-                                    <FormikCheckbox label='Commercial' name='commercialUse' errors={errors.commercialUse} touched={touched.commercialUse} />
-                                    <FormikFileInput label="Draft" name="file" setFieldValue={setFieldValue} />
                                     <div className="flex items-center justify-center gap-2">
                                         <button
                                             type="submit"

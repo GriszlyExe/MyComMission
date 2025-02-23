@@ -20,3 +20,13 @@ export const briefSchema = yup.object().shape({
         .boolean()
 
 });
+
+
+export const postPoneSchema = yup.object().shape({
+
+    newDeadline: yup
+        .date()
+        .min(new Date(), "Deadline cannot be in the past")
+        .required("Deadline is required"),
+
+});
