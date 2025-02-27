@@ -1,8 +1,21 @@
 import Link from "next/link";
+import { Review, User } from "@/common/model";
+import { getUserInfo } from "@/service/userService";
+import { useState } from "react";
+import { useEffect } from "react";
 
-export default function ReviewWidget() {
+interface ReviewProps {
+	review: Review;
+}
+
+export default function ReviewWidget( { review }: ReviewProps ) {
 	const uniqueId = Math.random().toString(36).substring(7);
+	const [user, setUser] = useState<{ displayName: string; profileUrl: string } | null>(null);
 
+	useEffect(() => {
+        getUserInfo(review.reviewerId).then(setUser);
+    }, [review.reviewerId]);
+	
 	return (
 		<div className="card w-full border-2 border-primary bg-white p-4">
 			{/* Review Header */}
@@ -17,7 +30,7 @@ export default function ReviewWidget() {
 								className="h-full overflow-hidden rounded-full object-cover"
 							/> */}
 						<img
-							src="/avatar.png"
+							src={ user ? user.profileUrl : "/avatar.png"}
 							alt="User Avatar"
 							width={50}
 							height={50}
@@ -31,7 +44,7 @@ export default function ReviewWidget() {
 								</p>
 							</Link> */}
 						<Link href="#">
-							<p className="font-semibold">Display Name</p>
+							<p className="font-semibold">{user?.displayName}</p>
 						</Link>
 						<p className="text-xs text-gray-500">{`February`}</p>
 					</div>
@@ -48,71 +61,77 @@ export default function ReviewWidget() {
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-1 mask-star-2 bg-yellow-400"
 							disabled
+							defaultChecked={review.rating === 0.5}
 						/>
 						<input
 							type="radio"
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-2 mask-star-2 bg-yellow-400"
 							disabled
+							defaultChecked={review.rating === 1}
 						/>
 						<input
 							type="radio"
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-1 mask-star-2 bg-yellow-400"
 							disabled
+							defaultChecked={review.rating === 1.5}
 						/>
 						<input
 							type="radio"
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-2 mask-star-2 bg-yellow-400"
 							disabled
-							defaultChecked
+							defaultChecked={review.rating === 2}
 						/>
 						<input
 							type="radio"
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-1 mask-star-2 bg-yellow-400"
 							disabled
+							defaultChecked={review.rating === 2.5}
 						/>
 						<input
 							type="radio"
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-2 mask-star-2 bg-yellow-400"
 							disabled
+							defaultChecked={review.rating === 3}
 						/>
 						<input
 							type="radio"
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-1 mask-star-2 bg-yellow-400"
 							disabled
+							defaultChecked={review.rating === 3.5}
 						/>
 						<input
 							type="radio"
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-2 mask-star-2 bg-yellow-400"
 							disabled
+							defaultChecked={review.rating === 4}
 						/>
 						<input
 							type="radio"
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-1 mask-star-2 bg-yellow-400"
 							disabled
+							defaultChecked={review.rating === 4.5}
 						/>
 						<input
 							type="radio"
 							name={`rating-${uniqueId}`}
 							className="mask mask-half-2 mask-star-2 bg-yellow-400"
 							disabled
+							defaultChecked={review.rating === 5}
 						/>
 					</div>
-                    <p className="text-gray-800 text-sm">2.0 out of 5 stars</p>
+                    <p className="text-gray-800 text-sm">{review.rating} out of 5 stars</p>
 				</div>
 			</div>
 			<p className="mt-2 text-gray-800">
-				Lorem ipsum dolor sit amet consectetur adipisicing elit.
-				Accusamus nulla repellendus eos? Velit, dolorem voluptate
-				deleniti saepe possimus aliquam molestias a rem laudantium odit
-				suscipit quaerat quidem odio? Inventore, magni.
+				{review.description}
 			</p>
 		</div>
 	);

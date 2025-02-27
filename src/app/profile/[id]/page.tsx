@@ -171,7 +171,7 @@ export default function ProfilePage() {
 						{/* Feed */}
 						{activeTab === "posts" && <FeedProfile />}
 						{activeTab === "artworks" && <FeedProfile />}
-						{activeTab === "reviews" && <Review userId={ id as string }/>}
+						{activeTab === "reviews" && <Review />}
 					</div>
 				</div>
 			</div>

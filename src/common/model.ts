@@ -33,3 +33,11 @@ export type Post = {
     picUrl4: string | null;
     artist: User;
 }
+
+export type Review = {
+    reviewId: string;
+    reviewerId: string;
+    revieweeId: string;
+    rating: number;
+    description: string | null
+}

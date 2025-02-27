@@ -20,3 +20,26 @@ export const createReview = async ({ data }: { data: any }) => {
         throw error;
     }
 }
+
+export const getReviewByUserId = async (userId: string) => {
+
+    try {
+
+        const options = {
+            method: "GET",
+            url: `${serverAddr}/review/user/${userId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        }
+
+        const { data } = await axios.request(options)
+
+        return {
+            data: data
+        }
+
+    } catch (error) {
+        throw error
+    }
+
+}

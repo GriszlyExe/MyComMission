@@ -3,12 +3,18 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { createReview } from "@/service/reviewService";
+import { useParams } from "next/navigation";
+import { useAppDispatch } from "@/states/hook";
+import { addReview } from "@/states/features/reviewSlice";
 
 const reviewSchema = yup.object().shape({
 	rating: yup.number().required("Rating is required"),
 });
 
-export default function ReviewForm({ userId }: { userId: string | undefined }) {
+export default function ReviewForm() {
+	const { id } = useParams();
+	const dispatch = useAppDispatch()
+
 	return (
 		<div className="card mx-4 border-2 border-primary bg-white p-4">
 			<h1 className="mb-2 text-center text-lg font-bold">
@@ -19,11 +25,13 @@ export default function ReviewForm({ userId }: { userId: string | undefined }) {
 				validationSchema={reviewSchema}
 				onSubmit={async (values, actions) => {
 					let data = {
-						revieweeId: userId,
+						revieweeId: id,
 						rating: values.rating,
 						description: values.review
 					}
 					const review = await createReview({ data })
+					console.log(review)
+					dispatch(addReview(review))
 					actions.resetForm();
 				}}
 			>

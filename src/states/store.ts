@@ -2,6 +2,7 @@
 import { authReducer } from "./features/authSlice";
 import { userReducer } from "./features/userSlice";
 import { postReducer } from "./features/postSlice";
+import { reviewReducer } from "./features/reviewSlice";
 
 import { configureStore, combineReducers, createAction } from '@reduxjs/toolkit';
 import {
@@ -22,6 +23,7 @@ const appReducer = combineReducers({
     auth: authReducer,
     user: userReducer,
     post: postReducer,
+    review: reviewReducer,
 });
 
 const rootReducer = (state: any, action: any) => {
