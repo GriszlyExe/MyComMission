@@ -11,6 +11,22 @@ interface ReviewProps {
 export default function ReviewWidget( { review }: ReviewProps ) {
 	const uniqueId = Math.random().toString(36).substring(7);
 	const [user, setUser] = useState<{ displayName: string; profileUrl: string } | null>(null);
+	const month = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
+	];
+
+	console.log(review)
 
 	useEffect(() => {
         getUserInfo(review.reviewerId).then(setUser);
@@ -46,7 +62,7 @@ export default function ReviewWidget( { review }: ReviewProps ) {
 						<Link href="#">
 							<p className="font-semibold">{user?.displayName}</p>
 						</Link>
-						<p className="text-xs text-gray-500">{`February`}</p>
+						<p className="text-xs text-gray-500">{`${new Date(review.createdAt).getDate()} ${month[new Date(review.createdAt).getMonth()]} ${new Date(review.createdAt).getFullYear()}`}</p>
 					</div>
 				</div>
 			</div>

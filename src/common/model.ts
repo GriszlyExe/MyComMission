@@ -39,5 +39,6 @@ export type Review = {
     reviewerId: string;
     revieweeId: string;
     rating: number;
-    description: string | null
+    description: string | null;
+    createdAt: Date
 }
