@@ -39,9 +39,13 @@ const states = [
 	},
 ];
 
-const ChatroomItem = () => {
+const ChatroomItem = ({ chatroom, onSelect }: { chatroom: any, onSelect: (roomId: string) => void }) => {
 	return (
-		<div className="flex flex-row items-center justify-between gap-2 rounded-md bg-white px-1 hover:bg-secondary">
+		<div className="flex flex-row items-center justify-between gap-2 rounded-md bg-white px-1 hover:bg-secondary"
+		onClick={() => {
+			onSelect(chatroom.chatRoomId)
+		}}
+		>
 			{/* profile avatar */}
 			<div>
 				<div className="h-12 w-12 overflow-hidden rounded-full border border-gray-300">
@@ -57,7 +61,7 @@ const ChatroomItem = () => {
 
 			{/* name + latest message */}
 			<div className="flex flex-grow flex-col p-2">
-				<span className="accent font-bold">Gabriel</span>
+				<span className="accent font-bold">{chatroom.chatRoomId}</span>
 				<p className="text-sm">Hello, how are you?</p>
 			</div>
 
