@@ -34,6 +34,15 @@ export type Post = {
     artist: User;
 }
 
+export type Review = {
+    reviewId: string;
+    reviewerId: string;
+    revieweeId: string;
+    rating: number;
+    description: string | null;
+    createdAt: Date
+}
+
 export type Message = {
     messageId: string;
     chatRoomId: string;

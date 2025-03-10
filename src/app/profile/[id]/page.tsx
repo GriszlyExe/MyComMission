@@ -5,16 +5,17 @@ import TopNav from "@/app/ui/global/nav-bar";
 import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { setUser } from "@/states/features/userSlice";
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendarDay } from "react-icons/fa6";
 import { getUserInfo } from "@/service/userService";
 import { User } from "@/common/model";
-import PostForm from "@/app/ui/post/create-form";
 import FeedProfile from "@/app/ui/components/FeedProfile";
 import SuggestedBar from "@/app/ui/components/SuggestedBar";
+import PostForm from "@/app/ui/post/create-form";
+import ReviewForm from "@/app/ui/components/ReviewForm";
+import Review from "@/app/ui/components/Review";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
@@ -157,13 +158,20 @@ export default function ProfilePage() {
 									ARTWORKS
 								</button>
 							</div>
+							<div className="w-1/2">
+								<button
+									className={`font-bold ${activeTab === "reviews" ? "border-b-4 border-base-200 text-base-200" : "text-gray-700"}`}
+									onClick={() => handleTabClick("reviews")}
+								>
+									REVIEWS
+								</button>
+							</div>
 						</div>
 
 						{/* Feed */}
-
 						{activeTab === "posts" && <FeedProfile />}
 						{activeTab === "artworks" && <FeedProfile />}
-						{/* {activeTab === "posts" && <FeedProfile />} */}
+						{activeTab === "reviews" && <Review />}
 					</div>
 				</div>
 			</div>

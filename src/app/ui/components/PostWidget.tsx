@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 import { FaHeart, FaRegHeart, FaRegCommentDots } from "react-icons/fa";
-import Image from "next/image";
 import EditPostForm from "../post/edit-form";
-import { PostData } from "@/common/interface";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { Post, User } from "@/common/model";
-import clsx from "clsx";
 import Link from "next/link";
 import { string } from "yup";
 import { useAppDispatch, useAppSelector } from "@/states/hook";
@@ -127,6 +124,7 @@ export default function PostWidget({ post, user }: PostProps) {
 				{/* Post Content */}
 				<p className="mt-2 text-gray-800">{post.postDescription}</p>
 				{/* Display multiple images */}
+
 				{images.length > 0 && (
 					<div className="carousel w-full mt-2 h-[380px] rounded-box">
 						{" "}
