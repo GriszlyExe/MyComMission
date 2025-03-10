@@ -4,6 +4,7 @@ import MessageItem from "./MessageItem";
 import MessageInput from "./MessageInput";
 import {io} from "socket.io-client"
 import { getMessageChatroom } from "@/service/chat";
+import BriefInChat from "./BriefInChat";
 
 const socket = io("http://localhost:12345",{autoConnect:false});
 
@@ -50,6 +51,7 @@ const ChatWindow = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) =
 				{messages.map((message) => (
 					<MessageItem messageItem={message} key={message.messageId}/>
 				))}
+				{/* <BriefInChat/> */}
 			</div>
             <MessageInput chatRoomId={chatRoomId} senderId={senderId}/>
 		</div>

@@ -2,14 +2,12 @@ import { Message } from "@/common/model";
 import { createMessage } from "@/service/chat";
 import React, { useState } from "react";
 import { io } from "socket.io-client";
+import { Divide, Plus, X} from "lucide-react";
+import ChatOptions from "./ChatOptions";
 
 const socket = io("http://localhost:12345");
 
 const MessageInput = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) => {
-import { Divide, Plus, X} from "lucide-react";
-import ChatOptions from "./ChatOptions";
-// import BriefForm from "./BriefForm";
-const MessageInput = () => {
 	const [message, setMessage] = useState<string>("");
 	const [showOptions, setShowOptions] = useState(false);
 
