@@ -46,15 +46,18 @@ const ChatWindow = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) =
 	}, []);
 
 	return (
-		<div className="p-1">
-			<div ref={containerRef} className="max-h-[550px] overflow-y-auto overflow-x-hidden scrollbar-hidden mt-1">
-				{messages.map((message) => (
-					<MessageItem messageItem={message} key={message.messageId}/>
-				))}
-				{/* <BriefInChat/> */}
+		<div>
+			<div className="p-1 border-red-600 border-2 max-h-[500px]">
+				<div ref={containerRef} className="max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden mt-1">
+					{messages.map((message) => (
+						<MessageItem messageItem={message} key={message.messageId}/>
+					))}
+					{/* <BriefInChat/> */}
+				</div>
 			</div>
-            <MessageInput chatRoomId={chatRoomId} senderId={senderId}/>
+			<MessageInput chatRoomId={chatRoomId} senderId={senderId}/>
 		</div>
+
 	);
 };
 
