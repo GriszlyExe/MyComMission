@@ -47,7 +47,7 @@ const ChatWindow = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) =
 
 	return (
 		<div>
-			<div className="p-1 border-red-600 border-2 max-h-[500px]">
+			<div className="p-1 max-h-[500px]">
 				<div ref={containerRef} className="max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden mt-1">
 					{messages.map((message) => (
 						<MessageItem messageItem={message} key={message.messageId}/>
