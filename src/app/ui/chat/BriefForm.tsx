@@ -12,24 +12,33 @@ interface ModalProps {
 
 export const BriefForm = ({ id }: ModalProps) => {
     type formSchema = yup.InferType<typeof briefSchema>;
+    const user = {
+        customerId: '64444444'
+    }
+    const artist = {
+        artistId: '123456'
+    }
+
     const brief = {
-        name: 'mona-lisa',
-        details: 'monalisa fanart',
-        deadline: '2025-04-16',
-        price: 450,
+        commissionName: 'mona-lisa',
+        briefDescription: 'monalisa fanart',
+        dueDate: '2025-04-16',
+        budget: 450,
         commercialUse: true
     }
     const initialValues = {
-        name: brief.name,
-        details: brief.details,
-        deadline: brief.deadline,
-        price: brief.price,
+        commissionName: brief.commissionName,
+        briefDescription: brief.briefDescription,
+        dueDate: brief.dueDate,
+        budget: brief.budget,
         commercialUse: brief.commercialUse,
-        file: null
+        // file: null
+        artistId: artist.artistId
     };
 
     const handleSubmit = async (
         values: formSchema,
+        artistId: string,
         { resetForm }: { resetForm: () => void } // Accept resetForm from Formik
     ) => {
         try {
@@ -52,22 +61,22 @@ export const BriefForm = ({ id }: ModalProps) => {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={briefSchema}
-                            onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
+                            onSubmit={(values, { resetForm }) => handleSubmit(values, artist.artistId, { resetForm })}
                         >
                             {({ isSubmitting, errors, touched, resetForm, setFieldValue }) => (
                                 <Form className="space-y-4" autoComplete="off">
-                                    <FormikInput label='Name' type='text' name='name' errors={errors.name} touched={touched.name}
+                                    <FormikInput label='Name' type='text' name='commissionName' errors={errors.commissionName} touched={touched.commissionName}
                                         placeholder='Name of your artwork'
                                     />
-                                    <FormikInput label='Details' type='textarea' name='details' errors={errors.details} touched={touched.details}
+                                    <FormikInput label='Details' type='textarea' name='briefDescription' errors={errors.briefDescription} touched={touched.briefDescription}
                                         placeholder='what do you want your artwork to be?' />
-                                    <FormikInput label='deadline' type='date' name='deadline' errors={errors.deadline} touched={touched.deadline}
+                                    <FormikInput label='deadline' type='date' name='dueDate' errors={errors.dueDate} touched={touched.dueDate}
                                         placeholder='Deadline of your artwork.'
                                     />
-                                    <FormikInput label='Price' type='text' name='price' errors={errors.price} touched={touched.price}
+                                    <FormikInput label='Price' type='text' name='budget' errors={errors.budget} touched={touched.budget}
                                         placeholder='Price of your artwork (THB)' />
                                     <FormikCheckbox label='Commercial' name='commercialUse' errors={errors.commercialUse} touched={touched.commercialUse} />
-                                    <FormikFileInput label="Draft" name="file" setFieldValue={setFieldValue} />
+                                    {/* <FormikFileInput label="Draft" name="file" setFieldValue={setFieldValue} /> */}
                                     <div className="flex items-center justify-center gap-2">
                                         <button
                                             type="submit"
