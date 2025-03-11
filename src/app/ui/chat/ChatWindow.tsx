@@ -6,7 +6,7 @@ import {io} from "socket.io-client"
 import { getMessageChatroom } from "@/service/chat";
 import BriefInChat from "./BriefInChat";
 
-const socket = io("http://localhost:12345",{autoConnect:false});
+const socket = io("http://localhost:12345",{autoConnect:true});
 
 const ChatWindow = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) => {
 

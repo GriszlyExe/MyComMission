@@ -50,6 +50,7 @@ const MessageInput = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string})
 					<div className="">
 						<button
 							onClick={() => setShowOptions(!showOptions)}
+							type="button"
 							className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-transform duration-300"
 						>
 							{showOptions ? <X size={20} className="transform rotate-180 transition-all duration-300" /> : <Plus size={20} className="transition-all duration-300" />}
