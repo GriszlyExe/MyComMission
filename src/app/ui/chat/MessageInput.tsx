@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import { Divide, Plus, X} from "lucide-react";
 import ChatOptions from "./ChatOptions";
 
-const socket = io("http://localhost:12345");
+const socket = io(process.env.SERVER_ADDRESS);
 
 const MessageInput = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) => {
 	const [message, setMessage] = useState<string>("");
