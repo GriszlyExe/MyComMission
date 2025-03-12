@@ -19,7 +19,7 @@ export default function ChatOptions() {
 
     return (
         <div>
-            <div className="flex justify-around w-4/5 min-h-12">
+            <div className="flex justify-around w-4/5 min-h-12 mb-5">
 
                 <OptionButton onClick={() => openForm('BriefForm')} >
                     <TextSelect size={24} /> <span>Brief</span>

@@ -40,7 +40,7 @@ const MessageInput = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string})
 		<div>
 			<form
 				onSubmit={handleSubmit}
-				className="flex flex-row items-center gap-2 border-t border-gray-200 p-2"
+				className="p-1 flex flex-row items-center gap-2 border-t border-gray-200"
 			>
 
 				{/* add button Section */}
