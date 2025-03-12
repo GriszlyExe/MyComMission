@@ -42,3 +42,25 @@ export const getCommissionById = async (commissionId: string) => {
 		throw error;
 	}
 };
+
+export const getArtworkByUserId = async (userId: string) => {
+	try {
+		const options = {
+			method: "GET",
+			url: `${serverAddr}/commmission/artworks/${userId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
+
+		const {
+			data: { posts, user },
+		} = await axios.request(options);
+
+		return {
+			posts: posts ? posts : [],
+			user: user,
+		};
+	} catch (err) {
+		throw err;
+	}
+};

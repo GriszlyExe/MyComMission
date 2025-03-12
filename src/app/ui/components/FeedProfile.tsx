@@ -15,7 +15,7 @@ export default function FeedProfile() {
 	const { id } = useParams();
 
 	useEffect(() => {
-		getPostByUserId(user!.userId).then(({ posts, user }) => {
+		getPostByUserId(id).then(({ posts, user }) => {
 			if (id && id === user!.userId) {
 				dispatch(setLoggedInUserPosts(posts));
 			}

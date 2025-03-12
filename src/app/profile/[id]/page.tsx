@@ -12,6 +12,7 @@ import { FaCalendarDay } from "react-icons/fa6";
 import { getUserInfo } from "@/service/userService";
 import { User } from "@/common/model";
 import FeedProfile from "@/app/ui/components/FeedProfile";
+import ArtworkTab from "@/app/ui/components/ArtworkTab";
 import SuggestedBar from "@/app/ui/components/SuggestedBar";
 import PostForm from "@/app/ui/post/create-form";
 import ReviewForm from "@/app/ui/components/ReviewForm";
@@ -205,7 +206,7 @@ export default function ProfilePage() {
 
 						{/* Feed */}
 						{activeTab === "posts" && <FeedProfile />}
-						{activeTab === "artworks" && <FeedProfile />}
+						{activeTab === "artworks" && <ArtworkTab />}
 						{activeTab === "reviews" && <Review />}
 					</div>
 				</div>
