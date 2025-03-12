@@ -17,6 +17,8 @@ import PostForm from "@/app/ui/post/create-form";
 import ReviewForm from "@/app/ui/components/ReviewForm";
 import Review from "@/app/ui/components/Review";
 import { Message01Icon } from "hugeicons-react";
+import { createChatroom } from "@/service/chat";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
@@ -25,6 +27,7 @@ export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState("posts");
 	const dispatch = useAppDispatch();
 	const { id } = useParams();
+	const router = useRouter()
 	const month = [
 		"January",
 		"February",
@@ -48,6 +51,23 @@ export default function ProfilePage() {
 		const user = await getUserInfo(id as string);
 		return user;
 	};
+
+	const handleTabCreateChat = async () =>{
+		if (!userId || !id){
+			console.log("userId or memberId invalid")
+			return
+		}
+
+		console.log({userId,id})
+
+		const res = await createChatroom({creatorId:userId,memberId:id as string})
+		if(res.chatroom){
+			console.log("Create complete")
+			router.push('../chat')
+		}else{
+			console.log("Something went wrong!")
+		}
+	}
 
 	useEffect(() => {
 		fetchUserProfile().then((user) => {
@@ -141,7 +161,7 @@ export default function ProfilePage() {
 										from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
 											type='button'
 											onClick={() => {
-												console.log("activated")
+												handleTabCreateChat()
 											}}
 									>
 										<Message01Icon className="scale-110"/>

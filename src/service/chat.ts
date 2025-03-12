@@ -51,7 +51,6 @@ export const createMessage = async ({
 }) => {
 
     try {
-
         const json = {
             chatRoomId,
             senderId,
@@ -68,6 +67,38 @@ export const createMessage = async ({
 
         const res = await axios.request(options)
         
+        return res.data
+    } catch (error) {
+        throw error
+    }
+}
+
+export const createChatroom = async({
+    creatorId,
+    memberId
+}:
+{
+    creatorId:string,
+    memberId:string
+}) => {
+    
+    console.log({creatorId,memberId})
+    try {
+        const json = {
+            creatorId,
+            memberId,
+        }
+
+        const options = {
+            method: "POST",
+            url: `${serverAddr}/chat/chatroom`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            data:json
+        };
+
+        const res = await axios.request(options)
+        console.log("Chat Room Created: ",res)
         return res.data
     } catch (error) {
         throw error
