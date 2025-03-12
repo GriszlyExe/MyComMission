@@ -6,6 +6,7 @@ import React from "react";
 const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: User}) => {
 
     const userId = useAppSelector(state => state.user.user!.userId);
+	const loggedInUser = useAppSelector(state => state.user.user); 
 
 	return (
 		<div className={clsx(`chat`, {
@@ -16,13 +17,13 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
 				<div className="w-10 rounded-full">
 					<img
 						alt="profile"
-						src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+						src={loggedInUser?.profileUrl}
 					/>
 				</div>
 			</div>
 			<div className="chat-header">
                 {/*  */}
-				{messageItem.senderId}
+				{messageItem.senderId === userId ? loggedInUser!.displayName : messageItem.senderId}
 				<time className="mx-1 text-xs opacity-50">12:45</time>
 			</div>
 			<div className="chat-bubble bg-accent text-white">{messageItem.content}</div>

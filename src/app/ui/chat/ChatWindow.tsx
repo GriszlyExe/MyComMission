@@ -5,6 +5,7 @@ import MessageInput from "./MessageInput";
 import { io } from "socket.io-client"
 import { getMessageChatroom } from "@/service/chat";
 import SendArtworkInChat from "./SendArtworkInChat";
+import BriefInChat from "./BriefInChat";
 
 const socket = io(process.env.SERVER_ADDRESS);
 
@@ -52,7 +53,7 @@ const ChatWindow = ({ chatRoomId, senderId }: { chatRoomId: string, senderId: st
 					{messages.map((message) => (
 						<MessageItem messageItem={message} key={message.messageId} />
 					))}
-					{/* <div className="chat-bubble text-black"><BriefInChat artistId="4d599e4d-cb28-41fa-89cd-9fe9e8164347" /></div> */}
+					<div className="chat-bubble text-black"><BriefInChat artistId="4d599e4d-cb28-41fa-89cd-9fe9e8164347" /></div>
 					<div className="chat-bubble text-black"><SendArtworkInChat /></div>
 				</div>
 			</div>
