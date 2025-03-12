@@ -4,20 +4,21 @@ import { briefSchema } from './FormSchemas';
 import { Formik, Form } from 'formik';
 import * as yup from "yup";
 import { FormikInput, FormikCheckbox, FormikFileInput } from './FormikInput';
-import { createCommission } from '@/service/commissionService';
+import { createCommission, getCommissionById } from '@/service/commissionService';
 import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { io } from "socket.io-client"
 import { createMessage } from '@/service/chatService';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { isCommissionEnded } from './commissionState';
 
 interface ModalProps {
-    id: string
+    id: string,
+    refresh: boolean
 }
 
 const socket = io(process.env.SERVER_ADDRESS);
 
-export const BriefForm = ({ id }: ModalProps) => {
+export const BriefForm = ({ id, refresh }: ModalProps) => {
 
     const artistId = useAppSelector(state => {
         if (state.chat.activeRoom?.user2) {
@@ -36,36 +37,34 @@ export const BriefForm = ({ id }: ModalProps) => {
         return null;
     });
 
+    const latestCommission = useAppSelector(state => {
+        if (state.chat.activeRoom?.latestCommission) {
+            return state.chat.activeRoom.latestCommission;
+        }
+        return null;
+    });
 
     type formSchema = yup.InferType<typeof briefSchema>;
-
-
-    const brief = {
-        commissionName: '',
-        briefDescription: '',
-        dueDate: '',
+    
+    const [initialValues, setCommission] = useState({
+        commissionName: "",
+        briefDescription: "",
+        deadline: "",
         budget: 500,
         commercialUse: false,
-        state: ''
-    }
+        artistId: "",
+        state: "",
+    });
 
-    const [commissionId, setCommissionId] = useState("");
-    const [createNewBrief, setCreateNewBrief] = useState(false);
-    if (commissionId == null || isCommissionEnded(brief.state)) {
-        setCreateNewBrief(true);
-    }
-
-    const initialValues = {
-        commissionName: brief.commissionName,
-        briefDescription: brief.briefDescription,
-        dueDate: brief.dueDate,
-        budget: brief.budget,
-        commercialUse: brief.commercialUse,
-        // file: null
-        artistId: artistId,
-        chatRoomId: activeRoomId,
-        // createNewBrief: createNewBrief
-    };
+    useEffect(() => {
+        console.log("sss");
+        if (latestCommission && !isCommissionEnded(latestCommission.state)) {
+            console.log(latestCommission);
+            setCommission(latestCommission);
+            console.log(initialValues);
+        }
+    
+    }, [refresh])
 
     const handleSubmit = async (
         values: formSchema,
@@ -113,6 +112,7 @@ export const BriefForm = ({ id }: ModalProps) => {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={briefSchema}
+                            enableReinitialize={true}
                             onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
                         >
                             {({ isSubmitting, errors, touched, resetForm, setFieldValue }) => (

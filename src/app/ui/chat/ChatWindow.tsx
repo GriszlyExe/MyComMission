@@ -11,6 +11,7 @@ import BriefInChat from "./BriefInChat";
 import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { addMessage, setMessages, setReceiver } from "@/states/features/chatSlice";
 import { getUserInfo } from "@/service/userService";
+import { BriefForm } from "./BriefForm";
 
 const socket = io(process.env.SERVER_ADDRESS);
 
@@ -82,8 +83,6 @@ const ChatWindow = () => {
 					{receiver !== null && messages.map((message) => (
 						<MessageItem messageItem={message} key={message.messageId} />
 					))}
-					{/* <div className="chat-bubble text-black"><BriefInChat artistId="4d599e4d-cb28-41fa-89cd-9fe9e8164347" /></div>
-					<div className="chat-bubble text-black"><SendArtworkInChat /></div> */}
 				</div>
 			</div>
 			{activeRoomId && <MessageInput />}

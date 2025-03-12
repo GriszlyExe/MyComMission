@@ -10,10 +10,11 @@ export default function ChatOptions() {
 
     const [isBriefCreated, setisBriefCreated] = useState(false);
     const state = states.brief
-
+    const [refresh, setRefresh] = useState(false);
     function openForm(file_name: string) {
         const form = document.getElementById(file_name)
         if (form != null) {
+            setRefresh(prev => !prev);
             form.showModal();
         }
     }
@@ -39,7 +40,7 @@ export default function ChatOptions() {
 
 
             </div>
-            <BriefForm id='BriefForm'></BriefForm>
+            <BriefForm id='BriefForm' refresh={refresh}></BriefForm>
             <SendArtworkForm id='SendArtworkForm' />
             {/* <PostponeForm id='PostponeForm' /> */}
 
