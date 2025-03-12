@@ -77,7 +77,7 @@ const ChatWindow = () => {
 
 	return (
 		<div>
-			<div className="p-1 max-h-[500px]">
+			<div className="p-1 max-h-[500px] h-[500px]">
 				<div ref={containerRef} className="max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden mt-1">
 					{receiver !== null && messages.map((message) => (
 						<MessageItem messageItem={message} key={message.messageId} />
@@ -86,7 +86,7 @@ const ChatWindow = () => {
 					<div className="chat-bubble text-black"><SendArtworkInChat /></div> */}
 				</div>
 			</div>
-			<MessageInput />
+			{activeRoomId && <MessageInput />}
 		</div>
 
 	);
