@@ -1,22 +1,24 @@
 'use client'
 import 'daisyui'
-import { artworkSchema, briefSchema } from './FormSchemas';
+import { briefSchema, proposalSchema } from './FormSchemas';
 import { Formik, Form } from 'formik';
 import * as yup from "yup";
-import {FormikFileInput } from './FormikInput';
-import { Upload } from 'lucide-react';
-import { useAppSelector } from '@/states/hook';
-import { useState, useEffect } from 'react';
+import { FormikInput, FormikCheckbox, FormikFileInput } from './FormikInput';
+import { createCommission, createProposal, getCommissionById } from '@/service/commissionService';
+import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { io } from "socket.io-client"
+import { createMessage } from '@/service/chatService';
+import { useEffect, useState } from 'react';
 import { isCommissionEnded } from './commissionState';
-import { sendArtwork, uploadArtwork } from '@/service/commissionService';
 
 interface ModalProps {
     id: string,
     refresh: boolean
 }
 
+const socket = io(process.env.SERVER_ADDRESS);
 
-export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
+export const ProposalForm = ({ id, refresh }: ModalProps) => {
 
     const artistId = useAppSelector(state => {
         if (state.chat.activeRoom?.user2) {
@@ -43,8 +45,17 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
     });
 
     console.log(latestCommission);
+
+    type formSchema = yup.InferType<typeof proposalSchema>;
+    
+    const [initialValues, setCommission] = useState({
+        expectedDate: new Date().toISOString().split("T")[0],
+        proposalPrice: 500,
+        chatRoomId: activeRoomId,
+    });
+
     useEffect(() => {
-        console.log("aaa");
+        console.log("ppp");
         if (latestCommission && !isCommissionEnded(latestCommission.state)) {
             console.log(latestCommission);
             console.log(new Date(latestCommission.deadline).toISOString().split("T")[0]);
@@ -58,41 +69,38 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
     
     }, [refresh])
 
-    type formSchema = yup.InferType<typeof artworkSchema>;
-    
-    const [initialValues, setCommission] = useState({
-        expectedDate: new Date().toISOString().split("T")[0],
-        proposalPrice: 500,
-        chatRoomId: activeRoomId,
-        // file: null
-    });
-
     const handleSubmit = async (
-        values: formSchema
+        values: formSchema,
+        { resetForm }: { resetForm: () => void } // Accept resetForm from Formik
     ) => {
         try {
-            const { file, ...others } = values;
+            console.log(new Date());
+            console.log(values);
+            // resetForm(); // Reset form fields after successful submission
+            console.log(latestCommission.commissionId)
+            const response = await createProposal(latestCommission.commissionId ,values);
+            console.log(response);
+            console.log(response.commission.commissionId);
 
-            const formData = new FormData();
+            document.getElementById(id).close(); // Close the modal
 
-            if (file) {
-                formData.append("picture", file);
+            const CM = async () => {
+                const res = await createMessage({
+                    chatRoomId: activeRoomId!,
+                    senderId: loggedInUserId,
+                    content: latestCommission.commissionId,
+                    messageType: "PROPOSAL"
+                })
+
+                const newMessage = res.newMessage
+                if (newMessage) {
+                    socket.emit("send_message", { newMessage });
+                }
             }
 
-            console.log(file);
+            CM()
 
-            const { artworkId } = await uploadArtwork(formData);
-            
-            const data = {
-                artworkId: artworkId,
-                artistHide: false
-            };
-
-            const response = sendArtwork(latestCommission.commissionId, data);
-
-            console.log(response.data)
-            
-            // router.refresh();
+            // router.refresh(); (Uncomment this if needed)
         } catch (err) {
             console.error(err);
         }
@@ -101,27 +109,34 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
         <div>
             <dialog id={id} className="modal modal-bottom sm:modal-middle">
                 <div className="modal-box">
-                    <h1 className="font-bold text-3xl flex justify-center">Send Artwork</h1>
-                    <div className="m-auto w-full max-w-lg rounded-md bg-white p-6 shadow-sm">
+                    {/* <div className="flex min-h-screen items-center justify-center"> */}
+                    <div className="m-auto w-full max-w-lg rounded-md p-2 bg-white">
+                        <h1 className="font-bold text-3xl flex justify-center">Proposal</h1>
                         <Formik
                             initialValues={initialValues}
-                            // validationSchema={briefSchema}
+                            validationSchema={proposalSchema}
+                            enableReinitialize={true}
                             onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
                         >
-                            {({ isSubmitting, resetForm, setFieldValue }) => (
+                            {({ isSubmitting, errors, touched, resetForm, setFieldValue }) => (
                                 <Form className="space-y-4" autoComplete="off">
-                                    <FormikFileInput label="Draft" name="file" setFieldValue={setFieldValue} />
+                                    <FormikInput label='expectedDate' type='date' name='expectedDate' errors={errors.expectedDate} touched={touched.expectedDate}
+                                        placeholder='Expected finish date of your artwork.'
+                                    />
+                                    <FormikInput label='Price' type='number' name='proposalPrice' errors={errors.proposalPrice} touched={touched.proposalPrice}
+                                        placeholder='Price of your artwork (THB)' />
+                                    {/* <FormikFileInput label="Draft" name="file" setFieldValue={setFieldValue} /> */}
                                     <div className="flex items-center justify-center gap-2">
                                         <button
                                             type="submit"
                                             disabled={isSubmitting}
-                                            className={`flex flex-row w-3/5 rounded px-4 py-3 text-white gap-x-2 focus:outline-none ${isSubmitting
+                                            className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${isSubmitting
                                                 ? "cursor-not-allowed bg-gray-400"
                                                 : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                                                 }`}
 
                                         >
-                                           <Upload size={24}/> Send Artwork
+                                            Send
                                         </button>
 
                                         <button className="w-1/2 rounded px-4 py-3 text-white bg-gradient-to-r
@@ -130,10 +145,12 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
                                             onClick={() => { resetForm(); document.getElementById(id).close() }}
                                         >Cancel</button>
 
+
                                     </div>
                                 </Form>
                             )}
                         </Formik>
+                        {/* </div> */}
                     </div>
                 </div>
             </dialog>

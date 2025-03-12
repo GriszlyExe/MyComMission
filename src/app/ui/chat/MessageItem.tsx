@@ -4,6 +4,8 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import BriefInChat from "./BriefInChat";
 import { getCommissionById } from "@/service/commissionService";
+import ProposalInChat from "./ProposalInChat";
+import SendArtworkInChat from "./SendArtworkInChat";
 
 
 const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: User}) => {
@@ -16,6 +18,8 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
 	// console.log(messageItem.messageType);
 	const is_message = messageItem.messageType == "MESSAGE";
 	const is_brief = messageItem.messageType == "BRIEF";
+	const is_proposal = messageItem.messageType == "PROPOSAL";
+	const is_working = messageItem.messageType == "WORKING";
 
 	// console.log("message" + is_message);
 	// console.log("brief" + is_brief);
@@ -25,13 +29,15 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
 		deadline: "",
 		budget: "",
 		commercialUse: false,
+		expectedDate: "",
+		proposalPrice: "",
 		artistId: "",
 		state: "",
 	});
 
 	useEffect(() => {
 		const fetchCommission = async () => {
-			if (is_brief) {
+			if (messageItem.messageType !== "MESSAGE") {
 				try {
 					const commissionData = await getCommissionById(messageItem.content);
 
@@ -76,6 +82,16 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
                             artistId={commission.artistId}
                             state={commission.state || ""}
                         />  </div>  }
+			{is_proposal && <div className="chat-bubble bg-accent text-black"> <ProposalInChat
+                            commissionName={commission.commissionName}
+                            briefDescription={commission.briefDescription}
+                            expectedDate={commission.expectedDate || ""}
+                            proposalPrice={commission.proposalPrice}
+                            commercialUse={commission.commercialUse}
+                            artistId={commission.artistId}
+                            state_={commission.state || ""}
+                        />  </div>  }
+			{is_working&& <div className="chat-bubble bg-accent text-black"><SendArtworkInChat /></div>}
 			<div className="chat-footer opacity-50">Delivered</div>
 		</div>
 	);

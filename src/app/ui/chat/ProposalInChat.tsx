@@ -8,25 +8,26 @@ import { useState } from 'react';
 import { isCommissionReject as isCommissionReject, states } from './commissionState';
 import { BriefForm } from './BriefForm';
 import { ProposalForm } from './ProposalForm';
+import { acceptProposal } from '@/service/commissionService';
 
 
-interface BriefProp {
+interface ProposalProp {
     commissionName: string;
     briefDescription: string;
-    dueDate: string;
-    budget: string;
+    expectedDate: string;
+    proposalPrice: string;
     commercialUse: boolean;
     artistId: string;
-    state: string
+    state_: string
 }
 
-export default function BriefInChat({ commissionName, briefDescription, dueDate, budget, commercialUse, artistId, state }: BriefProp) {
+export default function ProposalInChat({ commissionName, briefDescription, expectedDate, proposalPrice, commercialUse, artistId, state_ }: ProposalProp) {
     const me = useAppSelector((state) => state.user.user!);
     const [userInfo, setUserInfo] = useState<User>(me);
     const userId = useAppSelector((state) => state.user.user?.userId);
     const isArtist = (artistId === userId);
 
-    const deadline = new Date(dueDate).toLocaleDateString("en-US", {
+    const deadline = new Date(expectedDate).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric"
@@ -40,11 +41,24 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
             form.showModal();
         }
     }
+
+    const latestCommission = useAppSelector(state => {
+        console.log(state)
+        if (state.chat.activeRoom?.latestCommission) {
+            return state.chat.activeRoom.latestCommission;
+        }
+        return null;
+    });
+
+    function acceptProposalBtn() {
+        acceptProposal(latestCommission.commissionId);
+    }
+
     return (
         <div>
             <div className="m-auto w-full max-w-lg rounded-md p-2 pb-6 bg-white">
                 {/* Header */}
-                <h1 className="font-bold text-2xl pl-6 pt-4 mb-6">Brief</h1>
+                <h1 className="font-bold text-2xl pl-6 pt-4 mb-6">Proposal</h1>
 
                 {/* Details Container */}
                 <div className='grid gap-y-6'>
@@ -64,14 +78,14 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
 
                     {/* Due Date */}
                     <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Deadline:</div>
+                        <div className="font-bold pl-6">Expected Finish Date:</div>
                         <div className="break-words sm:whitespace-normal">{deadline}</div>
                     </div>
 
                     {/* Price */}
                     <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Price:</div>
-                        <div className="break-words sm:whitespace-normal">{budget}</div>
+                        <div className="font-bold pl-6">Real Price:</div>
+                        <div className="break-words sm:whitespace-normal">{proposalPrice}</div>
                     </div>
 
                     {/* Commercial Use */}
@@ -83,7 +97,7 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
                     {/* Buttons */}
                     <div className='flex gap-x-2 justify-end pr-4'>
                         {/* Edit */}
-                        {/* {!isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                        {/* {isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                             from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                             type='button'
                             onClick={() => openForm('BriefFormInChat')}
@@ -93,17 +107,17 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
                         </button>} */}
 
                         {/* Accept */}
-                        {isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                        {!isArtist && !isCommissionReject(state_) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                             from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                             type='button'
-                            onClick={() => openForm('ProposalForm')}
+                            onClick={() => acceptProposalBtn()}
                         >
                             <CheckmarkCircle01Icon className='scale-150 pr-1' />
                             Accept
                         </button>}
 
                         {/* Reject */}
-                        {isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                        {!isArtist && !isCommissionReject(state_) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                         from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                             type='button'
                             onClick={() => console.log({ state: states.canceled })}
@@ -115,7 +129,6 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
 
                 </div>
             </div >
-            <BriefForm id='BriefFormInChat' refresh={refresh}></BriefForm>
             <ProposalForm id='ProposalForm' refresh={refresh}></ProposalForm>
         </div>
     )

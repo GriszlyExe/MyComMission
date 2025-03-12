@@ -49,18 +49,19 @@ export const BriefForm = ({ id, refresh }: ModalProps) => {
     const [initialValues, setCommission] = useState({
         commissionName: "",
         briefDescription: "",
-        deadline: "",
+        dueDate: new Date().toISOString().split("T")[0],
         budget: 500,
         commercialUse: false,
-        artistId: "",
-        state: "",
+        artistId: artistId,
+        chatRoomId: activeRoomId,
     });
 
     useEffect(() => {
         console.log("sss");
+        console.log(latestCommission);
         if (latestCommission && !isCommissionEnded(latestCommission.state)) {
             console.log(latestCommission);
-            setCommission(latestCommission);
+            setCommission({...latestCommission, dueDate: new Date(latestCommission.deadline).toISOString().split("T")[0]});
             console.log(initialValues);
         }
     
