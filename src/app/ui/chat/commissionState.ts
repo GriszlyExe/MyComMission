@@ -1,5 +1,5 @@
 export const states = {
-	idle: "idle",
+	idle: "IDLE",
 	brief: "BRIEF",
 	brief_reject: "BRIEF_REJECTED",
 	proposal: "PROPOSAL",

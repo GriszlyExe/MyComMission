@@ -36,7 +36,7 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
 					const commissionData = await getCommissionById(messageItem.content);
 
 					setCommission(commissionData.commission);
-					console.log(commission)
+					// console.log(commission)
 				} catch (error) {
 					console.error("Failed to fetch commission:", error);
 				}

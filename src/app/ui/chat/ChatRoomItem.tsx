@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 /* stats icon */
-import { FaDollarSign } from "react-icons/fa";
+import { FaBoxOpen, FaDollarSign, FaTimesCircle } from "react-icons/fa";
 import { RiProgress1Line } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
@@ -12,33 +12,41 @@ import { ChatRoom, User } from "@/common/model";
 import { getUserInfo } from "@/service/userService";
 
 const states = [
-	{ name: "idle", icon: <></> },
+	{ name: "IDLE", icon: <></> },
 	{
-		name: "brief",
+		name: "BRIEF",
 		icon: <IoDocumentText fontSize={40} className="text-success" />,
 	},
 	{
-		name: "brief-reject",
+		name: "BRIEF_REJECTED",
 		icon: <IoDocumentText fontSize={40} className="text-warning" />,
 	},
 	{
-		name: "proposal",
+		name: "PROPOSAL",
 		icon: <FaDollarSign fontSize={40} className="text-success" />,
 	},
 	{
-		name: "proposal-reject",
+		name: "PROPOSAL_REJECTED",
 		icon: <FaDollarSign fontSize={40} className="text-warning" />,
 	},
 	{
-		name: "working",
+		name: "WORKING",
 		icon: <RiProgress1Line fontSize={40} className="text-success" />,
 	},
 	{
-		name: "finished",
+		name: "ARTWORK_SHIPPED",
+		icon: <FaBoxOpen fontSize={40} className="text-info" />,
+	},
+	{
+		name: "ARTWORK_REJECTED",
+		icon: <FaTimesCircle fontSize={40} className="text-error" />,
+	},
+	{
+		name: "FINISHED",
 		icon: <FaCheckCircle fontSize={40} className="text-success" />,
 	},
 	{
-		name: "canceled",
+		name: "CANCELED",
 		icon: <MdOutlineCancel fontSize={40} className="text-error" />,
 	},
 ];
@@ -86,7 +94,10 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 
 			{/* @ts-ignore */}
 			<button className="py-3" onClick={()=>document.getElementById('status-info')!.showModal()}>
-				{states[Math.floor(Math.random() * 8)].icon}
+				{states.filter(state => {
+					if (!chatRoom.latestCommission) return state.name === "IDLE";
+					return state.name === chatRoom.latestCommission.state;
+				})[0].icon}
 			</button>
 			<dialog id="status-info" className="modal">
 				<div className="modal-box">

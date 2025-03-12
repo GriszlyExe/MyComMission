@@ -63,7 +63,8 @@ export const BriefForm = ({ id }: ModalProps) => {
         commercialUse: brief.commercialUse,
         // file: null
         artistId: artistId,
-        createNewBrief: createNewBrief
+        chatRoomId: activeRoomId,
+        // createNewBrief: createNewBrief
     };
 
     const handleSubmit = async (
@@ -71,6 +72,7 @@ export const BriefForm = ({ id }: ModalProps) => {
         { resetForm }: { resetForm: () => void } // Accept resetForm from Formik
     ) => {
         try {
+            console.log(new Date());
             console.log(values);
             // resetForm(); // Reset form fields after successful submission
 
