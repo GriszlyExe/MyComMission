@@ -1,15 +1,24 @@
 import { Message } from "@/common/model";
-import { createMessage } from "@/service/chat";
+import { createMessage } from "@/service/chatService";
 import React, { useState } from "react";
 import { io } from "socket.io-client";
-import { Divide, Plus, X} from "lucide-react";
+import { Divide, Plus, X } from "lucide-react";
 import ChatOptions from "./ChatOptions";
+import { useAppSelector } from "@/states/hook";
 
 const socket = io(process.env.SERVER_ADDRESS);
 
-const MessageInput = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) => {
+const MessageInput = () => {
+
 	const [message, setMessage] = useState<string>("");
 	const [showOptions, setShowOptions] = useState(false);
+	const loggedInUserId = useAppSelector(state => state.user.user!.userId);
+	const activeRoomId = useAppSelector(state => {
+		if (state.chat.activeRoom) {
+			return state.chat.activeRoom.chatRoomId;
+		}
+		return null;
+	});
 
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
@@ -17,21 +26,19 @@ const MessageInput = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string})
 
 		const CM = async () => {
 			const res = await createMessage({
-				chatRoomId,
-				senderId,
-				content:message,
-				messageType:"MESSAGE"
+				chatRoomId: activeRoomId!,
+				senderId: loggedInUserId,
+				content: message,
+				messageType: "MESSAGE"
 			})
-			// setNewMessage(res.newMessage)
+
 			const newMessage = res.newMessage
-			if(newMessage){
+			if (newMessage) {
 				socket.emit("send_message", { newMessage });
 			}
-			console.log(newMessage)
 		}
 
 		CM()
-
 
 		setMessage("")
 	};
@@ -74,7 +81,7 @@ const MessageInput = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string})
 					Send
 				</button>
 			</form>
-			{showOptions && <div className="flex justify-center"> <ChatOptions/>     </div>}
+			{showOptions && <div className="flex justify-center"> <ChatOptions /> </div>}
 		</div>
 	);
 };

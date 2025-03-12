@@ -1,8 +1,7 @@
 import axios from "axios";
+import { serverAddr } from ".";
 
-const serverAddr = process.env.SERVER_ADDRESS;
-
-export const getChatrooms = async (userId:string) => {
+export const getChatrooms = async (userId: string) => {
 
     try {
         const options = {
@@ -12,15 +11,21 @@ export const getChatrooms = async (userId:string) => {
             withCredentials: true,
         };
 
-        const res = await axios.request(options)
-        
-        return res.data.chatrooms
+        const { data: { chatrooms } } = await axios.request(options);
+
+        return chatrooms.map((chatRoom: any) => {
+            return {
+                chatRoomId: chatRoom.chatRoomId,
+                createdAt: chatRoom.createdAt,
+                user2: chatRoom.users[0].userId === userId ? chatRoom.users[1] : chatRoom.users[0], 
+            }
+        })
     } catch (error) {
         throw error
     }
 }
 
-export const getMessageChatroom = async (chatroomId:string) =>{
+export const getMessageChatroom = async (chatroomId: string) => {
 
     try {
         const options = {
@@ -43,11 +48,11 @@ export const createMessage = async ({
     senderId,
     content,
     messageType
-}:{
-    chatRoomId:string,
-    senderId:string,
-    content:string,
-    messageType:"MESSAGE" | "BRIEF" | "PROPOSAL" | "IMAGE"
+}: {
+    chatRoomId: string,
+    senderId: string,
+    content: string,
+    messageType: "MESSAGE" | "BRIEF" | "PROPOSAL" | "IMAGE"
 }) => {
 
     try {
@@ -58,16 +63,17 @@ export const createMessage = async ({
             content,
             messageType
         }
+        console.log(json);
         const options = {
             method: "POST",
             url: `${serverAddr}/chat/message`,
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
-            data:json
+            data: json
         };
 
         const res = await axios.request(options)
-        
+
         return res.data
     } catch (error) {
         throw error

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 /* stats icon */
 import { FaDollarSign } from "react-icons/fa";
@@ -6,6 +6,10 @@ import { RiProgress1Line } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
+import { useAppDispatch } from "@/states/hook";
+import { setActiveRoom } from "@/states/features/chatSlice";
+import { ChatRoom, User } from "@/common/model";
+import { getUserInfo } from "@/service/userService";
 
 const states = [
 	{ name: "idle", icon: <></> },
@@ -39,20 +43,33 @@ const states = [
 	},
 ];
 
-const ChatroomItem = ({ chatroom, onSelect }: { chatroom: any, onSelect: (roomId: string) => void }) => {
-	
+const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
+
+	const dispatch = useAppDispatch();
+	const [receiver, setReceiver] = useState<User | null>(null);
+
+	useEffect(() => {
+
+		const fetchUserProfile = async () => {
+			const user = await getUserInfo(chatRoom.user2.userId);
+			setReceiver(user);
+		};
+
+		fetchUserProfile();
+
+	}, [chatRoom.chatRoomId])
 
 	return (
 		<div className="flex flex-row items-center justify-between gap-2 rounded-md bg-white px-1 hover:bg-secondary"
 		onClick={() => {
-			onSelect(chatroom.chatRoomId)
+			dispatch(setActiveRoom(chatRoom));
 		}}
 		>
 			{/* profile avatar */}
 			<div>
 				<div className="h-12 w-12 overflow-hidden rounded-full border border-gray-300">
 					<img
-						src={`/default-profile-2.png`}
+						src={receiver !== null ? receiver.profileUrl : `/default-profile-2.png`}
 						alt="Profile"
 						className="h-full w-full overflow-hidden rounded-full border border-gray-300 object-cover"
 						width={50}
@@ -63,12 +80,12 @@ const ChatroomItem = ({ chatroom, onSelect }: { chatroom: any, onSelect: (roomId
 
 			{/* name + latest message */}
 			<div className="flex flex-grow flex-col p-2">
-				<span className="accent font-bold">{chatroom.chatRoomId}</span>
+				<span className="accent font-bold">{receiver !== null ? receiver.displayName : ""}</span>
 				<p className="text-sm">Hello, how are you?</p>
 			</div>
 
-			{/* state */}
-			<button className="py-3" onClick={()=>document.getElementById('status-info').showModal()}>
+			{/* @ts-ignore */}
+			<button className="py-3" onClick={()=>document.getElementById('status-info')!.showModal()}>
 				{states[Math.floor(Math.random() * 8)].icon}
 			</button>
 			<dialog id="status-info" className="modal">
