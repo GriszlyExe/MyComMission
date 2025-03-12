@@ -24,6 +24,12 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
     const userId = useAppSelector((state) => state.user.user?.userId);
     const isArtist = (artistId === userId);
 
+    const deadline = new Date(dueDate).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    })
+
     function openForm(file_name: string) {
         const form = document.getElementById(file_name)
         if (form != null) {
@@ -54,7 +60,7 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
                 {/* Due Date */}
                 <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
                     <div className="font-bold pl-6">Deadline:</div>
-                    <div className="break-words sm:whitespace-normal">{dueDate}</div>
+                    <div className="break-words sm:whitespace-normal">{deadline}</div>
                 </div>
 
                 {/* Price */}

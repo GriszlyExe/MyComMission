@@ -4,20 +4,39 @@ import { briefSchema } from './FormSchemas';
 import { Formik, Form } from 'formik';
 import * as yup from "yup";
 import { FormikInput, FormikCheckbox, FormikFileInput } from './FormikInput';
+import { createCommission } from '@/service/commissionService';
+import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { io } from "socket.io-client"
+import { createMessage } from '@/service/chatService';
+import { useState } from 'react';
 
 interface ModalProps {
     id: string
 }
 
+const socket = io(process.env.SERVER_ADDRESS);
 
 export const BriefForm = ({ id }: ModalProps) => {
+    
+    const artistId = useAppSelector(state => {
+        if (state.chat.activeRoom?.user2) {
+            return state.chat.activeRoom.user2.userId;
+        }
+        return null;
+    });
+
+    const [message, setMessage] = useState<string>("");
+    const [showOptions, setShowOptions] = useState(false);
+    const loggedInUserId = useAppSelector(state => state.user.user!.userId);
+    const activeRoomId = useAppSelector(state => {
+        if (state.chat.activeRoom) {
+            return state.chat.activeRoom.chatRoomId;
+        }
+        return null;
+    });
+    
+
     type formSchema = yup.InferType<typeof briefSchema>;
-    const user = {
-        customerId: '64444444'
-    }
-    const artist = {
-        artistId: '123456'
-    }
 
     const brief = {
         commissionName: 'mona-lisa',
@@ -26,6 +45,7 @@ export const BriefForm = ({ id }: ModalProps) => {
         budget: 450,
         commercialUse: true
     }
+
     const initialValues = {
         commissionName: brief.commissionName,
         briefDescription: brief.briefDescription,
@@ -33,18 +53,38 @@ export const BriefForm = ({ id }: ModalProps) => {
         budget: brief.budget,
         commercialUse: brief.commercialUse,
         // file: null
-        artistId: artist.artistId
+        artistId: artistId
     };
 
     const handleSubmit = async (
         values: formSchema,
-        artistId: string,
         { resetForm }: { resetForm: () => void } // Accept resetForm from Formik
     ) => {
         try {
             console.log(values);
-            resetForm(); // Reset form fields after successful submission
+            // resetForm(); // Reset form fields after successful submission
+
+            const response = await createCommission(values);
+            console.log(response);
+            console.log(response.commission.commissionId);
+
             document.getElementById(id).close(); // Close the modal
+
+            const CM = async () => {
+                const res = await createMessage({
+                    chatRoomId: activeRoomId!,
+                    senderId: loggedInUserId,
+                    content: response.commission.commissionId,
+                    messageType: "BRIEF"
+                })
+    
+            const newMessage = res.newMessage
+                if (newMessage) {
+                    socket.emit("send_message", { newMessage });
+                }
+            }
+            
+            CM()
 
             // router.refresh(); (Uncomment this if needed)
         } catch (err) {
@@ -61,7 +101,7 @@ export const BriefForm = ({ id }: ModalProps) => {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={briefSchema}
-                            onSubmit={(values, { resetForm }) => handleSubmit(values, artist.artistId, { resetForm })}
+                            onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
                         >
                             {({ isSubmitting, errors, touched, resetForm, setFieldValue }) => (
                                 <Form className="space-y-4" autoComplete="off">
@@ -73,7 +113,7 @@ export const BriefForm = ({ id }: ModalProps) => {
                                     <FormikInput label='deadline' type='date' name='dueDate' errors={errors.dueDate} touched={touched.dueDate}
                                         placeholder='Deadline of your artwork.'
                                     />
-                                    <FormikInput label='Price' type='text' name='budget' errors={errors.budget} touched={touched.budget}
+                                    <FormikInput label='Price' type='number' name='budget' errors={errors.budget} touched={touched.budget}
                                         placeholder='Price of your artwork (THB)' />
                                     <FormikCheckbox label='Commercial' name='commercialUse' errors={errors.commercialUse} touched={touched.commercialUse} />
                                     {/* <FormikFileInput label="Draft" name="file" setFieldValue={setFieldValue} /> */}
