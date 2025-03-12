@@ -16,6 +16,7 @@ import SuggestedBar from "@/app/ui/components/SuggestedBar";
 import PostForm from "@/app/ui/post/create-form";
 import ReviewForm from "@/app/ui/components/ReviewForm";
 import Review from "@/app/ui/components/Review";
+import { Message01Icon } from "hugeicons-react";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
@@ -134,6 +135,18 @@ export default function ProfilePage() {
 											</span>
 										</div>
 									</div>
+
+									{/* Start chat */}
+									<button className="w-1/3 flex justify-center gap-2 rounded py-3 text-white bg-gradient-to-r
+										from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+											type='button'
+											onClick={() => {
+												console.log("activated")
+											}}
+									>
+										<Message01Icon className="scale-110"/>
+										Message
+									</button>
 								</div>
 							</div>
 						</div>
