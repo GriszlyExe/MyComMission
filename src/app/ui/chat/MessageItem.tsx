@@ -4,7 +4,6 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import BriefInChat from "./BriefInChat";
 import { getCommissionById } from "@/service/commissionService";
-import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 
 const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: User}) => {

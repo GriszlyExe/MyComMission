@@ -10,13 +10,15 @@ import { string } from "yup";
 import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { hidePost } from "@/service/postService";
 import { editPagePost, editUserPost } from "@/states/features/postSlice";
+import ImageModal from "./ImageModal";
 
 interface PostProps {
 	post: Post;
 	user: User;
+	isInsideModal?: boolean; // New prop to prevent pop-up in modal
 }
 
-export default function PostWidget({ post, user }: PostProps) {
+export default function PostWidget({ post, user, isInsideModal = false }: PostProps) {
 
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
@@ -28,6 +30,8 @@ export default function PostWidget({ post, user }: PostProps) {
 		setLiked(!liked);
 		setLikes(likes + (liked ? -1 : 1));
 	};
+	
+	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
 	const images = [post.picUrl1, post.picUrl2, post.picUrl3, post.picUrl4]
 		.filter((imgUrl) => imgUrl !== null && imgUrl !== undefined)
@@ -51,7 +55,7 @@ export default function PostWidget({ post, user }: PostProps) {
 		price: post.price!,
 		postTags: post.postTags!,
 	};
-
+	
 	return (
 		<>
 			<div className="card w-full border-2 border-primary bg-white p-4 shadow-xl">
@@ -143,7 +147,13 @@ export default function PostWidget({ post, user }: PostProps) {
 										alt={`Post Image ${index + 1}`}
 										width={800}
 										height={400}
-										className="rounded-lg"
+										className="rounded-lg w-full h-full object-cover"
+										onClick={() => {
+											if(!isInsideModal){ // Prevent modal inside modal
+												setSelectedImage(src.preview);
+											}
+											console.log("click")}
+										}
 									/>
 								</div>
 							);
@@ -169,6 +179,9 @@ export default function PostWidget({ post, user }: PostProps) {
 						<span>Comment</span>
 					</button>
 				</div>
+
+				{/* Image Modal */}
+				{selectedImage && <ImageModal imageSrc={selectedImage} onClose={() => setSelectedImage(null)} />}
 			</div>
 		</>
 	);

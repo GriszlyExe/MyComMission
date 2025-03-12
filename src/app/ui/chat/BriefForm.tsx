@@ -39,11 +39,11 @@ export const BriefForm = ({ id }: ModalProps) => {
     type formSchema = yup.InferType<typeof briefSchema>;
 
     const brief = {
-        commissionName: 'mona-lisa',
-        briefDescription: 'monalisa fanart',
-        dueDate: '2025-04-16',
-        budget: 450,
-        commercialUse: true
+        commissionName: '',
+        briefDescription: '',
+        dueDate: '',
+        budget: 500,
+        commercialUse: false
     }
 
     const initialValues = {

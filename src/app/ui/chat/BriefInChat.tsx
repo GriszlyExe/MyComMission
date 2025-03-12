@@ -5,7 +5,7 @@ import { Edit01Icon, CheckmarkCircle01Icon } from 'hugeicons-react'
 import { XSquareIcon } from 'lucide-react'
 import { User } from "@/common/model";
 import { useState } from 'react';
-import { isComissionReject, states } from './commissionState';
+import { isCommissionReject as isCommissionReject, states } from './commissionState';
 
 
 interface BriefProp {
@@ -78,7 +78,7 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
                 {/* Buttons */}
                 <div className='flex gap-x-2 justify-end pr-4'>
                     {/* Edit */}
-                    {!isArtist && !isComissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                    {!isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                         from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                         type='button'
                         onClick={() => openForm('BriefForm')}
@@ -88,7 +88,7 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
                     </button>}
 
                     {/* Accept */}
-                    {isArtist && !isComissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                    {isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                         from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                         type='button'
                     >
@@ -97,7 +97,7 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
                     </button>}
 
                     {/* Reject */}
-                    {isArtist && !isComissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                    {isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                     from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                         type='button'
                         onClick={() => console.log({ state: states.canceled })}
