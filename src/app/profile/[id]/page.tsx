@@ -17,7 +17,7 @@ import PostForm from "@/app/ui/post/create-form";
 import ReviewForm from "@/app/ui/components/ReviewForm";
 import Review from "@/app/ui/components/Review";
 import { Message01Icon } from "hugeicons-react";
-import { createChatroom } from "@/service/chat";
+import { createChatroom } from "@/service/chatService";
 import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {

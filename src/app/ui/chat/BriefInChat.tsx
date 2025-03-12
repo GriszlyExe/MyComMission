@@ -1,11 +1,37 @@
 'use client'
+import { useAppSelector } from '@/states/hook';
 import 'daisyui'
 import { Edit01Icon, CheckmarkCircle01Icon } from 'hugeicons-react'
 import { XSquareIcon } from 'lucide-react'
+import { User } from "@/common/model";
+import { useState } from 'react';
+import { isComissionReject, states } from './commissionState';
 
-export default function BriefInChat() {
-    return (  
-        <div className="m-auto w-full max-w-lg rounded-md p-2 pb-6 bg-white text-black">
+
+interface BriefProp {
+    commissionName: string;
+    briefDescription: string;
+    dueDate: string;
+    budget: string;
+    commercialUse: boolean;
+    artistId: string;
+    state: string
+}
+
+export default function BriefInChat({ commissionName, briefDescription, dueDate, budget, commercialUse, artistId, state }: BriefProp) {
+    const me = useAppSelector((state) => state.user.user!);
+    const [userInfo, setUserInfo] = useState<User>(me);
+    const userId = useAppSelector((state) => state.user.user?.userId);
+    const isArtist = (artistId === userId);
+
+    function openForm(file_name: string) {
+        const form = document.getElementById(file_name)
+        if (form != null) {
+            form.showModal();
+        }
+    }
+    return (
+        <div className="m-auto w-full max-w-lg rounded-md p-2 pb-6 bg-white">
             {/* Header */}
             <h1 className="font-bold text-2xl pl-6 pt-4 mb-6">Brief</h1>
 
@@ -14,67 +40,68 @@ export default function BriefInChat() {
                 {/* Name */}
                 <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
                     <div className="font-bold pl-6">Name:</div>
-                    <div className="break-words sm:whitespace-normal">Monalisa</div>
+                    <div className="break-words sm:whitespace-normal">{commissionName}</div>
                 </div>
 
                 {/* Details */}
                 <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
                     <div className="font-bold pl-6">Details:</div>
                     <div className="break-words sm:whitespace-normal">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum velit architecto id assumenda distinctio libero accusantium sunt maiores laudantium excepturi rem dignissimos debitis, pariatur aperiam? Maxime non libero illo molestiae!
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia, illo. Consectetur expedita at, quibusdam eveniet sed deserunt aperiam aliquid voluptate, ad labore est earum blanditiis neque. Aut blanditiis aperiam consequatur.
+                        {briefDescription}
                     </div>
                 </div>
 
                 {/* Due Date */}
                 <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
                     <div className="font-bold pl-6">Deadline:</div>
-                    <div className="break-words sm:whitespace-normal">12/3/2025</div>
+                    <div className="break-words sm:whitespace-normal">{dueDate}</div>
                 </div>
 
                 {/* Price */}
                 <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
                     <div className="font-bold pl-6">Price:</div>
-                    <div className="break-words sm:whitespace-normal">350,000 BTCN</div>
+                    <div className="break-words sm:whitespace-normal">{budget}</div>
                 </div>
 
                 {/* Commercial Use */}
                 <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
                     <div className="font-bold pl-6">Commercial:</div>
-                    <div className="break-words sm:whitespace-normal">commercial use</div>
+                    <div className="break-words sm:whitespace-normal">{commercialUse ? "For Commercial Use" : "-"}</div>
                 </div>
 
                 {/* Buttons */}
                 <div className='flex gap-x-2 justify-end pr-4'>
                     {/* Edit */}
-                    <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                    {!isArtist && !isComissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                         from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
-                                type='button'
-                        >
-                        <Edit01Icon className='pr-1'/>
+                        type='button'
+                        onClick={() => openForm('BriefForm')}
+                    >
+                        <Edit01Icon className='pr-1' />
                         Edit
-                    </button>
+                    </button>}
 
                     {/* Accept */}
-                    <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                    {isArtist && !isComissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                         from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
-                                type='button'
-                        >
-                        <CheckmarkCircle01Icon className='scale-150 pr-1'/>
+                        type='button'
+                    >
+                        <CheckmarkCircle01Icon className='scale-150 pr-1' />
                         Accept
-                    </button>
+                    </button>}
 
                     {/* Reject */}
-                    <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                    {isArtist && !isComissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                     from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
-                            type='button'
+                        type='button'
+                        onClick={() => console.log({ state: states.canceled })}
                     >
-                        <XSquareIcon className='scale-x-110 pr-1'/>
+                        <XSquareIcon className='scale-x-110 pr-1' />
                         Reject
-                    </button>
+                    </button>}
                 </div>
 
             </div>
-        </div>   
+        </div >
     )
 }

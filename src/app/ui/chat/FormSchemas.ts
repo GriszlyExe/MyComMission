@@ -3,16 +3,16 @@ import * as yup from "yup";
 
 
 export const briefSchema = yup.object().shape({
-    name: yup.string().required("Brief name is required"),
+    commissionName: yup.string().required("Brief name is required"),
 
-    details: yup.string().required("Brief details are required"),
+    briefDescription: yup.string().required("Brief details are required"),
 
-    deadline: yup
+    dueDate: yup
         .date()
         .min(new Date(), "Deadline cannot be in the past")
         .required("Deadline is required"),
 
-    price: yup
+    budget: yup
         .string()
         .matches(/^\d+$/, "Price must be a valid number")
         .required("Price is required"),

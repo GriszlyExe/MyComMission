@@ -16,6 +16,7 @@ import {
     REGISTER
 } from "redux-persist"
 import storage from 'redux-persist/lib/storage';
+import { chatReducer } from "./features/chatSlice";
 
 export const resetState = createAction("resetState");
 
@@ -24,6 +25,7 @@ const appReducer = combineReducers({
     user: userReducer,
     post: postReducer,
     review: reviewReducer,
+    chat: chatReducer,
 });
 
 const rootReducer = (state: any, action: any) => {
