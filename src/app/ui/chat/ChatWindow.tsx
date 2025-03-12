@@ -43,7 +43,7 @@ const ChatWindow = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) =
 		if (containerRef.current) {
 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
 		}
-	}, []);
+	}, [messages]);
 
 	return (
 		<div>
@@ -52,7 +52,6 @@ const ChatWindow = ({chatRoomId,senderId}:{chatRoomId:string,senderId:string}) =
 					{messages.map((message) => (
 						<MessageItem messageItem={message} key={message.messageId}/>
 					))}
-					{/* <BriefInChat/> */}
 				</div>
 			</div>
 			<MessageInput chatRoomId={chatRoomId} senderId={senderId}/>

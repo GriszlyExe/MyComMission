@@ -5,7 +5,7 @@ import { XSquareIcon } from 'lucide-react'
 
 export default function BriefInChat() {
     return (  
-        <div className="m-auto w-3/4 max-w-lg rounded-md p-2 pb-6 bg-white">
+        <div className="m-auto w-full max-w-lg rounded-md p-2 pb-6 bg-white text-black">
             {/* Header */}
             <h1 className="font-bold text-2xl pl-6 pt-4 mb-6">Brief</h1>
 
