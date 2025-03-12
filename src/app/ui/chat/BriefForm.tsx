@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { io } from "socket.io-client"
 import { createMessage } from '@/service/chatService';
 import { useState } from 'react';
+import { isCommissionEnded } from './commissionState';
 
 interface ModalProps {
     id: string
@@ -17,7 +18,7 @@ interface ModalProps {
 const socket = io(process.env.SERVER_ADDRESS);
 
 export const BriefForm = ({ id }: ModalProps) => {
-    
+
     const artistId = useAppSelector(state => {
         if (state.chat.activeRoom?.user2) {
             return state.chat.activeRoom.user2.userId;
@@ -34,16 +35,24 @@ export const BriefForm = ({ id }: ModalProps) => {
         }
         return null;
     });
-    
+
 
     type formSchema = yup.InferType<typeof briefSchema>;
+
 
     const brief = {
         commissionName: '',
         briefDescription: '',
         dueDate: '',
         budget: 500,
-        commercialUse: false
+        commercialUse: false,
+        state: ''
+    }
+
+    const [commissionId, setCommissionId] = useState("");
+    const [createNewBrief, setCreateNewBrief] = useState(false);
+    if (commissionId == null || isCommissionEnded(brief.state)) {
+        setCreateNewBrief(true);
     }
 
     const initialValues = {
@@ -53,7 +62,8 @@ export const BriefForm = ({ id }: ModalProps) => {
         budget: brief.budget,
         commercialUse: brief.commercialUse,
         // file: null
-        artistId: artistId
+        artistId: artistId,
+        createNewBrief: createNewBrief
     };
 
     const handleSubmit = async (
@@ -77,13 +87,13 @@ export const BriefForm = ({ id }: ModalProps) => {
                     content: response.commission.commissionId,
                     messageType: "BRIEF"
                 })
-    
-            const newMessage = res.newMessage
+
+                const newMessage = res.newMessage
                 if (newMessage) {
                     socket.emit("send_message", { newMessage });
                 }
             }
-            
+
             CM()
 
             // router.refresh(); (Uncomment this if needed)

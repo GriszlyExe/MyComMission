@@ -15,6 +15,11 @@ export function isBriefExist(state: string) {
 	return state == states.idle;
 }
 
+export function isCommissionEnded(state: string) {
+	return (state === states.brief_reject) || (state === states.finished) || (state === states.canceled)
+}
+
+
 export function isCommissionReject(state: string) {
 	return state == states.canceled || state == states.brief_reject;
 }
