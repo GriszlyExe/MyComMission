@@ -17,7 +17,7 @@ export const getChatrooms = async (userId:string) => {
         return res.data.chatrooms
     } catch (error) {
         throw error
-    }
+    }   
 }
 
 export const getMessageChatroom = async (chatroomId:string) =>{

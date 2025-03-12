@@ -157,16 +157,18 @@ export default function ProfilePage() {
 									</div>
 
 									{/* Start chat */}
-									<button className="w-1/3 flex justify-center gap-2 rounded py-3 text-white bg-gradient-to-r
+									{	userId !== id &&
+										<button className="w-1/3 flex justify-center gap-2 rounded py-3 text-white bg-gradient-to-r
 										from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
 											type='button'
 											onClick={() => {
 												handleTabCreateChat()
 											}}
-									>
-										<Message01Icon className="scale-110"/>
-										Message
-									</button>
+										>
+											<Message01Icon className="scale-110"/>
+											Message
+										</button>
+									}
 								</div>
 							</div>
 						</div>
