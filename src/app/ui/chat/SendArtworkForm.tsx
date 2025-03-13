@@ -9,12 +9,15 @@ import { useAppSelector } from '@/states/hook';
 import { useState, useEffect } from 'react';
 import { isCommissionEnded } from './commissionState';
 import { sendArtwork, uploadArtwork } from '@/service/commissionService';
+import { createMessage } from '@/service/chatService';
+import { io } from "socket.io-client"
 
 interface ModalProps {
     id: string,
     refresh: boolean
 }
 
+const socket = io(process.env.SERVER_ADDRESS);
 
 export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
 
@@ -81,18 +84,32 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
 
             console.log(file);
 
-            const { artworkId } = await uploadArtwork(formData);
+            const { imageUrl } = await uploadArtwork(formData);
             
             const data = {
-                artworkId: artworkId,
+                imageUrl: imageUrl,
                 artistHide: false
             };
 
             const response = sendArtwork(latestCommission.commissionId, data);
 
             console.log(response.data)
-            
-            // router.refresh();
+
+            const CM = async () => {
+                const res = await createMessage({
+                    chatRoomId: activeRoomId!,
+                    senderId: loggedInUserId,
+                    content: imageUrl,
+                    messageType: "IMAGE"
+                })
+
+                const newMessage = res.newMessage
+                if (newMessage) {
+                    socket.emit("send_message", { newMessage });
+                }
+            }
+
+            CM()
         } catch (err) {
             console.error(err);
         }

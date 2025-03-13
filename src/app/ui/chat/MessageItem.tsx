@@ -6,6 +6,8 @@ import BriefInChat from "./BriefInChat";
 import { getCommissionById } from "@/service/commissionService";
 import ProposalInChat from "./ProposalInChat";
 import SendArtworkInChat from "./SendArtworkInChat";
+import ImageModal from "../components/ImageModal";
+import ChatImage from "./ChatImage";
 
 
 const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: User}) => {
@@ -20,6 +22,7 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
 	const is_brief = messageItem.messageType == "BRIEF";
 	const is_proposal = messageItem.messageType == "PROPOSAL";
 	const is_working = messageItem.messageType == "WORKING";
+	const is_image = messageItem.messageType == "IMAGE";
 
 	// console.log("message" + is_message);
 	// console.log("brief" + is_brief);
@@ -34,10 +37,12 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
 		artistId: "",
 		state: "",
 	});
+    
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchCommission = async () => {
-			if (messageItem.messageType !== "MESSAGE") {
+			if (!is_message && !is_image) {
 				try {
 					const commissionData = await getCommissionById(messageItem.content);
 
@@ -93,6 +98,8 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
                         />  </div>  }
 			{is_working&& <div className="chat-bubble bg-accent text-black"><SendArtworkInChat /></div>}
 			<div className="chat-footer opacity-50">Delivered</div>
+            {is_image && <ChatImage imageUrl={messageItem.content} />}
+            <div className="chat-footer opacity-50">Delivered</div>
 		</div>
 	);
 };
