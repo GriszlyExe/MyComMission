@@ -98,7 +98,9 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
                         />  </div>  }
 			{is_working&& <div className="chat-bubble bg-accent text-black"><SendArtworkInChat /></div>}
 			<div className="chat-footer opacity-50">Delivered</div>
-            {is_image && <ChatImage imageUrl={messageItem.content} />}
+            {/* {is_image && <ChatImage imageUrl={messageItem.content} />}
+            <div className="chat-footer opacity-50">Delivered</div> */}
+            {is_image && <SendArtworkInChat />}
             <div className="chat-footer opacity-50">Delivered</div>
 		</div>
 	);

@@ -21,7 +21,8 @@ export default function PaymentPage() {
 
     const handleCreatePaymentIntent = async () =>{
         const res = await createPaymentIntentService(10000)
-        console.log(res)
+		console.log("key = ",process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+        console.log("res =",res)
         setClientSecret(res.client_secret)
     }
 

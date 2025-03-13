@@ -2,12 +2,41 @@ import { Download } from 'lucide-react';
 import React, { useState } from 'react'
 import { states } from './commissionState';
 import 'daisyui'
+import { acceptArtwork, rejectArtwork } from '@/service/commissionService';
+import { useAppSelector } from '@/states/hook';
 export default function SendArtworkInChat() {
+
+    const artistId = useAppSelector(state => {
+        if (state.chat.activeRoom?.user2) {
+            return state.chat.activeRoom.user2.userId;
+        }
+        return null;
+    });
+    
+    const userId = useAppSelector((state) => state.user.user?.userId);
+    const isArtist = (artistId === userId);
+
+    const latestCommission = useAppSelector(state => {
+        // console.log(state)
+        if (state.chat.activeRoom?.latestCommission) {
+            return state.chat.activeRoom.latestCommission;
+        }
+        return null;
+    });
+
+    const [isOpen, setIsOpen] = useState(false);
+
     const [previewPic, setPreviewPic] = useState("/post.jpeg");
     const acceptArtworkId = "accept_artwork"
     function handleAcceptArtwork() {
         document.getElementById(acceptArtworkId)?.close()
         console.log({ state: states.finished });
+        acceptArtwork(latestCommission.commissionId);
+    }
+    function handleRejectArtwork() {
+        document.getElementById(acceptArtworkId)?.close()
+        console.log({ state: states.finished });
+        // rejectArtwork(latestCommission.commissionId);
     }
     return (
 
@@ -23,11 +52,11 @@ export default function SendArtworkInChat() {
 
 
             <div className='flex flex-row gap-3'>
-                <button className="flex rounded px-4 py-3 text-white bg-gradient-to-r
+                {!isArtist && (latestCommission && latestCommission.state) === "ARTWORK_SHIPPED" && <button className="flex rounded px-4 py-3 text-white bg-gradient-to-r
                                                 from-green-500 to-green-600 hover:from-green-700 hover:to-green-700"
                     type='button'
                     onClick={() => document.getElementById(acceptArtworkId)?.showModal()}
-                >Accept Artwork</button>
+                >Accept Artwork</button>}
                 <a className="flex flex-row gap-x-3 rounded px-4 py-3 text-white bg-gradient-to-r
                                                 from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                     href={previewPic} download="artwork.jpg">

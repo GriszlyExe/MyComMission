@@ -93,7 +93,7 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
                         </button>} */}
 
                         {/* Accept */}
-                        {isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                        {isArtist && state === "BRIEF" && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                             from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                             type='button'
                             onClick={() => openForm('ProposalForm')}
@@ -103,7 +103,7 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
                         </button>}
 
                         {/* Reject */}
-                        {isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                        {isArtist && state === "BRIEF" && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
                                         from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                             type='button'
                             onClick={() => console.log({ state: states.canceled })}

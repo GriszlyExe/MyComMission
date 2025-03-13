@@ -24,12 +24,12 @@ export default function ChatOptions() {
             <div className="flex justify-around w-4/5 min-h-12 mb-5">
 
                 <OptionButton onClick={() => openForm('BriefForm')} >
-                    <TextSelect size={24} /> <span>{isBriefExist(state) ? "Brief" : "Edit Brief"}</span>
+                    {/* <TextSelect size={24} /> <span>{isBriefExist(state) ? "Create Brief" : "Edit Brief"}</span> */}
+                    <TextSelect size={24} /> <span>Create Brief</span>
                 </OptionButton>
                 {/* <OptionButton onClick={() => openForm('PostponeForm')}>
                     <AlarmClockIcon size={24} /> <span>Postpone</span>
                 </OptionButton> */}
-
 
                 <OptionButton>
                     <XSquareIcon size={24} /> <span>Reject</span>

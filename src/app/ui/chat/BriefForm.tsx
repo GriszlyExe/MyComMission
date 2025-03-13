@@ -57,8 +57,8 @@ export const BriefForm = ({ id, refresh }: ModalProps) => {
     });
 
     useEffect(() => {
-        console.log("sss");
-        console.log(latestCommission);
+        // console.log("sss");
+        // console.log(latestCommission);
         if (latestCommission && !isCommissionEnded(latestCommission.state)) {
             console.log(latestCommission);
             setCommission({...latestCommission, dueDate: new Date(latestCommission.deadline).toISOString().split("T")[0]});
@@ -77,8 +77,8 @@ export const BriefForm = ({ id, refresh }: ModalProps) => {
             // resetForm(); // Reset form fields after successful submission
 
             const response = await createCommission(values);
-            console.log(response);
-            console.log(response.commission.commissionId);
+            // console.log(response);
+            // console.log(response.commission.commissionId);
 
             document.getElementById(id).close(); // Close the modal
 

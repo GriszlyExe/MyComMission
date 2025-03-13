@@ -55,7 +55,7 @@ export const ProposalForm = ({ id, refresh }: ModalProps) => {
     });
 
     useEffect(() => {
-        console.log("ppp");
+        // console.log("ppp");
         if (latestCommission && !isCommissionEnded(latestCommission.state)) {
             console.log(latestCommission);
             console.log(new Date(latestCommission.deadline).toISOString().split("T")[0]);
