@@ -20,6 +20,7 @@ const postSlice = createSlice({
         },
         addPost: (state, action: PayloadAction<Post>) => {
             state.posts.push(action.payload);
+            state.pagePosts.push(action.payload);
         },
         editUserPost: (state, action: PayloadAction<Post>) => {
             state.posts = state.posts.map((post, idx) => {

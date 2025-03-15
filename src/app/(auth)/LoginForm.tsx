@@ -48,7 +48,7 @@ export default function LoginForm({
 
 			if (token) {
 				dispatch(login(token));
-				dispatch(setUser({ user }));
+				dispatch(setUser(user));
 				actions.resetForm();
 				router.push("/home");
 			} else {

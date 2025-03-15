@@ -12,7 +12,7 @@ export default function FeedProfile() {
 	const dispatch = useAppDispatch();
 	const posts = useAppSelector((state) => state.post.pagePosts);
 	const user = useAppSelector((state) => state.user.user)!;
-	const { id } = useParams();
+	const { id } = useParams() as { id: string };
 
 	useEffect(() => {
 		getPostByUserId(id).then(({ posts, user }) => {
@@ -25,9 +25,19 @@ export default function FeedProfile() {
 
 	return (
 		<div className="grid grid-cols-3 gap-2 p-4">
-			{posts.map((post) => (
-				<FeedProfileWidget key={post.postId} post={post} user={user} />
-			))}
+			{posts
+				.sort(
+					(post1, post2) =>
+						new Date(post2.createdAt).getTime() -
+						new Date(post1.createdAt).getTime(),
+				)
+				.map((post) => (
+					<FeedProfileWidget
+						key={post.postId}
+						post={post}
+						user={user}
+					/>
+				))}
 		</div>
 	);
 }

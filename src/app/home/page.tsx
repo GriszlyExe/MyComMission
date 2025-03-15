@@ -23,7 +23,7 @@ export default function Page() {
 	const fetchPostInfo = async () => {
 		const { posts, user } = await getPostByUserId(userId);
 		// console.log(posts);
-		dispatch(setUser({ user }));
+		// dispatch(setUser(user));
 		dispatch(setLoggedInUserPosts(posts));
 	};
 
@@ -36,7 +36,7 @@ export default function Page() {
 		<>
 			{/* <div>Hello World!</div> */}
 			<div className="flex justify-center">
-				<div className="flex w-1/3 flex-col gap-3">
+				<div className="flex w-full md:w-5/12 flex-col gap-3">
 					<PostForm />
 					<Feed />
 				</div>

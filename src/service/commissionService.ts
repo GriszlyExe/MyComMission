@@ -148,9 +148,6 @@ export const uploadArtwork = async (picture: FormData) => {
 		const options = {
 			method: "POST",
 			url: `${serverAddr}/commission/upload-artwork`,
-			// headers: {
-			// 	"Content-Type": "multipart/form-data",
-			// },
 			withCredentials: true,
 			data: picture,
 		};
