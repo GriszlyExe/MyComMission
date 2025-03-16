@@ -25,7 +25,7 @@ export default function FeedProfile() {
 
 	return (
 		<div className="grid grid-cols-3 gap-2 p-4">
-			{posts
+			{[...posts]
 				.sort(
 					(post1, post2) =>
 						new Date(post2.createdAt).getTime() -
