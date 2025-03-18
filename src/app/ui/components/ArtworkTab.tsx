@@ -11,22 +11,25 @@ import { useParams } from "next/navigation";
 export default function ArtworkTab() {
     const dispatch = useAppDispatch();
     const posts = useAppSelector((state) => state.post.pagePosts);
-    const user = useAppSelector((state) => state.user.user)!;
+    const loggedInUser = useAppSelector((state) => state.user.user!);
     const { id } = useParams();
 
     useEffect(() => {
-        getPostByUserId(user!.userId).then(({ posts, user }) => {
-            if (id && id === user!.userId) {
+
+        getPostByUserId(loggedInUser.userId).then(({ posts, artist }) => {
+            
+            if (id && id === loggedInUser.userId) {
                 dispatch(setLoggedInUserPosts(posts));
             }
             dispatch(setPagePosts(posts));
         });
+        
     }, []);
 
     return (
         <div className="grid grid-cols-3 gap-2 p-4">
             {posts.map((post) => (
-                <ArtworkWidget key={post.postId} post={post} user={user} />
+                <ArtworkWidget key={post.postId} post={post} user={loggedInUser} />
             ))}
         </div>
     );

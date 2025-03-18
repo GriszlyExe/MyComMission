@@ -14,7 +14,7 @@ export default function FeedProfileWidget({ post, user }: PostProps) {
 			return { file: undefined, preview: url };
 		});
 
-	console.log(images);
+	// console.log(images);
 
 	return (
 		<div

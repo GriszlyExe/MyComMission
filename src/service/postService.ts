@@ -86,11 +86,11 @@ export const getPostByUserId = async (userId: string) => {
             withCredentials: true,
         }
 
-        const { data: { posts, user } } = await axios.request(options);
+        const { data: { posts, artist } } = await axios.request(options);
 
         return {
             posts: posts ? posts : [],
-            user: user,
+            artist,
         };
 
     } catch (err) {

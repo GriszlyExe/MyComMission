@@ -51,7 +51,7 @@ export default function SignupForm() {
       const { user, token } = await register(registerBody) as { user: User, token: string };
 
       dispatch(login(token));
-      dispatch(setUser({ user }));
+      dispatch(setUser(user));
 
       actions.resetForm();
       router.push("../home");

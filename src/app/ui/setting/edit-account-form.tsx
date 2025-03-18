@@ -57,7 +57,7 @@ export default function EditAccountForm() {
 				picture: formData,
 			});
 
-			dispatch(setUser({ user }));
+			dispatch(setUser(user));
 			setShowSubmitPopup(true);
 			setTimeout(() => {
 				setShowSubmitPopup(false);

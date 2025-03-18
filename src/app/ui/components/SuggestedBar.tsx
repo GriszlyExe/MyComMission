@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function SuggestedBar() {
 	return (
-		<div className="sticky top-20 hidden w-1/3 rounded-md bg-base-300 p-4 md:mx-4 md:block">
+		<div className="sticky hidden rounded-md bg-base-300 p-4 md:mx-4 md:block">
 			<h2 className="text-xl font-bold">Suggested Artist</h2>
 			<ul className="mt-4 space-y-2">
 				<li>

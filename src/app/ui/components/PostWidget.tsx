@@ -58,7 +58,7 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 	
 	return (
 		<>
-			<div className="card rounded-md w-full border-2 border-primary bg-white p-4">
+			<div className="card rounded-md w-full border border-gray-200 shadow-md bg-white p-4">
 				{/* Post Header */}
 				<div className="flex items-center justify-between">
 					<div className="flex items-center space-x-3">

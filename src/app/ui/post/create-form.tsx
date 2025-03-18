@@ -3,14 +3,10 @@
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import TagSelector from "./tags";
-import FileUpload from "./file-upload";
-import { FilePreview } from "@/common/interface";
 import { postSchema } from "@/common/Schemas";
 import { createPost } from "@/service/postService";
 import { useAppDispatch } from "@/states/hook";
 import { addPost } from "@/states/features/postSlice";
-import { PostData } from "@/common/interface";
 import { useRef, useState } from "react";
 import PostModal from "./post-modal";
 import { Link02Icon } from "hugeicons-react";
@@ -19,7 +15,7 @@ type FormSchema = yup.InferType<typeof postSchema>;
 
 export default function PostForm() {
 
-    const textareaRef = useRef(null);
+    // const textareaRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const dispatch = useAppDispatch();
 
@@ -54,7 +50,7 @@ export default function PostForm() {
 
 	return (
 		<div>
-			<div className="card mx-4 rounded-md border-2 border-primary bg-white p-4">
+			<div className="card mx-4 rounded-md border shadow-sm bg-white p-4">
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<h1 className="mb-2 text-center text-lg font-bold">
 						Create Post
@@ -62,10 +58,10 @@ export default function PostForm() {
 
 					{/* Description section */}
 					<div className="mb-4">
-						<h2 className="mb-2 mr-2">Commission description:</h2>
+						<h2 className="mb-2 mr-2 ml-1">Commission description:</h2>
 						<textarea
-							className="w-full h-auto resize-none rounded-md border px-3 pt-2"
-							placeholder="Description..."
+							className="w-full h-24 resize-none rounded-md border px-3 pt-2"
+							placeholder="What's on your mind..."
 							{...register("postDescription")}
 						/>
 						{errors.postDescription && (

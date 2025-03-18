@@ -7,19 +7,26 @@ import {
 	setPagePosts,
 } from "@/states/features/postSlice";
 import { useParams } from "next/navigation";
+import { Post } from "@/common/model";
 
 export default function FeedProfile() {
 	const dispatch = useAppDispatch();
 	const posts = useAppSelector((state) => state.post.pagePosts);
+	const loggedInUserId = useAppSelector((state) => state.user.user!.userId);
 	const user = useAppSelector((state) => state.user.user)!;
 	const { id } = useParams() as { id: string };
 
 	useEffect(() => {
-		getPostByUserId(id).then(({ posts, user }) => {
-			if (id && id === user!.userId) {
+		getPostByUserId(id).then(({ posts, artist }) => {
+			if (id && id === loggedInUserId) {
 				dispatch(setLoggedInUserPosts(posts));
 			}
-			dispatch(setPagePosts(posts));
+			dispatch(setPagePosts(posts.map((post: Post) => {
+				return {
+					...post,
+					artist,
+				}
+			})));
 		});
 	}, []);
 
@@ -35,7 +42,7 @@ export default function FeedProfile() {
 					<FeedProfileWidget
 						key={post.postId}
 						post={post}
-						user={user}
+						user={post.artist}
 					/>
 				))}
 		</div>

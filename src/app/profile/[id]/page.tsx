@@ -1,11 +1,9 @@
 "use client";
 
-import Feed from "@/app/ui/components/Feed";
 import TopNav from "@/app/ui/global/nav-bar";
 import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { setUser } from "@/states/features/userSlice";
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendarDay } from "react-icons/fa6";
@@ -14,8 +12,6 @@ import { User } from "@/common/model";
 import FeedProfile from "@/app/ui/components/FeedProfile";
 import ArtworkTab from "@/app/ui/components/ArtworkTab";
 import SuggestedBar from "@/app/ui/components/SuggestedBar";
-import PostForm from "@/app/ui/post/create-form";
-import ReviewForm from "@/app/ui/components/ReviewForm";
 import Review from "@/app/ui/components/Review";
 import { Message01Icon } from "hugeicons-react";
 import { createChatroom } from "@/service/chatService";
@@ -28,7 +24,7 @@ export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState("posts");
 	const dispatch = useAppDispatch();
 	const { id } = useParams();
-	const router = useRouter()
+	const router = useRouter();
 	const month = [
 		"January",
 		"February",
@@ -53,31 +49,37 @@ export default function ProfilePage() {
 		return user;
 	};
 
-	const handleTabCreateChat = async () =>{
-		if (!userId || !id){
-			console.log("userId or memberId invalid")
-			return
+	const handleTabCreateChat = async () => {
+		if (!userId || !id) {
+			console.log("userId or memberId invalid");
+			return;
 		}
 
-		console.log({userId,id})
+		try {
+			const { chatroom } = await createChatroom({
+				creatorId: userId,
+				memberId: id as string,
+			});
 
-		const res = await createChatroom({creatorId:userId,memberId:id as string})
-		if(res.chatroom){
-			console.log("Create complete")
-			router.push('../chat')
-		}else{
-			console.log("Something went wrong!")
+			if (!chatroom) {
+				throw new Error("Something went wrong!");
+			}
+
+			router.push("/chat")			
+		} catch (error) {
+			console.error(error);
 		}
-	}
+
+	};
 
 	useEffect(() => {
 		fetchUserProfile().then((user) => {
 			if (user.userId === userId) {
-				dispatch(setUser({ user }));
+				dispatch(setUser(user));
 			}
-			// console.log(user);
+			
 			setUserInfo(user);
-			// console.log(userInfo);
+			
 		});
 	}, []);
 
@@ -90,7 +92,9 @@ export default function ProfilePage() {
 
 			<div className="mx-auto flex w-full flex-row items-start justify-center">
 				{/* Left Sidebar */}
-				<SuggestedBar />
+				<div className="mt-20 w-1/4 hidden md:mx-4 md:block">
+					<SuggestedBar />
+				</div>
 
 				{/* Center Feed */}
 				<div className="mt-20 flex w-full max-w-3xl md:mx-4">
@@ -158,18 +162,18 @@ export default function ProfilePage() {
 									</div>
 
 									{/* Start chat */}
-									{	userId !== id &&
-										<button className="w-1/3 flex justify-center gap-2 rounded py-3 text-white bg-gradient-to-r
-										from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
-											type='button'
+									{userId !== id && (
+										<button
+											className="flex w-1/3 justify-center gap-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 py-3 text-white hover:from-blue-700 hover:to-purple-700"
+											type="button"
 											onClick={() => {
-												handleTabCreateChat()
+												handleTabCreateChat();
 											}}
 										>
-											<Message01Icon className="scale-110"/>
+											<Message01Icon className="scale-110" />
 											Message
 										</button>
-									}
+									)}
 								</div>
 							</div>
 						</div>

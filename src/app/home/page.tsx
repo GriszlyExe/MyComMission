@@ -2,41 +2,33 @@
 
 import { useAppDispatch, useAppSelector } from "@/states/hook";
 import PostForm from "../ui/post/create-form";
-import EditPostForm from "../ui/post/edit-form";
-import { PostData } from "@/common/interface";
-import { getUserInfo } from "@/service/userService";
-import { setUser } from "@/states/features/userSlice";
 import { setLoggedInUserPosts } from "@/states/features/postSlice";
 import { useEffect } from "react";
 import { getPostByUserId } from "@/service/postService";
 import Feed from "../ui/components/Feed";
+import SuggestedBar from "@/app/ui/components/SuggestedBar";
 
 export default function Page() {
 	const userId = useAppSelector((state) => state.user.user!.userId);
 	const dispatch = useAppDispatch();
 
-	// const fetchUserInfo = async () => {
-	// 	const user = await getUserInfo(userId);
-	// 	console.log(user);
-	// };
-
 	const fetchPostInfo = async () => {
-		const { posts, user } = await getPostByUserId(userId);
-		// console.log(posts);
-		// dispatch(setUser(user));
+		const { posts, artist } = await getPostByUserId(userId);
 		dispatch(setLoggedInUserPosts(posts));
 	};
 
 	useEffect(() => {
-		// fetchUserInfo();
 		fetchPostInfo();
 	}, []);
 
 	return (
 		<>
 			{/* <div>Hello World!</div> */}
-			<div className="flex justify-center">
-				<div className="flex w-full md:w-5/12 flex-col gap-3">
+			<div className="flex flex-row justify-start">
+				<div className="w-4/12 border">
+					<SuggestedBar />
+				</div>
+				<div className="flex w-full md:w-5/12 flex-col gap-3 bg-white rounded-md py-4">
 					<PostForm />
 					<Feed />
 				</div>

@@ -110,7 +110,7 @@ export default function TwoFactorAuthPage({ email }: { email: string }) {
 
 			try {
 				const { user } = await check2FA({ email, token });
-				dispatch(setUser({ user }));
+				dispatch(setUser(user));
 				router.push("/home");
 			} catch (error) {
 				console.error("Error verifying code:", error);
