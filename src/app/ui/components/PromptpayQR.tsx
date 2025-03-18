@@ -1,4 +1,4 @@
-export default function PromptPayQR() {
+export default function PromptPayQR({qrImageSrc}:{qrImageSrc:string}) {
     return (
         <div className="flex justify-center items-center h-[400px]">
             <div className="flex flex-col items-center h-full border-2 border-gray-500">
@@ -8,9 +8,9 @@ export default function PromptPayQR() {
                     width={300}
                 />
                 <img
-                    src="/QR_test.png"
+                    src={qrImageSrc}
                     alt="PromptPay QR Code"
-                    width={175}
+                    width={350}
                 />
             </div>
         </div>
