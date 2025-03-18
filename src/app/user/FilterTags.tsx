@@ -33,7 +33,7 @@ export default function FilterTags() {
 		if (selectedTags.length === 0) {
 			params.delete("tags");
 		} else {
-			params.set("tags", selectedTags.map(tag => tag.replace(/\s+/g, "-")).join("+"));
+			params.set("tags", selectedTags.map(tag => tag.replace(/\s+/g, "_")).join("+"));
 		}
 		replace(`${pathname}?${params.toString()}`);
 	}, 300);
