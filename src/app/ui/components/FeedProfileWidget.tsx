@@ -1,7 +1,7 @@
 import { Post, User } from "@/common/model";
 import PostWidget from "./PostWidget";
 import { RiCheckboxMultipleBlankLine } from "react-icons/ri";
-
+import { HiCheckBadge } from "react-icons/hi2";
 interface PostProps {
 	post: Post;
 	user: User;
@@ -15,7 +15,10 @@ export default function FeedProfileWidget({ post, user }: PostProps) {
 		});
 
 	// console.log(images);
-
+	function getRandomInt(max: number) {
+		return Math.floor(Math.random() * max);
+	  }
+	const isPostBoosted = getRandomInt(2);
 	return (
 		<div
 			className="group cursor-pointer"
@@ -37,6 +40,7 @@ export default function FeedProfileWidget({ post, user }: PostProps) {
 				{images.length > 1 && (
 					<RiCheckboxMultipleBlankLine className="absolute right-2 top-2 text-3xl text-white" />
 				)}
+				{isPostBoosted && <HiCheckBadge className="absolute left-2 top-2 text-3xl text-white" />}
 			</div>}
 
 			{/* Modal */}
