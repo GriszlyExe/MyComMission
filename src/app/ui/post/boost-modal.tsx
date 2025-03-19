@@ -80,7 +80,7 @@ export default function BoostModal({ modalId }: ModalProps) {
                     </div>
 
                     {/* Scrollable Post Container */}
-                    <div className="flex-grow overflow-y-auto">
+                    <div className="max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden mt-1">
                         <div className="grid grid-cols-3 gap-2">
                             {posts
                                 .filter((post) => true)
