@@ -16,12 +16,16 @@ import Review from "@/app/ui/components/Review";
 import { Message01Icon } from "hugeicons-react";
 import { createChatroom } from "@/service/chatService";
 import { useRouter } from "next/navigation";
+import ReportPopup from "@/app/ui/components/ReportPopup";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { submitReport } from "@/service/reportService";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
 	const [userInfo, setUserInfo] = useState<User>(me);
 	const userId = useAppSelector((state) => state.user.user?.userId);
 	const [activeTab, setActiveTab] = useState("posts");
+	const [isReportOpen, setIsReportOpen] = useState(false);
 	const dispatch = useAppDispatch();
 	const { id } = useParams();
 	const router = useRouter();
@@ -72,6 +76,11 @@ export default function ProfilePage() {
 
 	};
 
+	const handleReportSubmit = async (reportData: { reportType: string; description: string }) => {
+		console.log('clicked')
+		await submitReport({ data: reportData });
+	  };
+	
 	useEffect(() => {
 		fetchUserProfile().then((user) => {
 			if (user.userId === userId) {
@@ -173,6 +182,23 @@ export default function ProfilePage() {
 											<Message01Icon className="scale-110" />
 											Message
 										</button>
+									)}
+
+									{/* Report */}
+									{userId !== id && (
+										<>
+										<div className="mt-4">
+											<button onClick={() => setIsReportOpen(true)} className="text-red-600 hover:text-red-800">
+											<ExclamationTriangleIcon className="w-6 h-6" />
+											</button>
+										</div>
+
+										{/* Report Popup */}
+										<ReportPopup
+											isOpen={isReportOpen}
+											onClose={() => setIsReportOpen(false)}
+											onSubmit={handleReportSubmit}
+										/></>
 									)}
 								</div>
 							</div>
