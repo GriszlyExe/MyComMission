@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { getPostByUserId } from "@/service/postService";
 import { setLoggedInUserPosts, setPagePosts } from "@/states/features/postSlice";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import UnboostedPostWidget from "../components/unboostedPostWidget";
 
 interface ModalProps {
@@ -10,6 +10,7 @@ interface ModalProps {
 }
 
 export default function BoostModal({ modalId }: ModalProps) {
+    const router = useRouter();
     const dispatch = useAppDispatch();
     const posts = useAppSelector((state) => state.post.pagePosts);
     const loggedInUser = useAppSelector((state) => state.user.user!);
@@ -56,6 +57,7 @@ export default function BoostModal({ modalId }: ModalProps) {
 
         // Auto-close modal
         (document.getElementById(modalId) as HTMLDialogElement)?.close();
+        router.push(`/home/payment/boosting-payment?count=${selectedPosts.length}`);
     };
 
     return (
@@ -65,6 +67,7 @@ export default function BoostModal({ modalId }: ModalProps) {
                     {/* Select All Checkbox */}
 
                     <div className="sticky top-0 z-10 bg-white p-1 border-b flex justify-between items-center">
+                        <h1>{selectedPosts.length} Posts Selected</h1>
                         <button className="flex justify-end items-center p-4 cursor-pointer hover:bg-gray-300 rounded-2xl"
                             type="button"
                             onClick={handleSelectAll}

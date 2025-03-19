@@ -2,16 +2,20 @@
 
 import PromptPayQR from "@/app/ui/components/PromptpayQR";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import CreditCardForm from "@/app/ui/components/CreditCardForm";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements, useStripe, useElements, PaymentElement} from "@stripe/react-stripe-js";
+import { Elements, useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
 import { createPaymentIntentService, createQRPayment } from "@/service/payment";
+import { useAppSelector } from "@/states/hook";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-
 export default function PaymentPage() {
+    const userId = useAppSelector((state) => state.user.user!.userId);
+    const searchParams = useSearchParams();
+    const count = parseInt(searchParams.get("count") || "0", 10);
+
     const [activeMethod, setActiveMethod] = useState("credit-card");
     const [clientSecret, setClientSecret] = useState("");
     const [qrImageSrc, setQrImageSrc] = useState("")
@@ -20,41 +24,40 @@ export default function PaymentPage() {
         setActiveMethod(method);
     };
 
-    const handleCreatePaymentIntent = async () =>{
+    const handleCreatePaymentIntent = async () => {
         const res = await createPaymentIntentService(10000)
-        console.log("key = ",process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-        console.log("res =",res)
+        console.log("key = ", process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+        console.log("res =", res)
         setClientSecret(res.client_secret)
     }
 
     const getButtonClass = (method: string) =>
-        `h-12 w-full rounded-md p-3 text-left ${
-            activeMethod === method ? "bg-blue-400 text-white" : "bg-white"
+        `h-12 w-full rounded-md p-3 text-left ${activeMethod === method ? "bg-blue-400 text-white" : "bg-white"
         }`;
 
     const router = useRouter();
 
-    useEffect(() =>{
+    useEffect(() => {
         if (activeMethod === 'promptpay') {
             console.log("START FETCHING");
-            
+
             // Direct async call within useEffect
             const fetchQR = async () => {
-              try {
-                const res = await createQRPayment("0817972894", 100);
-                console.log(res);
-                if (res?.signedUrl) {
-                  setQrImageSrc(res.signedUrl); // Set the QR code image URL
+                try {
+                    const res = await createQRPayment("0817972894", 100);
+                    console.log(res);
+                    if (res?.signedUrl) {
+                        setQrImageSrc(res.signedUrl); // Set the QR code image URL
+                    }
+                } catch (error) {
+                    console.error("Error fetching QR:", error);
                 }
-              } catch (error) {
-                console.error("Error fetching QR:", error);
-              }
             };
-      
+
             fetchQR(); // Call the function inside useEffect
-          }
-            
-    },[activeMethod])
+        }
+
+    }, [activeMethod])
 
     return (
         <div className="m-auto w-3/4">
@@ -66,7 +69,7 @@ export default function PaymentPage() {
                     <div>
                         <button
                             className="btn btn-error text-white"
-                            onClick={() => router.push("/home")}
+                            onClick={() => router.push(`/profile/${userId}`)}
                         >
                             Cancel Payment
                         </button>
@@ -92,17 +95,24 @@ export default function PaymentPage() {
                     <div className="w-full">
                         <div className="flex">
                             <div className="m-auto w-full rounded-md bg-white p-6 md:max-w-full">
-                                <p className="mb-4 text-lg text-gray-600">
-                                    Amount being paid now: 100 THB
-                                </p>
-                                <button onClick={handleCreatePaymentIntent}>ClickME!</button>
+                                <div className="flex justify-between items-center border-b pb-2 mb-4">
+                                    <h2 className="text-xl font-semibold text-gray-700">Summary</h2>
+                                    <p className="text-lg font-semibold text-gray-700">Total: <span className="text-blue-600">{count * 100}฿</span></p>
+                                </div>
+
+                                {/* Boosted Posts Breakdown */}
+                                <div className="mb-4 p-4 border rounded-md shadow-sm bg-gray-100">
+                                    <p className="text-lg text-gray-600">Boosted Posts <span className="font-bold">x{count}</span> <span className="float-right">{count * 100}฿</span></p>
+                                </div>
+                                <button className="bg-blue-600 hover:bg-blue-700 p-2 rounded-lg text-white"
+                                    onClick={handleCreatePaymentIntent}>PROCEED TO PLAY</button>
                                 {activeMethod === "credit-card" && clientSecret && (
                                     <Elements stripe={stripePromise} options={{ clientSecret }}>
                                         <CreditCardForm />
                                     </Elements>
                                 )}
                                 {activeMethod === "promptpay" && (
-                                    <PromptPayQR qrImageSrc={qrImageSrc}/>
+                                    <PromptPayQR qrImageSrc={qrImageSrc} />
                                 )}
                             </div>
                         </div>
