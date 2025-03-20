@@ -78,7 +78,7 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
 				<time className="mx-1 text-xs opacity-50">12:45</time>
 			</div>
 			{is_message&& <div className="chat-bubble bg-accent text-white">{messageItem.content}</div>}
-			{is_brief && <div className="chat-bubble bg-accent text-black"> <BriefInChat
+			{is_brief && <div className="chat-bubble w-2/3 bg-accent text-black"> <BriefInChat
                             commissionName={commission.commissionName}
                             briefDescription={commission.briefDescription}
                             dueDate={commission.deadline || ""}

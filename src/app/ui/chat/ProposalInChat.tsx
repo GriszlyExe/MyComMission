@@ -9,6 +9,7 @@ import { isCommissionReject as isCommissionReject, states } from './commissionSt
 import { BriefForm } from './BriefForm';
 import { ProposalForm } from './ProposalForm';
 import { acceptProposal } from '@/service/commissionService';
+import FieldContainer from './InChatFieldContainer';
 
 
 interface ProposalProp {
@@ -61,37 +62,30 @@ export default function ProposalInChat({ commissionName, briefDescription, expec
                 <h1 className="font-bold text-2xl pl-6 pt-4 mb-6">Proposal</h1>
 
                 {/* Details Container */}
-                <div className='grid gap-y-6'>
+                <div className='px-7'>
                     {/* Name */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Name:</div>
-                        <div className="break-words sm:whitespace-normal">{commissionName}</div>
+                    <div>
+                        <FieldContainer name='Name' value={commissionName}/>
                     </div>
-
+                        
                     {/* Details */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Details:</div>
-                        <div className="break-words sm:whitespace-normal">
-                            {briefDescription}
-                        </div>
+                    <div>
+                        <FieldContainer name='Details' value={briefDescription}/>
                     </div>
 
                     {/* Due Date */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Expected Finish Date:</div>
-                        <div className="break-words sm:whitespace-normal">{deadline}</div>
+                    <div>
+                        <FieldContainer name='Expected Finish Date' value={deadline}/>
                     </div>
 
                     {/* Price */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Real Price:</div>
-                        <div className="break-words sm:whitespace-normal">{proposalPrice}</div>
+                    <div>
+                        <FieldContainer name='Real Price' value={proposalPrice}/>
                     </div>
 
                     {/* Commercial Use */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Commercial:</div>
-                        <div className="break-words sm:whitespace-normal">{commercialUse ? "For Commercial Use" : "-"}</div>
+                    <div>
+                        <FieldContainer name='Commercial' value={commercialUse ? "For Commercial Use" : "-"}/>
                     </div>
 
                     {/* Buttons */}

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { isCommissionReject as isCommissionReject, states } from './commissionState';
 import { BriefForm } from './BriefForm';
 import { ProposalForm } from './ProposalForm';
+import FieldContainer from './InChatFieldContainer';
 
 
 interface BriefProp {
@@ -42,42 +43,35 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
     }
     return (
         <div>
-            <div className="m-auto w-full max-w-lg rounded-md p-2 pb-6 bg-white">
+            <div className="m-auto rounded-md p-2 pb-6 bg-white mb-2">
                 {/* Header */}
-                <h1 className="font-bold text-2xl pl-6 pt-4 mb-6">Brief</h1>
+                <h1 className="font-bold text-2xl pl-6 pt-4 mb-10">Brief</h1>
 
                 {/* Details Container */}
-                <div className='grid gap-y-6'>
+                <div className='px-7'>
                     {/* Name */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Name:</div>
-                        <div className="break-words sm:whitespace-normal">{commissionName}</div>
+                    <div>
+                        <FieldContainer name='Name' value={commissionName}/>
                     </div>
 
                     {/* Details */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Details:</div>
-                        <div className="break-words sm:whitespace-normal">
-                            {briefDescription}
-                        </div>
+                    <div>
+                        <FieldContainer name='Details' value={briefDescription}/>
                     </div>
 
                     {/* Due Date */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Deadline:</div>
-                        <div className="break-words sm:whitespace-normal">{deadline}</div>
+                    <div className="">
+                        <FieldContainer name='Deadline' value={deadline}/>
                     </div>
 
                     {/* Price */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Price:</div>
-                        <div className="break-words sm:whitespace-normal">{budget}</div>
+                    <div className="">
+                        <FieldContainer name='Price' value={budget}/>
                     </div>
 
                     {/* Commercial Use */}
-                    <div className="grid grid-cols-1 sm:grid-cols-[2fr_4fr] px-6">
-                        <div className="font-bold pl-6">Commercial:</div>
-                        <div className="break-words sm:whitespace-normal">{commercialUse ? "For Commercial Use" : "-"}</div>
+                    <div className="">
+                        <FieldContainer name='Commercial' value={commercialUse ? "For Commercial Use" : "-"}/>
                     </div>
 
                     {/* Buttons */}
@@ -93,17 +87,17 @@ export default function BriefInChat({ commissionName, briefDescription, dueDate,
                         </button>} */}
 
                         {/* Accept */}
-                        {isArtist && state === "BRIEF" && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                        {isArtist && state === "BRIEF" && <button className="flex w-1/4 rounded px-4 py-3 text-white bg-gradient-to-r
                                             from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                             type='button'
                             onClick={() => openForm('ProposalForm')}
                         >
-                            <CheckmarkCircle01Icon className='scale-150 pr-1' />
+                            <CheckmarkCircle01Icon className='scale-125 pr-1' />
                             Accept
                         </button>}
 
                         {/* Reject */}
-                        {isArtist && state === "BRIEF" && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
+                        {isArtist && state === "BRIEF" && <button className="flex w-1/4 rounded px-4 py-3 text-white bg-gradient-to-r
                                         from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                             type='button'
                             onClick={() => console.log({ state: states.canceled })}
