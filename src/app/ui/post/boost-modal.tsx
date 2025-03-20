@@ -4,6 +4,7 @@ import { getPostByUserId } from "@/service/postService";
 import { setLoggedInUserPosts, setPagePosts } from "@/states/features/postSlice";
 import { useParams, useRouter } from "next/navigation";
 import UnboostedPostWidget from "../components/unboostedPostWidget";
+import PlanSelectModal from "./plan-select-modal";
 
 interface ModalProps {
     modalId: string;
@@ -62,7 +63,8 @@ export default function BoostModal({ modalId }: ModalProps) {
 
         // Auto-close modal
         (document.getElementById(modalId) as HTMLDialogElement)?.close();
-        router.push(`/home/payment/boosting-payment?count=${selectedPosts.length}`);
+        (document.getElementById("selectBoostingPlan") as HTMLDialogElement)?.showModal();
+        // router.push(`/home/payment/boosting-payment?count=${selectedPosts.length}`);
     };
 
     return (
@@ -113,11 +115,11 @@ export default function BoostModal({ modalId }: ModalProps) {
                     {/* Boost Button */}
                     <div className="mt-4 sticky bottom-0 z-10 bg-white p-4 border-t flex justify-end">
                         <button
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
+                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 min-w-24"
                             onClick={handleBoost}
                             disabled={selectedPosts.length === 0} // Disable if no selection
                         >
-                            Boost Posts
+                            Next
                         </button>
                     </div>
                 </div>
@@ -125,6 +127,7 @@ export default function BoostModal({ modalId }: ModalProps) {
                     <button>close</button>
                 </form>
             </dialog>
+            <PlanSelectModal modalId='selectBoostingPlan' selectedPosts={selectedPosts} />
         </div>
     );
 }
