@@ -18,6 +18,12 @@ export const submitReport = async ({ data }: { data: any }) => {
             reportDescription: data.description,
         }
     }
+    if(data.targetType === "GENERAL"){
+        requestBody={
+            reportType: "POST",
+            reportDescription: data.description,
+        }
+    }
     try{
         const options={
             method: "POST",
