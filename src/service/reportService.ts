@@ -20,7 +20,7 @@ export const submitReport = async ({ data }: { data: any }) => {
     }
     if(data.targetType === "GENERAL"){
         requestBody={
-            reportType: "POST",
+            reportType: "GENERAL",
             reportDescription: data.description,
         }
     }
