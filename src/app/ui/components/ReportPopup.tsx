@@ -3,16 +3,18 @@ import React, { useState,useEffect } from "react";
 interface ReportPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (reportData: { reportType: string; description: string }) => void;
+  onSubmit: (reportData: { targetType: string; targetId:string; description: string }) => void;
+  title :string;
+  targetId :string;
+  targetType:string;
 }
 
-export default function ReportPopup({ isOpen, onClose, onSubmit }: ReportPopupProps) {
-  const [reportType, setReportType] = useState("");
+export default function ReportPopup({ isOpen, onClose, onSubmit,title,targetType,targetId }: ReportPopupProps) {
+  //const [reportType, setReportType] = useState("");
   const [description, setDescription] = useState("");
 
   if (!isOpen) return null; // Hide when not open
 
-//   // Reset form when popup opens
 //   useEffect(() => {
 //     if (isOpen) {
 //       setReportType("");
@@ -21,27 +23,26 @@ export default function ReportPopup({ isOpen, onClose, onSubmit }: ReportPopupPr
 //   }, [isOpen]);
 
   const handleSubmit = () => {
-    if (reportType && description) {
-      onSubmit({ reportType, description });
-      setReportType("");
+    if (description) {
+      onSubmit({ targetType,targetId, description });
+      //setReportType("");
       setDescription("");
-      onClose(); // Close popup after submitting
+      onClose(); 
     }
   };
 
   const handleCancel = () => {
-    // Reset form when closing
-    setReportType("");
+    //setReportType("");
     setDescription("");
-    onClose(); // Close popup without submitting
+    onClose(); 
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
-        <h2 className="text-xl font-semibold mb-4">Report User</h2>
+        <h2 className="text-xl font-semibold mb-4">{title}</h2> {/* Dynamic header */}
 
-        {/* Report Type Selection */}
+        {/* Report Type Selection
         <label className="block mb-2 text-sm font-medium text-gray-700">Report Type</label>
         <select
           value={reportType}
@@ -52,7 +53,7 @@ export default function ReportPopup({ isOpen, onClose, onSubmit }: ReportPopupPr
           <option value="spam">Spam</option>
           <option value="harassment">Harassment</option>
           <option value="fake">Fake Profile</option>
-        </select>
+        </select> */}
 
         {/* Description Input */}
         <label className="block mb-2 text-sm font-medium text-gray-700">Description</label>

@@ -76,7 +76,7 @@ export default function ProfilePage() {
 
 	};
 
-	const handleReportSubmit = async (reportData: { reportType: string; description: string }) => {
+	const handleReportSubmit = async (reportData: { targetType: string; targetId:string;description: string }) => {
 		console.log('clicked')
 		await submitReport({ data: reportData });
 	  };
@@ -198,6 +198,10 @@ export default function ProfilePage() {
 											isOpen={isReportOpen}
 											onClose={() => setIsReportOpen(false)}
 											onSubmit={handleReportSubmit}
+											title="Report This User"
+											targetId={id as string}
+											targetType="USER"
+											
 										/></>
 									)}
 								</div>
