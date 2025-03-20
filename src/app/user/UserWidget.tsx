@@ -1,8 +1,27 @@
-import { User } from "@/common/model";
+"use client";
 
-export default function UserWidget({userInfo}:{userInfo: User}) {
+import { User } from "@/common/model";
+import Link from "next/link";
+import { MdStarRate } from "react-icons/md";
+import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { useRouter } from "next/navigation";
+
+export default function UserWidget({ userInfo }: { userInfo: User }) {
+	const router = useRouter();
+
+	const handleChatClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		router.push("/chat");
+	};
+
+	console.log(userInfo);
+
 	return (
-		<button className="flex flex-row gap-3 rounded-md p-2 hover:bg-gray-200 w-full">
+		<Link
+			href={`/profile/${userInfo.userId}`}
+			className="mb-1 flex w-full flex-row gap-3 rounded-md border border-gray-300 p-2 hover:bg-gray-200"
+		>
 			{/* User profile */}
 			<div>
 				<div className="aspect-square w-14 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
@@ -18,9 +37,28 @@ export default function UserWidget({userInfo}:{userInfo: User}) {
 
 			{/* UserInfo */}
 			<div className="flex flex-col">
-				<div className="m-auto w-full text-start">{userInfo.displayName}</div>
-				<div className="m-auto text-sm">This is the end</div>
+				<div className="flex flex-row gap-3">
+					<div className="m-auto w-full text-start">
+						{userInfo.displayName}
+					</div>
+					{userInfo.artistRate && (
+						<div className="flex flex-row">
+							<MdStarRate className="m-auto mr-2 text-xl text-yellow-400" />
+							{userInfo.artistRate.toFixed(2)}
+							/5
+						</div>
+					)}
+				</div>
+				<div className="my-auto text-sm">This is the end</div>
 			</div>
-		</button>
+
+			{/* Chat icon */}
+			<button
+				className="my-auto ml-auto cursor-pointer border-none bg-transparent p-0"
+				onClick={handleChatClick}
+			>
+				<IoChatboxEllipsesOutline className="text-4xl" />
+			</button>
+		</Link>
 	);
 }
