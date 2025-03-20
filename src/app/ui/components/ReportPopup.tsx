@@ -23,7 +23,7 @@ export default function ReportPopup({ isOpen, onClose, onSubmit,title,targetType
 //   }, [isOpen]);
 
   const handleSubmit = () => {
-    if (description) {
+    if (description && description.trim()!="") {
       onSubmit({ targetType,targetId, description });
       //setReportType("");
       setDescription("");
@@ -39,7 +39,7 @@ export default function ReportPopup({ isOpen, onClose, onSubmit,title,targetType
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-1/2 max-w-[700px] relative">
         <h2 className="text-xl font-semibold mb-4">{title}</h2> {/* Dynamic header */}
 
         {/* Report Type Selection
