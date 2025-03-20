@@ -43,7 +43,7 @@ export default function BoostModal({ modalId }: ModalProps) {
         } else {
             const allUnboostedIds = posts
                 // .filter((post) => !post.isBoosted)
-                .filter((post) => true)
+                .filter((post) => new Date(post.boostExpiredDate) < new Date())
                 .map((post) => post.postId);
             setSelectedPosts(allUnboostedIds);
         }
@@ -86,7 +86,8 @@ export default function BoostModal({ modalId }: ModalProps) {
                     <div className="max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden mt-1">
                         <div className="grid grid-cols-3 gap-2">
                             {posts
-                                .filter((post) => true)
+                                // filter only unboosted posts
+                                .filter((post) => new Date(post.boostExpiredDate) < new Date())
                                 .map((post) => (
                                     <UnboostedPostWidget
                                         key={post.postId}

@@ -14,11 +14,9 @@ export default function FeedProfileWidget({ post, user }: PostProps) {
 			return { file: undefined, preview: url };
 		});
 
-	// console.log(images);
-	function getRandomInt(max: number) {
-		return Math.floor(Math.random() * max);
-	  }
-	const isPostBoosted = getRandomInt(2);
+	const boostExpiredDate = new Date(post.boostExpiredDate)
+	const isPostBoosted = boostExpiredDate > new Date();
+
 	return (
 		<div
 			className="group cursor-pointer"
