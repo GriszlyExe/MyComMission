@@ -13,6 +13,11 @@ export default function BoostModal({ modalId }: ModalProps) {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const posts = useAppSelector((state) => state.post.pagePosts);
+    const sortedPosts = [...posts].sort(
+        (post1, post2) =>
+            new Date(post2.createdAt).getTime() -
+            new Date(post1.createdAt).getTime()
+    );
     const loggedInUser = useAppSelector((state) => state.user.user!);
     const { id } = useParams();
 
@@ -88,6 +93,11 @@ export default function BoostModal({ modalId }: ModalProps) {
                             {posts
                                 // filter only unboosted posts
                                 .filter((post) => new Date(post.boostExpiredDate) < new Date())
+                                .sort(
+                                    (post1, post2) =>
+                                        new Date(post2.createdAt).getTime() -
+                                        new Date(post1.createdAt).getTime()
+                                )
                                 .map((post) => (
                                     <UnboostedPostWidget
                                         key={post.postId}
