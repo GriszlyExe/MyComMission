@@ -56,7 +56,7 @@ import { useAppDispatch, useAppSelector } from "@/states/hook";
 import PostWidget from "./PostWidget";
 import BoostedPostWidget from "./BoostedPostWidget"; // Import BoostedPostWidget
 import { useEffect, useState } from "react";
-import { getPostByUserId, getRandomPosts } from "@/service/postService";
+import { getPostByUserId, getRandomBoostedPosts, getRandomNonBoostedPosts, getRandomPosts } from "@/service/postService";
 import {
 	setLoggedInUserPosts,
 	setPagePosts,
@@ -75,14 +75,23 @@ export default function Feed() {
 	};
 
 	useEffect(() => {
-		getRandomPosts().then((posts) => {
+		getRandomNonBoostedPosts().then((posts) => {
 			dispatch(setPagePosts(posts));
+
+			// After setting non-boosted posts, fetch random boosted posts
+			getRandomBoostedPosts().then((boostedPosts) => {
+				const maxBoostedToShow = Math.max(
+					1,
+					Math.floor(posts.length / 5),
+				);
+				const selectedBoostedPosts = shuffleArray(boostedPosts).slice(
+					0,
+					maxBoostedToShow,
+				);
+				setBoostedPosts(selectedBoostedPosts);
+				console.log("eeee",selectedBoostedPosts)
+			});
 		});
-		// Fetch boosted posts, in this line you have to fetch another boost posts to prevent duplicate posts
-		const allBoostedPosts = posts.filter(post => new Date(post.boostExpiredDate) >= new Date());
-		const maxBoostedToShow = Math.max(1, Math.floor(posts.length / 5));
-		const selectedBoostedPosts = shuffleArray(allBoostedPosts).slice(0, maxBoostedToShow);
-		setBoostedPosts(selectedBoostedPosts)
 	}, []);
 
 	// Sort ordinary posts by date
