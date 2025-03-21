@@ -12,19 +12,13 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 
 
 export default function PaymentPage() {
+
 	const [activeMethod, setActiveMethod] = useState("credit-card");
-    const [clientSecret, setClientSecret] = useState("");
+	const [clientSecret, setClientSecret] = useState("");
 
 	const handleMethodClick = (method: string) => {
 		setActiveMethod(method);
 	};
-
-    const handleCreatePaymentIntent = async () =>{
-        const res = await createPaymentIntentService(10000)
-		console.log("key = ",process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-        console.log("res =",res)
-        setClientSecret(res.client_secret)
-    }
 
 	const getButtonClass = (method: string) =>
 		`h-12 w-full rounded-md p-3 text-left ${
@@ -72,7 +66,7 @@ export default function PaymentPage() {
 								<p className="mb-4 text-lg text-gray-600">
 									Amount being paid now: 100 THB
 								</p>
-                                <button onClick={handleCreatePaymentIntent}>ClickME!</button>
+                                
 								{activeMethod === "credit-card" && clientSecret && (
                                     <Elements stripe={stripePromise} options={{ clientSecret }}>
                                         <CreditCardForm />
