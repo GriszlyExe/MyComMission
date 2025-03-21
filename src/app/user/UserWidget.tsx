@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MdStarRate } from "react-icons/md";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import { Chatting01Icon } from "hugeicons-react";
 
 export default function UserWidget({ userInfo }: { userInfo: User }) {
 	const router = useRouter();
@@ -20,7 +21,7 @@ export default function UserWidget({ userInfo }: { userInfo: User }) {
 	return (
 		<Link
 			href={`/profile/${userInfo.userId}`}
-			className="mb-1 flex w-full flex-row gap-3 rounded-md border border-gray-300 p-2 hover:bg-gray-200"
+			className="mb-1 flex w-full flex-row gap-3 rounded-md border border-gray-300 py-2 pl-2 pr-6 hover:bg-gray-200"
 		>
 			{/* User profile */}
 			<div>
@@ -37,15 +38,15 @@ export default function UserWidget({ userInfo }: { userInfo: User }) {
 
 			{/* UserInfo */}
 			<div className="flex flex-col">
-				<div className="flex flex-row gap-3">
+				<div className="flex flex-row gap-1">
 					<div className="m-auto w-full text-start">
 						{userInfo.displayName}
 					</div>
 					{userInfo.artistRate && (
-						<div className="flex flex-row">
-							<MdStarRate className="m-auto mr-2 text-xl text-yellow-400" />
+						<div className="flex flex-row min-w-32 gap-1 items-center">
+							<MdStarRate className="text-xl text-yellow-400" />
 							{userInfo.artistRate.toFixed(2)}
-							/5
+							{" "}/ 5.00
 						</div>
 					)}
 				</div>
@@ -54,10 +55,10 @@ export default function UserWidget({ userInfo }: { userInfo: User }) {
 
 			{/* Chat icon */}
 			<button
-				className="my-auto ml-auto cursor-pointer border-none bg-transparent p-0"
+				className="my-aut ml-auto cursor-pointer border-none bg-transparent p-0"
 				onClick={handleChatClick}
 			>
-				<IoChatboxEllipsesOutline className="text-4xl" />
+				<Chatting01Icon className="scale-150" />
 			</button>
 		</Link>
 	);
