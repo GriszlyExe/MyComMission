@@ -7,7 +7,7 @@ export const submitReport = async ({ data }: { data: any }) => {
     if(data.targetType === "USER"){
         requestBody={
             reportType: "USER",
-            userId: data.targetId,
+            reporteeId: data.targetId,
             reportDescription: data.description,
         }
     }
@@ -15,6 +15,13 @@ export const submitReport = async ({ data }: { data: any }) => {
         requestBody={
             reportType: "POST",
             postId: data.targetId,
+            reportDescription: data.description,
+        }
+    }
+    if(data.targetType === "COMMISSION"){
+        requestBody={
+            reportType: "COMMISSION",
+            commissionId: data.targetId,
             reportDescription: data.description,
         }
     }
@@ -27,7 +34,7 @@ export const submitReport = async ({ data }: { data: any }) => {
     try{
         const options={
             method: "POST",
-            url: `${serverAddr}/report/create`,
+            url: `${serverAddr}/report/submit`,
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
             data: requestBody,
