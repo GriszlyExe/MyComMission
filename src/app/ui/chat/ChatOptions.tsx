@@ -8,6 +8,8 @@ import { PostponeForm } from './PostponeForm';
 import { states, isBriefExist } from './commissionState';
 import { submitReport } from "@/service/reportService";
 import ReportPopup from "@/app/ui/components/ReportPopup";
+import { useAppSelector } from '@/states/hook';
+import { getChatroom } from '@/service/chatService';
 
 
 export default function ChatOptions() {
@@ -23,9 +25,24 @@ export default function ChatOptions() {
             form.showModal();
         }
     }
+    const chatRoomId = useAppSelector(state => {
+        if (state.chat?.activeRoom) {
+            return state.chat.activeRoom.chatRoomId;
+        }
+        return null;
+    });
+
     const handleReportSubmit = async (reportData: { targetType: string; targetId: string; description: string }) => {
 		console.log('clicked')
-		await submitReport({ data: reportData });
+        if (chatRoomId) {
+            console.log("chatroomId: ", chatRoomId);
+            const chatroom = await getChatroom(chatRoomId);
+            console.log("chatroom: ", chatroom);
+            reportData.targetId = chatroom.latestCommission.commissionId;
+            await submitReport({ data: reportData });
+        } else {
+            console.log('chatRoomId does not exist')
+        }
 	};
     return (
         <div>
@@ -54,8 +71,8 @@ export default function ChatOptions() {
                     onClose={() => setIsReportOpen(false)}
                     onSubmit={handleReportSubmit}
                     title="Report This Commission"
-                    targetId="123"
-                    targetType="COMMISIION"
+                    targetId=""
+                    targetType="COMMISSION"
 
                 />
 
