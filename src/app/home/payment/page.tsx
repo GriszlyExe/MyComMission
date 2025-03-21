@@ -68,7 +68,7 @@ export default function PaymentPage() {
                             className="btn btn-error text-white"
                             onClick={() => router.push("/home")}
                         >
-                            Cancle Payment
+                            Cancel Payment
                         </button>
                     </div>
                 </div>

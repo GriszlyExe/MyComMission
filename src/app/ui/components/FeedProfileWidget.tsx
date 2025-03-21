@@ -1,7 +1,7 @@
 import { Post, User } from "@/common/model";
 import PostWidget from "./PostWidget";
 import { RiCheckboxMultipleBlankLine } from "react-icons/ri";
-
+import { HiCheckBadge } from "react-icons/hi2";
 interface PostProps {
 	post: Post;
 	user: User;
@@ -14,7 +14,8 @@ export default function FeedProfileWidget({ post, user }: PostProps) {
 			return { file: undefined, preview: url };
 		});
 
-	// console.log(images);
+	const boostExpiredDate = new Date(post.boostExpiredDate)
+	const isPostBoosted = boostExpiredDate > new Date();
 
 	return (
 		<div
@@ -37,6 +38,7 @@ export default function FeedProfileWidget({ post, user }: PostProps) {
 				{images.length > 1 && (
 					<RiCheckboxMultipleBlankLine className="absolute right-2 top-2 text-3xl text-white" />
 				)}
+				{isPostBoosted && <HiCheckBadge className="absolute left-2 top-2 text-3xl text-white" />}
 			</div>}
 
 			{/* Modal */}
