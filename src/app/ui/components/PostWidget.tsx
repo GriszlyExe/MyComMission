@@ -14,6 +14,7 @@ import ImageModal from "./ImageModal";
 import ReportPopup from "@/app/ui/components/ReportPopup";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { submitReport } from "@/service/reportService";
+import { Ellipsis } from "lucide-react";
 
 interface PostProps {
 	post: Post;
@@ -124,9 +125,9 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 					{/* Report */}
 					{userId != post.artistId && (
 							<>
-							<div className="mt-4">
-								<button onClick={() => setIsReportOpen(true)} className="text-red-600 hover:text-red-800">
-								<ExclamationTriangleIcon className="w-6 h-6" />
+							<div className="mt-4 relative">
+								<button onClick={() => setIsReportOpen(true)} className="text-gray-600 hover:text-gray-800 p-3">
+									<Ellipsis className="w-6 h-6 top-0 right-4 absolute" />
 								</button>
 							</div>
 							{/* Report Popup */}

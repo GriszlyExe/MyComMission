@@ -19,6 +19,8 @@ import { useRouter } from "next/navigation";
 import ReportPopup from "@/app/ui/components/ReportPopup";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { submitReport } from "@/service/reportService";
+import { Ellipsis } from "lucide-react";
+
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
@@ -69,26 +71,26 @@ export default function ProfilePage() {
 				throw new Error("Something went wrong!");
 			}
 
-			router.push("/chat")			
+			router.push("/chat")
 		} catch (error) {
 			console.error(error);
 		}
 
 	};
 
-	const handleReportSubmit = async (reportData: { targetType: string; targetId:string;description: string }) => {
+	const handleReportSubmit = async (reportData: { targetType: string; targetId: string; description: string }) => {
 		console.log('clicked')
 		await submitReport({ data: reportData });
-	  };
-	
+	};
+
 	useEffect(() => {
 		fetchUserProfile().then((user) => {
 			if (user.userId === userId) {
 				dispatch(setUser(user));
 			}
-			
+
 			setUserInfo(user);
-			
+
 		});
 	}, []);
 
@@ -127,6 +129,28 @@ export default function ProfilePage() {
 
 							{/* Information */}
 							<div className="w-full">
+
+								{/* Report */}
+								{userId !== id && (
+									<>
+										<div className="mt-4 relative">
+											<button onClick={() => setIsReportOpen(true)} className="text-gray-600 hover:text-gray-800 p-3">
+												<Ellipsis className="w-6 h-6 top-0 right-4 absolute" />
+											</button>
+										</div>
+
+										{/* Report Popup */}
+										<ReportPopup
+											isOpen={isReportOpen}
+											onClose={() => setIsReportOpen(false)}
+											onSubmit={handleReportSubmit}
+											title="Report This User"
+											targetId={id as string}
+											targetType="USER"
+
+										/></>
+								)}
+								{/* end of report */}
 								<div className="m-16 flex flex-col gap-2">
 									<div>
 										<h1 className="text-2xl font-bold">
@@ -184,26 +208,6 @@ export default function ProfilePage() {
 										</button>
 									)}
 
-									{/* Report */}
-									{userId !== id && (
-										<>
-										<div className="mt-4">
-											<button onClick={() => setIsReportOpen(true)} className="text-red-600 hover:text-red-800">
-											<ExclamationTriangleIcon className="w-6 h-6" />
-											</button>
-										</div>
-
-										{/* Report Popup */}
-										<ReportPopup
-											isOpen={isReportOpen}
-											onClose={() => setIsReportOpen(false)}
-											onSubmit={handleReportSubmit}
-											title="Report This User"
-											targetId={id as string}
-											targetType="USER"
-											
-										/></>
-									)}
 								</div>
 							</div>
 						</div>
