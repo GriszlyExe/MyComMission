@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
-import { XSquareIcon, TextSelect, SendIcon, AlarmClockIcon } from "lucide-react";
+import { XSquareIcon, TextSelect, SendIcon, AlarmClockIcon, BadgeAlert } from "lucide-react";
 import { OptionButton } from './Button';
 import "daisyui";
 import { BriefForm } from './BriefForm';
 import { SendArtworkForm } from './SendArtworkForm';
 import { PostponeForm } from './PostponeForm';
 import { states, isBriefExist } from './commissionState';
+import { submitReport } from "@/service/reportService";
+import ReportPopup from "@/app/ui/components/ReportPopup";
+
+
 export default function ChatOptions() {
 
     const [isBriefCreated, setisBriefCreated] = useState(false);
     const state = states.brief
     const [refresh, setRefresh] = useState(false);
+    const [isReportOpen, setIsReportOpen] = useState(false);
     function openForm(file_name: string) {
         const form = document.getElementById(file_name)
         if (form != null) {
@@ -18,7 +23,10 @@ export default function ChatOptions() {
             form.showModal();
         }
     }
-
+    const handleReportSubmit = async (reportData: { targetType: string; targetId: string; description: string }) => {
+		console.log('clicked')
+		await submitReport({ data: reportData });
+	};
     return (
         <div>
             <div className="flex justify-around w-4/5 min-h-12 mb-5">
@@ -37,6 +45,19 @@ export default function ChatOptions() {
                 <OptionButton onClick={() => openForm('SendArtworkForm')} >
                     <SendIcon size={24} /> <span>Send Artwork</span>
                 </OptionButton>
+                <OptionButton onClick={() => setIsReportOpen(true)}>
+                    <BadgeAlert size={24} /> <span>Report</span>
+                </OptionButton>
+                {/* Report Popup */}
+                <ReportPopup
+                    isOpen={isReportOpen}
+                    onClose={() => setIsReportOpen(false)}
+                    onSubmit={handleReportSubmit}
+                    title="Report This Commission"
+                    targetId="123"
+                    targetType="COMMISIION"
+
+                />
 
 
             </div>
