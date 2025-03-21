@@ -1,162 +1,174 @@
-import axios, { AxiosRequestConfig } from "axios"
+import axios, { AxiosRequestConfig } from "axios";
 
 const serverAddr = process.env.SERVER_ADDRESS;
 
 export const getUserInfo = async (userId: string) => {
+	try {
+		const options = {
+			method: "GET",
+			url: `${serverAddr}/user/profile/${userId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
 
-    try {
+		const {
+			data: { user },
+		} = await axios.request(options);
 
-        const options = {
-            method: "GET",
-            url: `${serverAddr}/user/profile/${userId}`,
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        }
-
-        const { data: { user } } = await axios.request(options);
-
-        return user;
-
-    } catch (err) {
-        throw err;
-    }
-
-}
+		return user;
+	} catch (err) {
+		throw err;
+	}
+};
 
 const changeProfilePicture = async (userId: string, picture: FormData) => {
+	try {
+		const options = {
+			method: "PATCH",
+			url: `${serverAddr}/user/account/profile-pic/${userId}`,
+			withCredentials: true,
+			data: picture,
+		};
 
-    try {
+		const {
+			data: { profileUrl },
+		} = await axios.request(options);
 
-        const options = {
-            method: "PATCH",
-            url: `${serverAddr}/user/account/profile-pic/${userId}`,
-            withCredentials: true,
-            data: picture,
-        }
-
-        const { data: { profileUrl } } = await axios.request(options);
-
-        return profileUrl;
-
-    } catch (err) {
-        throw err;
-    }
-}
+		return profileUrl;
+	} catch (err) {
+		throw err;
+	}
+};
 
 export const updateUser = async (forms: any) => {
+	try {
+		console.log(`update user called`);
+		// console.log(forms);
 
-    try {
+		const { user, picture } = forms;
+		const userId = user.userId;
+		let profileUrl: string = user.profileUrl;
 
-        console.log(`update user called`);
-        // console.log(forms);
+		if (picture && picture.has("picture"))
+			profileUrl = await changeProfilePicture(userId, picture);
 
-        const { user, picture } = forms;
-        const userId = user.userId;
-        let profileUrl: string = user.profileUrl;
+		// console.log(user);
+		const options: AxiosRequestConfig = {
+			method: "PATCH",
+			url: `${serverAddr}/user/account/${userId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+			data: user,
+		};
 
-        if (picture && picture.has("picture"))
-            profileUrl = await changeProfilePicture(userId, picture);
+		// console.log(options.data);
 
-        // console.log(user);
-        const options: AxiosRequestConfig = {
-            method: "PATCH",
-            url: `${serverAddr}/user/account/${userId}`,
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-            data: user,
-        }
+		const { data } = await axios.request(options);
 
-        // console.log(options.data);
-
-        const { data } = await axios.request(options);
-
-        return {
-            user: {
-                ...data.user,
-                profileUrl,
-            },
-        }
-
-    } catch (err) {
-        throw err;
-    }
-
-}
+		return {
+			user: {
+				...data.user,
+				profileUrl,
+			},
+		};
+	} catch (err) {
+		throw err;
+	}
+};
 
 export const changePassword = async ({
-    userId,
-    oldPassword,
-    newPassword
+	userId,
+	oldPassword,
+	newPassword,
 }: {
-    userId: string;
-    oldPassword: string;
-    newPassword: string;
+	userId: string;
+	oldPassword: string;
+	newPassword: string;
 }) => {
+	try {
+		const options = {
+			method: "PATCH",
+			url: `${serverAddr}/user/change-password/${userId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+			data: { oldPassword, newPassword },
+		};
 
-    try {
+		const {
+			data: { user },
+		} = await axios.request(options);
 
-        const options = {
-            method: "PATCH",
-            url: `${serverAddr}/user/change-password/${userId}`,
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-            data: { oldPassword, newPassword },
-        }
-
-        const { data: { user } } = await axios.request(options);
-
-        return user;
-
-    } catch (err) {
-        throw err;
-    }
-
-}
+		return user;
+	} catch (err) {
+		throw err;
+	}
+};
 
 export const enable2Fa1 = async (userId: string) => {
-    try {
+	try {
+		const options = {
+			method: "POST",
+			url: `${serverAddr}/user/enable-2fa/${userId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
 
-        const options = {
-            method: "POST",
-            url: `${serverAddr}/user/enable-2fa/${userId}`,
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-        };
+		await axios.request(options);
 
-        await axios.request(options);
+		return;
+	} catch (err) {
+		throw err;
+	}
+};
 
-        return;
+export const enable2Fa2 = async ({
+	email,
+	token,
+	userId,
+}: {
+	email: string;
+	token: string;
+	userId: string;
+}) => {
+	try {
+		const options = {
+			method: "POST",
+			url: `${serverAddr}/auth/two-factor-enable`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+			data: {
+				email,
+				token,
+			},
+		};
 
-    } catch (err) {
-        throw err;
-    }
-}
+		await axios.request(options);
+		await updateUser({
+			user: {
+				userId,
+				enabled2FA: true,
+			},
+		});
 
-export const enable2Fa2 = async ({email, token, userId}: { email: string, token: string, userId: string }) => {
-    try {
+		return;
+	} catch (err) {
+		throw err;
+	}
+};
 
-        const options = {
-            method: "POST",
-            url: `${serverAddr}/auth/two-factor-enable`,
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-            data: {
-                email,
-                token,
-            }
-        };
+// Use for search display name
+export const searchDisplayname = async (displayName: string) => {
+	try {
+		const options = {
+			method: "GET",
+			url: `${serverAddr}/user?search=${displayName}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
 
-        await axios.request(options);
-        await updateUser({
-            user: {
-                userId,
-                enabled2FA: true,
-            }
-        })
-
-        return;
-
-    } catch (err) {
-        throw err;
-    }
-}
+		const {data} = await axios.request(options);
+		return data
+	} catch (err) {
+		throw err;
+	}
+};

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart, FaRegCommentDots } from "react-icons/fa";
 import EditPostForm from "../post/edit-form";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
@@ -117,7 +117,7 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 				<div className="mt-3 flex flex-wrap gap-1">
 					{post.postTags && post.postTags.map((tag) => (
 						<div
-							key={tag}
+							key={`${post.postId}-${tag}`}
 							className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"
 						>
 							{tag}
