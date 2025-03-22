@@ -24,6 +24,7 @@ import { Ellipsis } from "lucide-react";
 import { GrUpgrade } from "react-icons/gr";
 import BoostModal from "@/app/ui/post/boost-modal";
 import PlanSelectModal from "@/app/ui/post/plan-select-modal";
+import { formatDate } from "@/utils/helper";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);

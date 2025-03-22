@@ -15,6 +15,7 @@ import ReportPopup from "@/app/ui/components/ReportPopup";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { submitReport } from "@/service/reportService";
 import { Ellipsis } from "lucide-react";
+import { formatDate } from "@/utils/helper";
 
 interface PostProps {
 	post: Post;

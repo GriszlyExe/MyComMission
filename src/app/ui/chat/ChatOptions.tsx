@@ -14,17 +14,13 @@ import { getChatroom } from '@/service/chatService';
 
 export default function ChatOptions() {
 
-    const [isBriefCreated, setisBriefCreated] = useState(false);
-    const state = states.brief
-    const [refresh, setRefresh] = useState(false);
+    const loggedInUserId = useAppSelector(state => state.user.user!.userId);
+    const latestCommission = useAppSelector(state => state.commission.latestComission);
+    const isCustomer = loggedInUserId === latestCommission?.customerId;
+    const canCreateBrief = !latestCommission || (latestCommission && latestCommission.state === "FINISHED");
+    const isWorking = latestCommission && latestCommission.state === states.working;
     const [isReportOpen, setIsReportOpen] = useState(false);
-    function openForm(file_name: string) {
-        const form = document.getElementById(file_name)
-        if (form != null) {
-            setRefresh(prev => !prev);
-            form.showModal();
-        }
-    }
+
     const chatRoomId = useAppSelector(state => {
         if (state.chat?.activeRoom) {
             return state.chat.activeRoom.chatRoomId;
@@ -59,9 +55,11 @@ export default function ChatOptions() {
                 <OptionButton>
                     <XSquareIcon size={24} /> <span>Reject</span>
                 </OptionButton>
-                {isWorking && !isCustomer && <OptionButton onClick={() => openForm('SendArtworkForm')} >
+                {isWorking && !isCustomer && <OptionButton onClick={() => 
+                    // @ts-ignore
+                    document.getElementById("SendArtworkForm").showModal()} >
                     <SendIcon size={24} /> <span>Send Artwork</span>
-                </OptionButton>
+                </OptionButton>}
                 <OptionButton onClick={() => setIsReportOpen(true)}>
                     <BadgeAlert size={24} /> <span>Report</span>
                 </OptionButton>
@@ -73,9 +71,7 @@ export default function ChatOptions() {
                     title="Report This Commission"
                     targetId=""
                     targetType="COMMISSION"
-
                 />
-
 
             </div>
             <BriefForm />
