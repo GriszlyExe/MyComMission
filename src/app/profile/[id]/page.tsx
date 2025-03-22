@@ -16,6 +16,7 @@ import Review from "@/app/ui/components/Review";
 import { Message01Icon } from "hugeicons-react";
 import { createChatroom } from "@/service/chatService";
 import { useRouter } from "next/navigation";
+import { formatDate } from "@/utils/helper";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
@@ -106,7 +107,7 @@ export default function ProfilePage() {
 								<div className="ml-16 mt-16 aspect-square w-40 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
 									<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
 										<img
-											src={userInfo.profileUrl}
+											src={userInfo.profileUrl ? userInfo.profileUrl : "/default-profile-2.png"}
 											alt=""
 											width={112}
 											height={112}
@@ -121,7 +122,7 @@ export default function ProfilePage() {
 								<div className="m-16 flex flex-col gap-2">
 									<div>
 										<h1 className="text-2xl font-bold">
-											{userInfo.displayName}
+											{`${userInfo.firstName} ${userInfo.lastName}`}
 										</h1>
 										<span className="text-textGray text-sm">
 											@{userInfo.displayName}
@@ -138,7 +139,7 @@ export default function ProfilePage() {
 											<FaCalendarDay />
 											<span>
 												Joined{" "}
-												{`${month[new Date(userInfo.createdAt).getMonth()]} ${new Date(userInfo.createdAt).getFullYear()}`}
+												{formatDate(userInfo.createdAt)}
 											</span>
 										</div>
 									</div>

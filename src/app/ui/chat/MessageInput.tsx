@@ -1,12 +1,10 @@
-import { Message } from "@/common/model";
+// import { Message } from "@/common/model";
 import { createMessage } from "@/service/chatService";
 import React, { useState } from "react";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import { Divide, Plus, X } from "lucide-react";
 import ChatOptions from "./ChatOptions";
 import { useAppSelector } from "@/states/hook";
-
-const socket = io(process.env.SERVER_ADDRESS);
 
 const MessageInput = () => {
 
@@ -25,17 +23,13 @@ const MessageInput = () => {
 		if (!message.trim()) return;
 
 		const CM = async () => {
-			const res = await createMessage({
+			await createMessage({
 				chatRoomId: activeRoomId!,
 				senderId: loggedInUserId,
 				content: message,
 				messageType: "MESSAGE"
 			})
 
-			const newMessage = res.newMessage
-			if (newMessage) {
-				socket.emit("send_message", { newMessage });
-			}
 		}
 
 		CM()

@@ -2,14 +2,9 @@ import { serverAddr } from ".";
 import axios from "axios";
 
 export const createCommission = async (data: any) => {
+	
 	try {
-		// Adapter
-		data = {
-			...data,
-			deadline: new Date(data.dueDate).toISOString(),
-			dueDate: undefined,
-		};
-
+		console.log(data);
 		const options = {
 			method: "POST",
 			url: `${serverAddr}/commission/create`,

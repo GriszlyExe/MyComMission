@@ -1,6 +1,7 @@
 export type User = {
     userId: string;
     birthDate: Date | string;
+    bio: string;
     firstName: string;
     lastName: string;
     artistFlag: Boolean;
@@ -12,13 +13,13 @@ export type User = {
     pdfUrl: string;
     artistRate: number;
     enabled2FA: boolean;
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: string;
+    updatedAt: string;
 }
 
 export type Post = {
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     postId: string;
     price: number;
     isHide: boolean;
@@ -40,14 +41,31 @@ export type Review = {
     revieweeId: string;
     rating: number;
     description: string | null;
-    createdAt: Date
+    createdAt: string;
+}
+
+export type Commission = {
+    commissionId: string;
+    customerId: string;
+    artistId: string;
+    chatRoomId: string;
+    state: "BRIEF" | "BRIEF_REJECTED" | "PROPOSAL" | "PROPOSAL_REJECTED" | "WORKING" | "FINISHED" | "CANCELLED";
+    transactionId: string;
+    artworkId: string;
+    commissionName: string;
+    briefDescription: string;
+    budget: number;
+    deadline: string;
+    commercialUse: boolean;
+    expectedDate: string;
+    proposalPrice: number;
 }
 
 export type Message = {
     messageId: string;
     chatRoomId: string;
     senderId: string;
-    type: "MESSAGE" | "BRIEF" | "PROPOSAL" | "IMAGE";
+    messageType: "MESSAGE" | "COMMISSION" | "IMAGE";
     content: string;
     createdAt: string;
 }

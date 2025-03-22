@@ -1,6 +1,6 @@
 'use client'
 import 'daisyui'
-import { postPoneSchema } from './FormSchemas';
+import { postPoneSchema } from './schemas/FormSchemas';
 import { Formik, Form } from 'formik';
 import * as yup from "yup";
 import { FormikInput } from './FormikInput';

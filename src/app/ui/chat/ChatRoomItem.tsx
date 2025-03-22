@@ -6,16 +6,20 @@ import { RiProgress1Line } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
-import { useAppDispatch } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { setActiveRoom } from "@/states/features/chatSlice";
 import { ChatRoom, User } from "@/common/model";
 import { getUserInfo } from "@/service/userService";
+import clsx from "clsx";
+import Link from "next/link";
+
+// const 
 
 const states = [
 	{ name: "IDLE", icon: <></> },
 	{
 		name: "BRIEF",
-		icon: <IoDocumentText fontSize={40} className="text-success" />,
+		icon: <IoDocumentText fontSize={40} className="text-info" />,
 	},
 	{
 		name: "BRIEF_REJECTED",
@@ -55,6 +59,7 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 
 	const dispatch = useAppDispatch();
 	const [receiver, setReceiver] = useState<User | null>(null);
+	const activeRoomId = useAppSelector(state => state.chat.activeRoom?.chatRoomId);
 
 	useEffect(() => {
 
@@ -68,7 +73,9 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 	}, [chatRoom.chatRoomId])
 
 	return (
-		<div className="flex flex-row items-center justify-between gap-2 rounded-md bg-white px-1 hover:bg-secondary"
+		<div className={clsx("flex flex-row items-center justify-between gap-2 rounded-md bg-white px-1", {
+			"ring-4 ring-primary": chatRoom.chatRoomId === activeRoomId,
+		})}
 		onClick={() => {
 			dispatch(setActiveRoom(chatRoom));
 		}}
@@ -88,7 +95,9 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 
 			{/* name + latest message */}
 			<div className="flex flex-grow flex-col p-2">
-				<span className="accent font-bold">{receiver !== null ? receiver.displayName : ""}</span>
+				<Link href={`/profile/${receiver?.userId}`}>
+					<span className="accent font-bold hover:underline">{receiver !== null ? receiver.displayName : ""}</span>
+				</Link>
 				<p className="text-sm">Hello, how are you?</p>
 			</div>
 

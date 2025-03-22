@@ -52,13 +52,13 @@ export default function PostForm() {
 		<div>
 			<div className="card mx-4 rounded-md border shadow-sm bg-white p-4">
 				<form onSubmit={handleSubmit(onSubmit)}>
-					<h1 className="mb-2 text-center text-lg font-bold">
+					{/* <h1 className="mb-2 text-center text-lg font-bold">
 						Create Post
-					</h1>
+					</h1> */}
 
 					{/* Description section */}
 					<div className="mb-4">
-						<h2 className="mb-2 mr-2 ml-1">Commission description:</h2>
+						{/* <h2 className="mb-2 mr-2 ml-1">Commission description:</h2> */}
 						<textarea
 							className="w-full h-24 resize-none rounded-md border px-3 pt-2"
 							placeholder="What's on your mind..."
@@ -72,14 +72,14 @@ export default function PostForm() {
 					</div>
 
 					{/* Open Modal via Link Icon */}
-					<div className="bottom-0 right-0 mt-4 flex justify-end">
+					<div className="bottom-0 right-0 mt-4 flex flex-row justify-end">
 						<Link02Icon
-							className="mr-4 mt-2 scale-125 cursor-pointer hover:opacity-60"
+							className="text-primary mr-4 mt-2 scale-125 cursor-pointer hover:opacity-60"
 							onClick={() => setIsOpen(true)}
 						/>
 						<button
 							type="submit"
-							className="rounded-md bg-black px-4 py-2 text-white hover:bg-gray-600 active:bg-black"
+							className="rounded-md bg-primary px-4 py-2 text-white hover:bg-accent active:bg-primary"
 						>
 							Post
 						</button>

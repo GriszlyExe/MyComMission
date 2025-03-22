@@ -58,24 +58,24 @@ export const createMessage = async ({
 	messageType: "MESSAGE" | "BRIEF" | "PROPOSAL" | "IMAGE";
 }) => {
 	try {
-		const json = {
+		const body = {
 			chatRoomId,
 			senderId,
 			content,
 			messageType,
 		};
-		console.log(json);
+		
 		const options = {
 			method: "POST",
 			url: `${serverAddr}/chat/message`,
 			headers: { "Content-Type": "application/json" },
 			withCredentials: true,
-			data: json,
+			data: body,
 		};
 
-		const res = await axios.request(options);
+		const { data } = await axios.request(options);
 
-		return res.data;
+		return data;
 	} catch (error) {
 		throw error;
 	}

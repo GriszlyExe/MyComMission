@@ -27,7 +27,7 @@ const Page = () => {
 		//Fetch Chatroom
 		const fetchChatrooms = async () => {
 			const chatrooms = await getChatrooms(userId);
-			console.log(chatrooms);
+			// console.log(chatrooms);
 			dispatch(setChatRooms(chatrooms));
 		};
 		fetchChatrooms()
@@ -50,7 +50,7 @@ const Page = () => {
 			<div className="mt-24 flex max-h-[600px] flex-row bg-gray-100 w-9/12 justify-around gap-3 p-3 overflow-hidden">
 
 				{/* Chat rooms list */}
-				<div className="flex flex-col w-1/4 gap-2 overflow-y-auto scrollbar-hidden">
+				<div className="flex flex-col w-1/4 gap-2 overflow-y-auto scrollbar-hidden p-1">
 					{rooms.map(room => (
 						<ChatRoomItem key={room.chatRoomId} chatRoom={room}  />
 					))}

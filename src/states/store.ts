@@ -3,6 +3,8 @@ import { authReducer } from "./features/authSlice";
 import { userReducer } from "./features/userSlice";
 import { postReducer } from "./features/postSlice";
 import { reviewReducer } from "./features/reviewSlice";
+import { chatReducer } from "./features/chatSlice";
+import { commissionReducer } from "./features/commisionSlice";
 
 import { configureStore, combineReducers, createAction } from '@reduxjs/toolkit';
 import {
@@ -16,7 +18,6 @@ import {
     REGISTER
 } from "redux-persist"
 import storage from 'redux-persist/lib/storage';
-import { chatReducer } from "./features/chatSlice";
 
 export const resetState = createAction("resetState");
 
@@ -26,6 +27,7 @@ const appReducer = combineReducers({
     post: postReducer,
     review: reviewReducer,
     chat: chatReducer,
+    commission: commissionReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

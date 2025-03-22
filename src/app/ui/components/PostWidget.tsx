@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { hidePost } from "@/service/postService";
 import { editPagePost, editUserPost } from "@/states/features/postSlice";
 import ImageModal from "./ImageModal";
+import { formatDate } from "@/utils/helper";
 
 interface PostProps {
 	post: Post;
@@ -77,7 +78,7 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 									{user ? user.displayName : "display name"}
 								</p>
 							</Link>
-							<p className="text-xs text-gray-500">{`January`}</p>
+							<p className="text-xs text-gray-500">{formatDate(post.createdAt)}</p>
 						</div>
 					</div>
 					{(userId === post.artistId) && <div className="flex gap-4">
@@ -118,7 +119,7 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 					{post.postTags && post.postTags.map((tag) => (
 						<div
 							key={tag}
-							className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"
+							className="mb-1 flex items-center rounded-full bg-primary px-2 py-1 text-white"
 						>
 							{tag}
 						</div>

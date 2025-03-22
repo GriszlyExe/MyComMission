@@ -10,7 +10,7 @@ export default function SettingsPage() {
     const pathname = usePathname();
     return (<>
 
-        <div className="max-w-7/12 mx-auto p-6 space-y-2">
+        <div className="max-w-7/12 w-1/3 mx-auto p-6 space-y-2">
             <Breadcrumbs
                 breadcrumbs={[
                     { label: 'Home', href: '/home' },

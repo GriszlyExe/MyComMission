@@ -1,0 +1,93 @@
+import { Form, Formik } from "formik";
+import React from "react";
+
+/* form schema */
+import { proposalSchema } from "@/app/ui/chat/schemas/FormSchemas";
+
+/* Formik + yup */
+import { FormikInput } from "../FormikInput";
+import * as yup from "yup";
+
+const ProposalForm = () => {
+	type formSchema = yup.InferType<typeof proposalSchema>;
+
+	const initialValues: formSchema = {
+		expectedDate: new Date(),
+		proposalPrice: "",
+	};
+
+	const handleSubmit = (values: formSchema, { resetForm }: any) => {
+		console.log(values);
+		resetForm();
+	};
+
+	return (
+		<dialog id="proposal-form" className="modal">
+			<div className="modal-box">
+				<h3 className="text-xl font-bold">Proposal</h3>
+				<Formik
+					initialValues={initialValues}
+					validationSchema={proposalSchema}
+					enableReinitialize={true}
+					onSubmit={(values, { resetForm }) =>
+						handleSubmit(values, { resetForm })
+					}
+				>
+					{({
+						isSubmitting,
+						errors,
+						touched,
+						resetForm,
+						setFieldValue,
+					}) => (
+						<Form className="space-y-4" autoComplete="off">
+							<FormikInput
+								label="expectedDate"
+								type="date"
+								name="expectedDate"
+								errors={errors.expectedDate}
+								touched={touched.expectedDate}
+								placeholder="Expected finish date of your artwork."
+							/>
+							<FormikInput
+								label="Price"
+								type="number"
+								name="proposalPrice"
+								errors={errors.proposalPrice}
+								touched={touched.proposalPrice}
+								placeholder="Price of your artwork (THB)"
+							/>
+							{/* <FormikFileInput label="Draft" name="file" setFieldValue={setFieldValue} /> */}
+							<div className="flex items-center justify-center gap-2">
+								<button
+									type="submit"
+									disabled={isSubmitting}
+									className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${
+										isSubmitting
+											? "cursor-not-allowed bg-gray-400"
+											: "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+									}`}
+								>
+									Send
+								</button>
+								<button
+									className="w-1/2 rounded bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-3 text-white hover:from-blue-700 hover:to-purple-700"
+									type="button"
+									onClick={() => {
+										resetForm();
+                                        // @ts-ignore
+										document.getElementById("proposal-form").close();
+									}}
+								>
+									Cancel
+								</button>
+							</div>
+						</Form>
+					)}
+				</Formik>
+			</div>
+		</dialog>
+	);
+};
+
+export default ProposalForm;

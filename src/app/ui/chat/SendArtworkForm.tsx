@@ -1,6 +1,6 @@
 'use client'
 import 'daisyui'
-import { artworkSchema, briefSchema } from './FormSchemas';
+import { artworkSchema, briefSchema } from './schemas/FormSchemas';
 import { Formik, Form } from 'formik';
 import * as yup from "yup";
 import {FormikFileInput } from './FormikInput';
