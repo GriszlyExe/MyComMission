@@ -16,9 +16,8 @@ import Review from "@/app/ui/components/Review";
 import { Message01Icon } from "hugeicons-react";
 import { createChatroom } from "@/service/chatService";
 import { useRouter } from "next/navigation";
-import { GrUpgrade } from "react-icons/gr";
 import BoostModal from "@/app/ui/post/boost-modal";
-import PlanSelectModal from "@/app/ui/post/plan-select-modal";
+import PostBoostingButton from "@/app/ui/post/post-boosting-button";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
@@ -74,13 +73,6 @@ export default function ProfilePage() {
 		}
 
 	};
-	const openBoostPostModal = (modalId: string) => {
-		(
-			document.getElementById(
-				modalId,
-			) as HTMLDialogElement
-		)?.showModal()
-	}
 
 	useEffect(() => {
 		fetchUserProfile().then((user) => {
@@ -185,20 +177,12 @@ export default function ProfilePage() {
 										</button>
 									)}
 									{userId === id && (
-										<button
-											className="flex w-1/3 items-center justify-center border-2 border-green-600 gap-2 rounded-full bg-gradient-to-r from-green-500 to-green-600 py-3 text-white hover:from-green-600 hover:to-green-700"
-											type="button"
-											onClick={()=> openBoostPostModal('postBoost')}
-										>
-											<GrUpgrade className="w-5 h-5" />
-											<span>Boost Posts</span>
-										</button>
-
+										<PostBoostingButton/>
 									)}
 								</div>
 							</div>
 						</div>
-						<BoostModal modalId="postBoost" />
+						{/* <BoostModal modalId="postBoost" /> */}
 						{/* <PostForm /> */}
 
 						{/* Switch Tab */}
