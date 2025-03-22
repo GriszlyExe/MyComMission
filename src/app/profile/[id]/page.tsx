@@ -16,13 +16,21 @@ import Review from "@/app/ui/components/Review";
 import { Message01Icon } from "hugeicons-react";
 import { createChatroom } from "@/service/chatService";
 import { useRouter } from "next/navigation";
-import { formatDate } from "@/utils/helper";
+import ReportPopup from "@/app/ui/components/ReportPopup";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { submitReport } from "@/service/reportService";
+import { Ellipsis } from "lucide-react";
+
+import { GrUpgrade } from "react-icons/gr";
+import BoostModal from "@/app/ui/post/boost-modal";
+import PlanSelectModal from "@/app/ui/post/plan-select-modal";
 
 export default function ProfilePage() {
 	const me = useAppSelector((state) => state.user.user!);
 	const [userInfo, setUserInfo] = useState<User>(me);
 	const userId = useAppSelector((state) => state.user.user?.userId);
 	const [activeTab, setActiveTab] = useState("posts");
+	const [isReportOpen, setIsReportOpen] = useState(false);
 	const dispatch = useAppDispatch();
 	const { id } = useParams();
 	const router = useRouter();
@@ -66,11 +74,22 @@ export default function ProfilePage() {
 				throw new Error("Something went wrong!");
 			}
 
-			router.push("/chat")			
+			router.push("/chat");
 		} catch (error) {
 			console.error(error);
 		}
+	};
+	const openBoostPostModal = (modalId: string) => {
+		(document.getElementById(modalId) as HTMLDialogElement)?.showModal();
+	};
 
+	const handleReportSubmit = async (reportData: {
+		targetType: string;
+		targetId: string;
+		description: string;
+	}) => {
+		console.log("clicked");
+		await submitReport({ data: reportData });
 	};
 
 	useEffect(() => {
@@ -78,9 +97,8 @@ export default function ProfilePage() {
 			if (user.userId === userId) {
 				dispatch(setUser(user));
 			}
-			
+
 			setUserInfo(user);
-			
 		});
 	}, []);
 
@@ -93,7 +111,7 @@ export default function ProfilePage() {
 
 			<div className="mx-auto flex w-full flex-row items-start justify-center">
 				{/* Left Sidebar */}
-				<div className="mt-20 w-1/4 hidden md:mx-4 md:block">
+				<div className="mt-20 hidden w-1/4 md:mx-4 md:block">
 					<SuggestedBar />
 				</div>
 
@@ -119,6 +137,34 @@ export default function ProfilePage() {
 
 							{/* Information */}
 							<div className="w-full">
+								{/* Report */}
+								{userId !== id && (
+									<>
+										<div className="relative mt-4">
+											<button
+												onClick={() =>
+													setIsReportOpen(true)
+												}
+												className="p-3 text-gray-600 hover:text-gray-800"
+											>
+												<Ellipsis className="absolute right-4 top-0 h-6 w-6" />
+											</button>
+										</div>
+
+										{/* Report Popup */}
+										<ReportPopup
+											isOpen={isReportOpen}
+											onClose={() =>
+												setIsReportOpen(false)
+											}
+											onSubmit={handleReportSubmit}
+											title="Report This User"
+											targetId={id as string}
+											targetType="USER"
+										/>
+									</>
+								)}
+								{/* end of report */}
 								<div className="m-16 flex flex-col gap-2">
 									<div>
 										<h1 className="text-2xl font-bold">
@@ -175,10 +221,23 @@ export default function ProfilePage() {
 											Message
 										</button>
 									)}
+
+									{userId === id && (
+										<button
+											className="flex w-1/3 items-center justify-center gap-2 rounded-full border-2 border-green-600 bg-gradient-to-r from-green-500 to-green-600 py-3 text-white hover:from-green-600 hover:to-green-700"
+											type="button"
+											onClick={() =>
+												openBoostPostModal("postBoost")
+											}
+										>
+											<GrUpgrade className="h-5 w-5" />
+											<span>Boost Posts</span>
+										</button>
+									)}
 								</div>
 							</div>
 						</div>
-
+						<BoostModal modalId="postBoost" />
 						{/* <PostForm /> */}
 
 						{/* Switch Tab */}

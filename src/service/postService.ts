@@ -227,3 +227,96 @@ export const getRandomPosts = async () => {
     }
 
 }
+
+/* GET boosted posts from a specific user */
+export const getBoostedPostsByUserId = async (userId: string) => {
+	try {
+		const options: AxiosRequestConfig = {
+			method: "GET",
+			url: `${serverAddr}/post/boost/from/${userId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
+
+		const { data } = await axios.request(options);
+		return data;
+	} catch (err) {
+		throw err;
+	}
+};
+
+/* GET all boosted posts */
+export const getAllBoostedPosts = async () => {
+	try {
+		const options: AxiosRequestConfig = {
+			method: "GET",
+			url: `${serverAddr}/post/get/boost`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
+
+		const {
+			data: { posts },
+		} = await axios.request(options);
+		return posts;
+	} catch (err) {
+		throw err;
+	}
+};
+
+/* GET all non-boosted posts */
+export const getAllNonBoostedPosts = async () => {
+	try {
+		const options: AxiosRequestConfig = {
+			method: "GET",
+			url: `${serverAddr}/post/get/non-boost`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
+
+		const {
+			data: { posts },
+		} = await axios.request(options);
+		return posts;
+	} catch (err) {
+		throw err;
+	}
+};
+
+/* GET random boosted posts */
+export const getRandomBoostedPosts = async () => {
+	try {
+		const options: AxiosRequestConfig = {
+			method: "GET",
+			url: `${serverAddr}/post/random/boost`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
+
+		const {
+			data: { posts },
+		} = await axios.request(options);
+		return posts;
+	} catch (err) {
+		throw err;
+	}
+};
+
+/* GET random non-boosted posts */
+export const getRandomNonBoostedPosts = async () => {
+	try {
+		const options: AxiosRequestConfig = {
+			method: "GET",
+			url: `${serverAddr}/post/random/non-boost`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
+
+		const {
+			data: { posts },
+		} = await axios.request(options);
+		return posts;
+	} catch (err) {
+		throw err;
+	}
+};

@@ -1,20 +1,49 @@
 import React, { useState } from 'react'
-import { XSquareIcon, TextSelect, SendIcon } from "lucide-react";
+import { XSquareIcon, TextSelect, SendIcon, AlarmClockIcon, BadgeAlert } from "lucide-react";
 import { OptionButton } from './Button';
 import "daisyui";
 import { BriefForm } from '@/app/ui/chat/brief/BriefForm';
 import { SendArtworkForm } from './SendArtworkForm';
 import { PostponeForm } from './PostponeForm';
 import { states, isBriefExist } from './commissionState';
+import { submitReport } from "@/service/reportService";
+import ReportPopup from "@/app/ui/components/ReportPopup";
 import { useAppSelector } from '@/states/hook';
+import { getChatroom } from '@/service/chatService';
+
+
 export default function ChatOptions() {
 
-    const loggedInUserId = useAppSelector(state => state.user.user!.userId);
-    const latestCommission = useAppSelector(state => state.commission.latestComission);
-    const isCustomer = loggedInUserId === latestCommission?.customerId;
-    const canCreateBrief = !latestCommission || (latestCommission && latestCommission.state === "FINISHED");
-    const isWorking = latestCommission && latestCommission.state === states.working;
+    const [isBriefCreated, setisBriefCreated] = useState(false);
+    const state = states.brief
+    const [refresh, setRefresh] = useState(false);
+    const [isReportOpen, setIsReportOpen] = useState(false);
+    function openForm(file_name: string) {
+        const form = document.getElementById(file_name)
+        if (form != null) {
+            setRefresh(prev => !prev);
+            form.showModal();
+        }
+    }
+    const chatRoomId = useAppSelector(state => {
+        if (state.chat?.activeRoom) {
+            return state.chat.activeRoom.chatRoomId;
+        }
+        return null;
+    });
 
+    const handleReportSubmit = async (reportData: { targetType: string; targetId: string; description: string }) => {
+		console.log('clicked')
+        if (chatRoomId) {
+            console.log("chatroomId: ", chatRoomId);
+            const chatroom = await getChatroom(chatRoomId);
+            console.log("chatroom: ", chatroom);
+            reportData.targetId = chatroom.latestCommission.commissionId;
+            await submitReport({ data: reportData });
+        } else {
+            console.log('chatRoomId does not exist')
+        }
+	};
     return (
         <div>
             <div className="flex justify-around w-4/5 min-h-12 mb-5">
@@ -32,7 +61,20 @@ export default function ChatOptions() {
                 </OptionButton>
                 {isWorking && !isCustomer && <OptionButton onClick={() => openForm('SendArtworkForm')} >
                     <SendIcon size={24} /> <span>Send Artwork</span>
-                </OptionButton>}
+                </OptionButton>
+                <OptionButton onClick={() => setIsReportOpen(true)}>
+                    <BadgeAlert size={24} /> <span>Report</span>
+                </OptionButton>
+                {/* Report Popup */}
+                <ReportPopup
+                    isOpen={isReportOpen}
+                    onClose={() => setIsReportOpen(false)}
+                    onSubmit={handleReportSubmit}
+                    title="Report This Commission"
+                    targetId=""
+                    targetType="COMMISSION"
+
+                />
 
 
             </div>

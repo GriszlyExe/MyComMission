@@ -30,6 +30,22 @@ export const getChatrooms = async (userId: string) => {
 	}
 };
 
+export const getChatroom = async (chatroomId: string) => {
+	try {
+		const options = {
+			method: "GET",
+			url: `${serverAddr}/chat/chatroom/get/${chatroomId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
+
+		const res = await axios.request(options);
+		return res.data.chatroom;
+	} catch (error) {
+		throw error;
+	}
+};
+
 export const getMessageChatroom = async (chatroomId: string) => {
 	try {
 		const options = {

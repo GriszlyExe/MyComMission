@@ -11,7 +11,10 @@ import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { hidePost } from "@/service/postService";
 import { editPagePost, editUserPost } from "@/states/features/postSlice";
 import ImageModal from "./ImageModal";
-import { formatDate } from "@/utils/helper";
+import ReportPopup from "@/app/ui/components/ReportPopup";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { submitReport } from "@/service/reportService";
+import { Ellipsis } from "lucide-react";
 
 interface PostProps {
 	post: Post;
@@ -23,6 +26,7 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
+	const [isReportOpen, setIsReportOpen] = useState(false);
 	const userId = useAppSelector((state) => state.user.user!.userId);
 	const isHide = post.isHide;
 	const dispatch = useAppDispatch();
@@ -56,6 +60,11 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 		price: post.price!,
 		postTags: post.postTags!,
 	};
+	
+	const handleReportSubmit = async (reportData: { targetType: string; targetId:string;description: string }) => {
+		console.log('clicked')
+		await submitReport({ data: reportData });
+	  };
 	
 	return (
 		<>
@@ -111,7 +120,27 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 								/>
 							</div>
 						)}
+						
 					</div>}
+					{/* Report */}
+					{userId != post.artistId && (
+							<>
+							<div className="mt-4 relative">
+								<button onClick={() => setIsReportOpen(true)} className="text-gray-600 hover:text-gray-800 p-3">
+									<Ellipsis className="w-6 h-6 top-0 right-4 absolute" />
+								</button>
+							</div>
+							{/* Report Popup */}
+							<ReportPopup
+								isOpen={isReportOpen}
+								onClose={() => setIsReportOpen(false)}
+								onSubmit={handleReportSubmit}
+								title="Report This Post"
+								targetId={post.postId}
+								targetType="POST"
+								
+							/></>
+						)}
 				</div>
 
 				{/* Tags */}
