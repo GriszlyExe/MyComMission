@@ -6,7 +6,7 @@ export default function ManagePostsPage() {
   return (
 
 
-    <div className='max-w-full mx-auto p-6'>
+    <div className='max-w-2xl mx-auto p-6 space-y-4'>
             <Breadcrumbs
                 breadcrumbs={[
                     { label: 'Home', href: '/home' },

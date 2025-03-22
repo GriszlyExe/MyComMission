@@ -39,21 +39,24 @@ export default function ManageBoostedPost({ post, user }: BoostedPostProps) {
             >
                 {/* Image */}
                 {images.length > 0 && (
-                    <div className="relative h-64 overflow-hidden hover:contrast-75"
-                        onClick={() =>
-                            (
-                                document.getElementById(
-                                    `post-modal-${post.postId}`
-                                ) as HTMLDialogElement
-                            )?.showModal()
-                        }>
-                        <img
-                            src={images[0].preview || "/path/to/default/image.jpg"}
-                            alt="boosted post image"
-                            // className="h-full w-full object-cover transition-all duration-300 group-hover:opacity-75 group-hover:brightness-50 cursor-pointer"
-                            className="w-auto h-auto sm:h-full sm:w-full overflow-hidden rounded-sm border border-gray-300 object-cover"
-                        />
-                        <InfoIcon className="absolute right-2 top-2 text-3xl text-white" />
+                    <div className="">
+
+                        <div className="p-1 relative h-32 w-32 sm:h-48 sm:w-48 overflow-hidden hover:contrast-75"
+                            onClick={() =>
+                                (
+                                    document.getElementById(
+                                        `post-modal-${post.postId}`
+                                    ) as HTMLDialogElement
+                                )?.showModal()
+                            }>
+                            <img
+                                src={images[0].preview || "/path/to/default/image.jpg"}
+                                alt="boosted post image"
+                                // className="h-full w-full object-cover transition-all duration-300 group-hover:opacity-75 group-hover:brightness-50 cursor-pointer"
+                                className="w-auto h-auto sm:h-full sm:w-full overflow-hidden rounded-sm border border-gray-300 object-cover"
+                            />
+                            <InfoIcon className="absolute right-2 top-2 text-3xl text-white" />
+                        </div>
                     </div>
                 )}
                 <div className="flex flex-col items-center gap-y-3">

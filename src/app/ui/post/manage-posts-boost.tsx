@@ -1,6 +1,6 @@
 import FeedProfileWidget from "../components/FeedProfileWidget";
 import { useAppDispatch, useAppSelector } from "@/states/hook";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getBoostedPostsByUserId, getPostByUserId } from "@/service/postService";
 import {
     setLoggedInUserPosts,
@@ -10,10 +10,11 @@ import { useParams } from "next/navigation";
 import UnboostedPostWidget from "../components/unboostedPostWidget";
 import ManageBoostedPost from "./manage-boosted-post";
 import PostBoostingButton from "./post-boosting-button";
+import { Post } from "@/common/model";
 
 export default function ManagePostsBoosting() {
     const dispatch = useAppDispatch();
-    const posts = useAppSelector((state) => state.post.pagePosts);
+    const [posts, setPosts] = useState<Post[]>()
     const loggedInUser = useAppSelector((state) => state.user.user!);
     const { id } = useParams();
 
@@ -21,10 +22,7 @@ export default function ManagePostsBoosting() {
     useEffect(() => {
         getBoostedPostsByUserId(loggedInUser.userId).then((data) => {
             console.log("hello", data);
-            if (id && id === loggedInUser.userId) {
-                dispatch(setLoggedInUserPosts(data));
-            }
-            dispatch(setPagePosts(data));
+            setPosts(data)
         });
     }, []);
     console.log("boosted", posts);
@@ -37,7 +35,7 @@ export default function ManagePostsBoosting() {
                 <PostBoostingButton />
             </div>
             <div className="grid gap-2">
-                {[...posts]
+                {posts && [...posts]
                     .sort(
                         (post1, post2) =>
                             new Date(post2.createdAt).getTime() -
