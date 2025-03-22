@@ -40,10 +40,28 @@ const changeProfilePicture = async (userId: string, picture: FormData) => {
 	}
 };
 
+export const getSuggestedArtist = async (amount: number) => {
+	try {
+
+		const options: AxiosRequestConfig = {
+			method: "GET",
+			url: `${serverAddr}/user/top-artists/${amount}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
+
+		const { data: { artists }} = await axios.request(options);
+
+		return artists;
+		
+	} catch (error) {
+		throw error;
+	}
+}
+
 export const updateUser = async (forms: any) => {
 	try {
 		console.log(`update user called`);
-		// console.log(forms);
 
 		const { user, picture } = forms;
 		const userId = user.userId;

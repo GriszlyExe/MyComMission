@@ -14,13 +14,16 @@ import { setUser } from "@/stores/features/userSlice";
 import AccountFormikInput from "./account-formik-input";
 
 export default function EditAccountForm() {
-
-	const loggedInUser = useAppSelector(state => state.user.user);
+	const loggedInUser = useAppSelector((state) => state.user.user);
 	const router = useRouter();
 
 	const dispatch = useAppDispatch();
 
-	const [previewPic, setPreviewPic] = useState(() => loggedInUser?.profileUrl ? loggedInUser?.profileUrl : "/default-profile-2.png");
+	const [previewPic, setPreviewPic] = useState(() =>
+		loggedInUser?.profileUrl
+			? loggedInUser?.profileUrl
+			: "/default-profile-2.png",
+	);
 	const [showSubmitPopup, setShowSubmitPopup] = useState(false);
 
 	type formSchema = yup.InferType<typeof accountSchema>;
@@ -33,15 +36,15 @@ export default function EditAccountForm() {
 		description: undefined,
 		phone: loggedInUser?.phone,
 		email: loggedInUser?.email,
+		description: loggedInUser?.description,
+		location: loggedInUser?.location,
 	};
 
 	const handleSubmit = async (
 		values: formSchema,
 		actions: FormikHelpers<formSchema>,
 	) => {
-
 		try {
-
 			const { profilePic, ...others } = values;
 			const data = {
 				...others,
@@ -66,11 +69,9 @@ export default function EditAccountForm() {
 			}, 3000);
 
 			// router.refresh();
-
 		} catch (err) {
 			console.error(err);
 		}
-
 	};
 
 	return (
@@ -99,62 +100,119 @@ export default function EditAccountForm() {
 										height={100}
 									/>
 								</div>
+								<fieldset className="fieldset flex flex-col">
+									<legend className="fieldset-legend font-semibold">
+										Pick a file
+									</legend>
+									<input
+										type="file"
+										name="profilePic"
+										accept="image/*"
+										onChange={(event) => {
+											const file =
+												event.target.files?.[0];
+											if (file) {
+												setFieldValue(
+													"profilePic",
+													file,
+												);
 
-								<input
-									type="file"
-									name="profilePic"
-									accept="image/*"
-									onChange={(event) => {
-										const file = event.target.files?.[0];
-										if (file) {
-											setFieldValue("profilePic", file);
-
-											// Generate preview URL
-											const reader = new FileReader();
-											reader.onloadend = () => {
-												if (
-													typeof reader.result ===
-													"string"
-												) {
-													setPreviewPic(
-														reader.result,
-													);
-												}
-											};
-											reader.readAsDataURL(file);
-										}
-									}}
-									className="mt-2 rounded p-3 text-sm font-bold"
-								/>
+												// Generate preview URL
+												const reader = new FileReader();
+												reader.onloadend = () => {
+													if (
+														typeof reader.result ===
+														"string"
+													) {
+														setPreviewPic(
+															reader.result,
+														);
+													}
+												};
+												reader.readAsDataURL(file);
+											}
+										}}
+										className="file-input max-w-60 max-h-10 ml-0 pl-0 file-input-primary"
+									/>
+									<label className="fieldset-label font-semibold">
+										Max size 2MB
+									</label>
+								</fieldset>
 							</div>
-							<AccountFormikInput label="Display Name" type="text" name="displayName"
-								errors={errors.displayName} touched={touched.displayName} />
+							<AccountFormikInput
+								label="Display Name"
+								type="text"
+								name="displayName"
+								errors={errors.displayName}
+								touched={touched.displayName}
+							/>
+							<div className="flex flex-row justify-between">
+								<div className="flex flex-col gap-2">
+									<AccountFormikInput
+										label="First Name"
+										type="text"
+										name="firstName"
+										errors={errors.firstName}
+										touched={touched.firstName}
+									/>
+									<AccountFormikInput
+										label="Birth Date"
+										type="date"
+										name="birthDate"
+										errors={errors.birthDate}
+										touched={touched.birthDate}
+									/>
+								</div>
+								<div className="flex flex-col gap-2">
+									<AccountFormikInput
+										label="Last Name"
+										type="text"
+										name="lastName"
+										errors={errors.lastName}
+										touched={touched.lastName}
+									/>
+									<AccountFormikInput
+										label="Phone Number"
+										type="tel"
+										name="phone"
+										errors={errors.phone}
+										touched={touched.phone}
+									/>
+								</div>
+							</div>
 
-							<AccountFormikInput label="First Name" type="text" name="firstName"
-								errors={errors.firstName} touched={touched.firstName} />
+							<AccountFormikInput
+								label="Email"
+								type="email"
+								name="email"
+								errors={errors.email}
+								touched={touched.email}
+							/>
 
-							<AccountFormikInput label="Last Name" type="text" name="lastName"
-								errors={errors.lastName} touched={touched.lastName} />
-
-							<AccountFormikInput label="Birth Date" type="date" name="birthDate"
-								errors={errors.birthDate} touched={touched.birthDate} />
-
-							<AccountFormikInput label="Phone Number" type="tel" name="phone"
-								errors={errors.phone} touched={touched.phone} />
-
-							<AccountFormikInput label="Email" type="email" name="email"
-								errors={errors.email} touched={touched.email} />
-							{/* <AccountFormikInput label="Description" type="text" name="description"
-								errors={errors.description} touched={touched.description} /> */}
+							<AccountFormikInput
+								label="Description"
+								type="text"
+								name="description"
+								errors={errors.description}
+								touched={touched.description}
+							/>
+							<AccountFormikInput
+								label="Location"
+								type="text"
+								name="location"
+								errors={errors.location}
+								touched={touched.location}
+							/>
 
 							<div className="flex items-center justify-center">
 								<button
 									type="submit"
 									disabled={isSubmitting}
-									className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${isSubmitting
-										? "cursor-not-allowed bg-gray-400"
-										: "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
-										}`}
+									className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${
+										isSubmitting
+											? "cursor-not-allowed bg-gray-400"
+											: "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+									}`}
 								>
 									Save Changes
 								</button>

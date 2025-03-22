@@ -20,7 +20,6 @@ import ReportPopup from "@/app/ui/components/ReportPopup";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { submitReport } from "@/service/reportService";
 import { Ellipsis } from "lucide-react";
-
 import BoostModal from "@/app/ui/post/boost-modal";
 import PostBoostingButton from "@/app/ui/post/post-boosting-button";
 import { formatDate } from "@/utils/helper";
@@ -111,10 +110,14 @@ export default function ProfilePage() {
 						<div className="mb-10 flex flex-row">
 							<div>
 								{/* User profile */}
-								<div className="ml-16 mt-16 aspect-square w-50 overflow-hidden rounded-full p-[4px]">
-									<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
+								<div className="ml-16 mt-16 aspect-square w-44 overflow-hidden rounded-full p-[4px]">
+									<div className="flex h-full w-full justify-center overflow-hidden rounded-full bg-gray-300">
 										<img
-											src={userInfo.profileUrl ? userInfo.profileUrl : "/default-profile-2.png"}
+											src={
+												userInfo.profileUrl
+													? userInfo.profileUrl
+													: "/default-profile-2.png"
+											}
 											alt=""
 											width={112}
 											height={112}
@@ -125,7 +128,7 @@ export default function ProfilePage() {
 							</div>
 
 							{/* Information */}
-							<div className="w-full">
+							<div className="flex w-full flex-row items-center">
 								{/* Report */}
 								{userId !== id && (
 									<>
@@ -136,21 +139,9 @@ export default function ProfilePage() {
 												}
 												className="p-3 text-gray-600 hover:text-gray-800"
 											>
-												<Ellipsis className="absolute right-4 top-0 h-6 w-6" />
+												{/* <Ellipsis className="absolute right-4 top-0 h-6 w-6" /> */}
 											</button>
 										</div>
-
-										{/* Report Popup */}
-										<ReportPopup
-											isOpen={isReportOpen}
-											onClose={() =>
-												setIsReportOpen(false)
-											}
-											onSubmit={handleReportSubmit}
-											title="Report This User"
-											targetId={id as string}
-											targetType="USER"
-										/>
 									</>
 								)}
 								{/* end of report */}
@@ -159,16 +150,16 @@ export default function ProfilePage() {
 										<h1 className="text-2xl font-bold">
 											{`${userInfo.firstName} ${userInfo.lastName}`}
 										</h1>
-										<span className="text-textGray text-sm">
+										<span className="text-textGray text-sm font-semibold">
 											@{userInfo.displayName}
 										</span>
 									</div>
-									<p>I'm gonna be king of pirate</p>
+									<p className="text-md">{userInfo.description}</p>
 
 									<div className="flex gap-4 text-base">
 										<div className="flex items-center gap-2">
 											<FaLocationDot />
-											<span>Laugh Tale</span>
+											<span>{userInfo.location}</span>
 										</div>
 										<div className="flex items-center gap-2">
 											<FaCalendarDay />
@@ -198,21 +189,22 @@ export default function ProfilePage() {
 									</div>
 
 									{/* Start chat */}
-									{userId !== id && (
+									{userId !== id ? (
 										<button
-											className="flex w-1/3 justify-center gap-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 py-3 text-white hover:from-blue-700 hover:to-purple-700"
+											// className="flex w-1/3 justify-center gap-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 py-3 text-white hover:from-blue-700 hover:to-purple-700"
+											className="flex w-1/3 flex-row items-center justify-center gap-2 rounded-md bg-primary p-3 hover:bg-accent"
 											type="button"
 											onClick={() => {
 												handleTabCreateChat();
 											}}
 										>
-											<Message01Icon className="scale-110" />
-											Message
+											<Message01Icon className="scale-120 font-bold text-white" />
+											<span className="text-md text-white">
+												Message
+											</span>
 										</button>
-									)}
-
-									{userId === id && (
-										<PostBoostingButton/>
+									) : (
+										<PostBoostingButton />
 									)}
 								</div>
 							</div>
@@ -247,6 +239,16 @@ export default function ProfilePage() {
 								</button>
 							</div>
 						</div>
+
+						{/* Report Popup */}
+						{/* <ReportPopup
+							isOpen={isReportOpen}
+							onClose={() => setIsReportOpen(false)}
+							onSubmit={handleReportSubmit}
+							title="Report This User"
+							targetId={id as string}
+							targetType="USER"
+						/> */}
 
 						{/* Feed */}
 						{activeTab === "posts" && <FeedProfile />}

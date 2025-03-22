@@ -13,7 +13,7 @@ interface TextInputProps {
 export default function AccountFormikInput({ label, type, name, errors, touched }: TextInputProps) {
     return (
         <div>
-            <label className="mb-2 block text-sm font-bold text-gray-700">
+            <label className="mb-1 block text-sm font-bold text-gray-700">
                 {label}
             </label>
             <Field

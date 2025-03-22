@@ -1,7 +1,8 @@
 export type User = {
     userId: string;
     birthDate: Date | string;
-    bio: string;
+    description: string;
+    location: string;
     firstName: string;
     lastName: string;
     artistFlag: Boolean;

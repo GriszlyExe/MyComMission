@@ -123,6 +123,9 @@ export const accountSchema = yup.object().shape({
 
     profilePic: yup
         .string(),
+
+    location: yup.string().max(100, "Location is too long").required("location is required"),
+    description: yup.string().max(100, "Description is too long").required("description is required")
 })
 
 export const postSchema = yup.object().shape({
