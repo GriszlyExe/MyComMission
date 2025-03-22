@@ -99,9 +99,21 @@ export default function ProfilePage() {
 				{/* Center Feed */}
 				<div className="mt-20 flex w-full max-w-3xl md:mx-4">
 					<div className="w-full rounded-md bg-base-300">
+						{/* Profile (mobile) */}
+						<div className="sm:hidden ml-16 mt-16 aspect-square w-40 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
+							<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
+								<img
+									src={userInfo.profileUrl}
+									alt=""
+									width={112}
+									height={112}
+									className="h-full w-full overflow-hidden rounded-full object-cover"
+								/>
+							</div>
+						</div>
 						{/* Profile */}
-						<div className="mb-10 flex flex-row">
-							<div>
+						<div className="flex flex-row">
+							<div className="hidden sm:block">
 								{/* User profile */}
 								<div className="ml-16 mt-16 aspect-square w-40 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
 									<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
@@ -164,7 +176,7 @@ export default function ProfilePage() {
 									{/* Start chat */}
 									{userId !== id && (
 										<button
-											className="flex w-1/3 justify-center gap-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 py-3 text-white hover:from-blue-700 hover:to-purple-700"
+											className="mt-6 flex w-1/2 md:w-1/3 justify-center gap-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 py-3 text-white hover:from-blue-700 hover:to-purple-700"
 											type="button"
 											onClick={() => {
 												handleTabCreateChat();
