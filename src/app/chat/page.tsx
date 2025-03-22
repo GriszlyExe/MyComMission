@@ -4,12 +4,13 @@ import React, { useEffect, useState } from "react";
 import TopNav from "@/app/ui/global/nav-bar";
 
 /* redux */
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import ChatRoomItem from "@/app/ui/chat/ChatRoomItem";
 import ChatWindow from "../ui/chat/ChatWindow";
 import { getChatrooms } from "@/service/chatService";
 
-import { setChatRooms } from "@/states/features/chatSlice";
+import { setChatRooms } from "@/stores/features/chatSlice";
+import { formatDate } from "@/utils/helper";
 
 const Page = () => {
 
@@ -24,13 +25,15 @@ const Page = () => {
 	});
 
 	useEffect(() => {
-		//Fetch Chatroom
+		
 		const fetchChatrooms = async () => {
 			const chatrooms = await getChatrooms(userId);
-			// console.log(chatrooms);
+			console.log(chatrooms);
 			dispatch(setChatRooms(chatrooms));
 		};
-		fetchChatrooms()
+
+		fetchChatrooms();
+
 	}, [userId])
 
 	// useEffect(() => {
@@ -46,12 +49,11 @@ const Page = () => {
 			</div>
 
 			{/* content */}
-
-			<div className="mt-24 flex max-h-[600px] flex-row bg-gray-100 w-9/12 justify-around gap-3 p-3 overflow-hidden">
+			<div className="mt-20 flex md:max-h-[600px] flex-row bg-gray-100 w-5/6 justify-around gap-3 p-3 overflow-hidden">
 
 				{/* Chat rooms list */}
-				<div className="flex flex-col w-1/4 gap-2 overflow-y-auto scrollbar-hidden p-1">
-					{rooms.map(room => (
+				<div className="flex flex-col w-1/4 gap-2 overflow-y-auto scrollbar-hidden p-3 bg-secondary rounded-lg">
+					{[...rooms].sort((a, b) => new Date(b.lastTimeStamp).getTime() - new Date(a.lastTimeStamp).getTime()).map(room => (
 						<ChatRoomItem key={room.chatRoomId} chatRoom={room}  />
 					))}
 				</div>

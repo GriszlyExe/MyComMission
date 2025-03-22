@@ -7,9 +7,9 @@ import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { Post, User } from "@/common/model";
 import Link from "next/link";
 import { string } from "yup";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { hidePost } from "@/service/postService";
-import { editPagePost, editUserPost } from "@/states/features/postSlice";
+import { editPagePost, editUserPost } from "@/stores/features/postSlice";
 import ImageModal from "./ImageModal";
 import ReportPopup from "@/app/ui/components/ReportPopup";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
@@ -23,8 +23,11 @@ interface PostProps {
 	isInsideModal?: boolean; // New prop to prevent pop-up in modal
 }
 
-export default function PostWidget({ post, user, isInsideModal = false }: PostProps) {
-
+export default function PostWidget({
+	post,
+	user,
+	isInsideModal = false,
+}: PostProps) {
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
 	const [isReportOpen, setIsReportOpen] = useState(false);
@@ -36,7 +39,7 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 		setLiked(!liked);
 		setLikes(likes + (liked ? -1 : 1));
 	};
-	
+
 	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
 	const images = [post.picUrl1, post.picUrl2, post.picUrl3, post.picUrl4]
@@ -50,10 +53,8 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 			await hidePost(post.postId, !isHide);
 			dispatch(editUserPost({ ...post, isHide: !isHide }));
 			dispatch(editPagePost({ ...post, isHide: !isHide }));
-		} catch (err) {
-			
-		}
-	}
+		} catch (err) {}
+	};
 
 	const editFormProps = {
 		postDescription: post.postDescription!,
@@ -61,74 +62,90 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 		price: post.price!,
 		postTags: post.postTags!,
 	};
-	
-	const handleReportSubmit = async (reportData: { targetType: string; targetId:string;description: string }) => {
-		console.log('clicked')
+
+	const handleReportSubmit = async (reportData: {
+		targetType: string;
+		targetId: string;
+		description: string;
+	}) => {
+		console.log("clicked");
 		await submitReport({ data: reportData });
-	  };
-	
+	};
+
 	return (
 		<>
-			<div className="card rounded-md w-full border border-gray-200 shadow-md bg-white p-4">
+			<div className="card w-full rounded-md border border-gray-200 bg-white p-4 shadow-md">
 				{/* Post Header */}
 				<div className="flex items-center justify-between">
 					<div className="flex items-center space-x-3">
 						<div className="aspect-square">
-							<img
-								src={user ? user.profileUrl : "/default-profile-2.png"}
-								alt="User Avatar"
-								width={50}
-								height={50}
-								className="h-full overflow-hidden rounded-full object-cover"
-							/>
+							<Link href={`/profile/${post.artistId}`}>
+								<img
+									src={
+										user
+											? user.profileUrl
+											: "/default-profile-2.png"
+									}
+									alt="User Avatar"
+									width={50}
+									height={50}
+									className="h-full overflow-hidden rounded-full object-cover"
+								/>
+							</Link>
 						</div>
 						<div>
 							<Link href={`/profile/${post.artistId}`}>
-								<p className="font-semibold">
+								<p className="font-semibold hover:underline">
 									{user ? user.displayName : "display name"}
 								</p>
 							</Link>
-							<p className="text-xs text-gray-500">{formatDate(post.createdAt)}</p>
+							<p className="text-xs text-gray-500">
+								{formatDate(post.createdAt)}
+							</p>
 						</div>
 					</div>
-					{(userId === post.artistId) && <div className="flex gap-4">
-						{/* Eyes off */}
-						{isHide && (
-							<div
-								className="flex cursor-pointer gap-2 hover:text-red-600"
-								onClick={toggleHidePost}
-							>
-								<EyeOffIcon className="my-3" />
-								<p className="py-3 font-semibold">hidden</p>
-							</div>
-						)}
+					{userId === post.artistId && (
+						<div className="flex gap-4">
+							{/* Eyes off */}
+							{isHide && (
+								<div
+									className="flex cursor-pointer gap-2 hover:text-red-600"
+									onClick={toggleHidePost}
+								>
+									<EyeOffIcon className="my-3" />
+									<p className="py-3 font-semibold">hidden</p>
+								</div>
+							)}
 
-						{/* Eyes on */}
-						{!isHide && (
-							<div
-								className="flex cursor-pointer gap-2 hover:text-red-600"
-								onClick={toggleHidePost}
-							>
-								<EyeIcon className="my-3" />
-								<p className="py-3 font-semibold">public</p>
-							</div>
-						)}
-						{userId == post.artistId && (
-							<div className="flex gap-6">
-								<EditPostForm
-									post={editFormProps}
-									postId={post.postId}
-								/>
-							</div>
-						)}
-						
-					</div>}
+							{/* Eyes on */}
+							{!isHide && (
+								<div
+									className="flex cursor-pointer gap-2 hover:text-red-600"
+									onClick={toggleHidePost}
+								>
+									<EyeIcon className="my-3" />
+									<p className="py-3 font-semibold">public</p>
+								</div>
+							)}
+							{userId == post.artistId && (
+								<div className="flex gap-6">
+									<EditPostForm
+										post={editFormProps}
+										postId={post.postId}
+									/>
+								</div>
+							)}
+						</div>
+					)}
 					{/* Report */}
 					{userId != post.artistId && (
-							<>
-							<div className="mt-4 relative">
-								<button onClick={() => setIsReportOpen(true)} className="text-gray-600 hover:text-gray-800 p-3">
-									<Ellipsis className="w-6 h-6 top-0 right-4 absolute" />
+						<>
+							<div className="relative mt-4">
+								<button
+									onClick={() => setIsReportOpen(true)}
+									className="p-3 text-gray-600 hover:text-gray-800"
+								>
+									<Ellipsis className="absolute right-4 top-0 h-6 w-6" />
 								</button>
 							</div>
 							{/* Report Popup */}
@@ -139,21 +156,22 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 								title="Report This Post"
 								targetId={post.postId}
 								targetType="POST"
-								
-							/></>
-						)}
+							/>
+						</>
+					)}
 				</div>
 
 				{/* Tags */}
 				<div className="mt-3 flex flex-wrap gap-1">
-					{post.postTags && post.postTags.map((tag) => (
-						<div
-							key={`${post.postId}-${tag}`}
-							className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"
-						>
-							{tag}
-						</div>
-					))}
+					{post.postTags &&
+						post.postTags.map((tag) => (
+							<div
+								key={`${post.postId}-${tag}`}
+								className="mb-1 flex items-center rounded-full bg-neutral px-2 py-1 text-white"
+							>
+								{tag}
+							</div>
+						))}
 				</div>
 
 				{/* Post Content */}
@@ -161,7 +179,7 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 				{/* Display multiple images */}
 
 				{images.length > 0 && (
-					<div className="carousel w-full mt-2 h-[380px] rounded-box">
+					<div className="carousel mt-2 h-[380px] w-full rounded-box">
 						{" "}
 						{images.map((src, index) => {
 							// console.log(src);
@@ -178,13 +196,14 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 										alt={`Post Image ${index + 1}`}
 										width={800}
 										height={400}
-										className="rounded-lg w-full h-full object-cover"
+										className="h-full w-full rounded-lg object-cover"
 										onClick={() => {
-											if(!isInsideModal){ // Prevent modal inside modal
+											if (!isInsideModal) {
+												// Prevent modal inside modal
 												setSelectedImage(src.preview);
 											}
-											console.log("click")}
-										}
+											console.log("click");
+										}}
 									/>
 								</div>
 							);
@@ -212,7 +231,12 @@ export default function PostWidget({ post, user, isInsideModal = false }: PostPr
 				</div>
 
 				{/* Image Modal */}
-				{selectedImage && <ImageModal imageSrc={selectedImage} onClose={() => setSelectedImage(null)} />}
+				{selectedImage && (
+					<ImageModal
+						imageSrc={selectedImage}
+						onClose={() => setSelectedImage(null)}
+					/>
+				)}
 			</div>
 		</>
 	);

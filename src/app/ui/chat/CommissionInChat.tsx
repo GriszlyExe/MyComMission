@@ -1,7 +1,7 @@
 "use client";
 
 import { Commission } from "@/common/model";
-import { useAppSelector } from "@/states/hook";
+import { useAppSelector } from "@/stores/hook";
 import { formatDate } from "@/utils/helper";
 import { CheckmarkCircle01Icon } from "hugeicons-react";
 import { XSquareIcon } from "lucide-react";

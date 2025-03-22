@@ -8,12 +8,12 @@ import {
 	createCommission,
 	getCommissionById,
 } from "@/service/commissionService";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { io } from "socket.io-client";
 import { createMessage } from "@/service/chatService";
 import { useEffect, useState } from "react";
 import { isCommissionEnded } from "../commissionState";
-import { setLatestCommission } from "@/states/features/commisionSlice";
+import { setLatestCommission } from "@/stores/features/commisionSlice";
 
 interface ModalProps {
 	id: string;

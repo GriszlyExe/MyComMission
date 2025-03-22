@@ -8,7 +8,7 @@ import * as yup from "yup";
 import { SettingButtonPopup } from "./button";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { changePassword } from "@/service/userService";
-import { useAppSelector } from "@/states/hook";
+import { useAppSelector } from "@/stores/hook";
 
 export default function ChangePasswordForm() {
 	const userId = useAppSelector((state) => state.user.user!.userId);

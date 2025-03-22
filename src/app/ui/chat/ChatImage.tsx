@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ImageModal from "../components/ImageModal";
-import { useAppSelector } from "@/states/hook";
+import { useAppSelector } from "@/stores/hook";
 import { User } from "next-auth";
 import { acceptArtwork, rejectArtwork } from "@/service/commissionService";
 

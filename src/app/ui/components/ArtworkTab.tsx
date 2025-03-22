@@ -1,11 +1,11 @@
 import ArtworkWidget from "./ArtworkWidget";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { useEffect } from "react";
 import { getPostByUserId } from "@/service/postService";
 import {
     setLoggedInUserPosts,
     setPagePosts,
-} from "@/states/features/postSlice";
+} from "@/stores/features/postSlice";
 import { useParams } from "next/navigation";
 
 export default function ArtworkTab() {

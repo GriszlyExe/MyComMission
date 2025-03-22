@@ -8,7 +8,7 @@ import { PostponeForm } from './PostponeForm';
 import { states, isBriefExist } from './commissionState';
 import { submitReport } from "@/service/reportService";
 import ReportPopup from "@/app/ui/components/ReportPopup";
-import { useAppSelector } from '@/states/hook';
+import { useAppSelector } from '@/stores/hook';
 import { getChatroom } from '@/service/chatService';
 
 
@@ -16,7 +16,7 @@ export default function ChatOptions() {
 
     const loggedInUserId = useAppSelector(state => state.user.user!.userId);
     const latestCommission = useAppSelector(state => state.commission.latestComission);
-    const isCustomer = loggedInUserId === latestCommission?.customerId;
+    const isCustomer = !latestCommission || (loggedInUserId === latestCommission?.customerId);
     const canCreateBrief = !latestCommission || (latestCommission && latestCommission.state === "FINISHED");
     const isWorking = latestCommission && latestCommission.state === states.working;
     const [isReportOpen, setIsReportOpen] = useState(false);

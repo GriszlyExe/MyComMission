@@ -4,8 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { createReview } from "@/service/reviewService";
 import { useParams } from "next/navigation";
-import { useAppDispatch } from "@/states/hook";
-import { addReview } from "@/states/features/reviewSlice";
+import { useAppDispatch } from "@/stores/hook";
+import { addReview } from "@/stores/features/reviewSlice";
 
 const reviewSchema = yup.object().shape({
 	rating: yup.number().required("Rating is required"),

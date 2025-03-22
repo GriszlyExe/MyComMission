@@ -12,8 +12,8 @@ import { postSchema } from "@/common/Schemas";
 import { EditIcon } from "lucide-react";
 import { Post } from "@/common/model";
 import { updatePostInfoById } from "@/service/postService";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
-import { editPagePost, editUserPost } from "@/states/features/postSlice";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
+import { editPagePost, editUserPost } from "@/stores/features/postSlice";
 import { useParams } from "next/navigation";
 
 type EditFormSchema = yup.InferType<typeof postSchema>;

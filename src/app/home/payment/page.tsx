@@ -89,7 +89,7 @@ export default function PaymentPage() {
 								<p className="mb-4 text-lg text-gray-600">
 									Amount being paid now: 100 THB
 								</p>
-                                <button onClick={handleCreatePaymentIntent}>ClickME!</button>
+                                {/* <button onClick={handleCreatePaymentIntent}>ClickME!</button> */}
 								{activeMethod === "credit-card" && clientSecret && (
                                     <Elements stripe={stripePromise} options={{ clientSecret }}>
                                         <CreditCardForm />

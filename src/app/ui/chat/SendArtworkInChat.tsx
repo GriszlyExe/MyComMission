@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { states } from './commissionState';
 import 'daisyui'
 import { acceptArtwork, rejectArtwork } from '@/service/commissionService';
-import { useAppSelector } from '@/states/hook';
+import { useAppSelector } from '@/stores/hook';
 export default function SendArtworkInChat() {
 
     const artistId = useAppSelector(state => {

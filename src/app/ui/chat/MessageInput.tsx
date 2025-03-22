@@ -4,7 +4,7 @@ import React, { useState } from "react";
 // import { io } from "socket.io-client";
 import { Divide, Plus, X } from "lucide-react";
 import ChatOptions from "./ChatOptions";
-import { useAppSelector } from "@/states/hook";
+import { useAppSelector } from "@/stores/hook";
 
 const MessageInput = () => {
 
@@ -22,7 +22,7 @@ const MessageInput = () => {
 		e.preventDefault();
 		if (!message.trim()) return;
 
-		const CM = async () => {
+		const sendMessage = async () => {
 			await createMessage({
 				chatRoomId: activeRoomId!,
 				senderId: loggedInUserId,
@@ -32,7 +32,7 @@ const MessageInput = () => {
 
 		}
 
-		CM()
+		sendMessage()
 
 		setMessage("")
 	};

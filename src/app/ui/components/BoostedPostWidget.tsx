@@ -7,9 +7,9 @@ import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { Post, User } from "@/common/model";
 import Link from "next/link";
 import { string } from "yup";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { hidePost } from "@/service/postService";
-import { editPagePost, editUserPost } from "@/states/features/postSlice";
+import { editPagePost, editUserPost } from "@/stores/features/postSlice";
 import ImageModal from "./ImageModal";
 
 interface PostProps {

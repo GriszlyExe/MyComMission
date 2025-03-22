@@ -1,6 +1,6 @@
 "use client";
 
-import { Message } from "@/common/model";
+import { Commission, Message } from "@/common/model";
 import React, { useEffect, useRef, useState } from "react";
 import MessageItem from "./MessageItem";
 import MessageInput from "./MessageInput";
@@ -8,12 +8,13 @@ import { io } from "socket.io-client";
 import { getMessageChatroom } from "@/service/chatService";
 import SendArtworkInChat from "./SendArtworkInChat";
 import BriefInChat from "./BriefInChat";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import {
 	addMessage,
 	setMessages,
 	setReceiver,
-} from "@/states/features/chatSlice";
+	updateRoomState,
+} from "@/stores/features/chatSlice";
 import { getUserInfo } from "@/service/userService";
 
 const socket = io(process.env.SERVER_ADDRESS);
@@ -32,8 +33,10 @@ const ChatWindow = () => {
 		}
 		return null;
 	});
+
 	const messages = useAppSelector((state) => state.chat.messages);
 	const receiver = useAppSelector((state) => state.chat.activeReceiver);
+	const currentCommission = useAppSelector(state => state.chat.chatRooms.find(room => room.chatRoomId === activeRoomId)?.latestCommission);
 
 	useEffect(() => {
 		// Fetch messages from backend
@@ -52,9 +55,11 @@ const ChatWindow = () => {
 
 	useEffect(() => {
 		socket.on("receiveMessage", ({ newMessage }) => {
-			const { chatRoomId } = newMessage;
+			const { chatRoomId, commission } = newMessage;
+			console.log(newMessage);
 			if (chatRoomId === activeRoomId) {
 				dispatch(addMessage(newMessage));
+				dispatch(updateRoomState({ chatRoomId, message: newMessage, commission: commission ? commission : currentCommission}))
 			}
 		});
 

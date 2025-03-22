@@ -1,8 +1,8 @@
 "use client";
 
 import TopNav from "@/app/ui/global/nav-bar";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
-import { setUser } from "@/states/features/userSlice";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
+import { setUser } from "@/stores/features/userSlice";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";

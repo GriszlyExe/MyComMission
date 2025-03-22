@@ -5,7 +5,7 @@ import NavLinks from "./nav-links";
 import Search from "./search";
 import Link from "next/link";
 import { UserAccountIcon } from "hugeicons-react";
-import { useAppSelector } from "@/states/hook";
+import { useAppSelector } from "@/stores/hook";
 import { useRouter } from "next/navigation";
 
 export default function TopNav() {

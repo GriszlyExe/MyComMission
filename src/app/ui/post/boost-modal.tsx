@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { getPostByUserId } from "@/service/postService";
 import {
 	setLoggedInUserPosts,
 	setPagePosts,
-} from "@/states/features/postSlice";
+} from "@/stores/features/postSlice";
 import { useParams } from "next/navigation";
 import UnboostedPostWidget from "../components/unboostedPostWidget";
 import PlanSelectModal from "./plan-select-modal";

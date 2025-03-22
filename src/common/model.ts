@@ -75,4 +75,8 @@ export type ChatRoom = {
     chatRoomId: string;
     user1: User;
     user2: User;
+    latestCommission: Commission;
+    lastTimeStamp: string;
+    latestMessage: string;
+    latestMessageType: string;
 }

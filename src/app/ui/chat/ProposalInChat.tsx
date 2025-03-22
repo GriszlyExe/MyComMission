@@ -1,5 +1,5 @@
 "use client";
-import { useAppSelector } from "@/states/hook";
+import { useAppSelector } from "@/stores/hook";
 import "daisyui";
 import { Edit01Icon, CheckmarkCircle01Icon } from "hugeicons-react";
 import { XSquareIcon } from "lucide-react";

@@ -1,4 +1,4 @@
-import { Message, ChatRoom, User } from "@/common/model";
+import { Message, ChatRoom, User, Commission } from "@/common/model";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type ChatState = {
@@ -34,6 +34,24 @@ const chatSlice = createSlice({
         addMessage(state, action: PayloadAction<Message>) {
             state.messages.push(action.payload);
         },
+
+        updateRoomState(state, action: PayloadAction<{ chatRoomId: string, commission: Commission, message: Message}>) {
+            const { chatRoomId, commission, message } = action.payload;
+            console.log(action.payload);
+            state.chatRooms = state.chatRooms.map(room => {
+                if (room.chatRoomId === chatRoomId) {
+                    return {
+                        ...room,
+                        latestCommission: commission,
+                        latestMessage: message.messageType === "MESSAGE" ? message.content : "Commission on going",
+                        lastTimeStamp: message.createdAt,
+                        latestMessageType: message.messageType,
+
+                    }
+                }
+                return room;
+            })
+        }
     },
 });
 
@@ -42,7 +60,8 @@ export const {
     setActiveRoom,
     setMessages,
     addMessage,
-    setReceiver
+    setReceiver,
+    updateRoomState,
 } = chatSlice.actions;
 
 export const chatReducer = chatSlice.reducer;

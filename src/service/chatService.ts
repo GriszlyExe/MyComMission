@@ -15,14 +15,13 @@ export const getChatrooms = async (userId: string) => {
 		} = await axios.request(options);
 
 		return chatrooms.map((chatRoom: any) => {
+			const { users, ...rest } = chatRoom;
 			return {
-				chatRoomId: chatRoom.chatRoomId,
-				createdAt: chatRoom.createdAt,
+				...rest,
 				user2:
 					chatRoom.users[0].userId === userId
 						? chatRoom.users[1]
 						: chatRoom.users[0],
-				latestCommission: chatRoom.latestCommission,
 			};
 		});
 	} catch (error) {

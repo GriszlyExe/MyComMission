@@ -8,8 +8,8 @@ import * as yup from "yup";
 import { ToggleSwitch } from "./button";
 import { enable2Fa1, enable2Fa2, updateUser } from "@/service/userService";
 import { maskEmail } from "@/utils/helper";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
-import { toggle2Fa } from "@/states/features/userSlice";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
+import { toggle2Fa } from "@/stores/features/userSlice";
 
 type FormSchema = yup.InferType<typeof twoFactorCode>;
 

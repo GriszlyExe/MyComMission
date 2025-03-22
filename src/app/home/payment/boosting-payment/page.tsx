@@ -12,7 +12,7 @@ import {
 	PaymentElement,
 } from "@stripe/react-stripe-js";
 import { createPaymentIntentService, createQRPayment } from "@/service/payment";
-import { useAppSelector } from "@/states/hook";
+import { useAppSelector } from "@/stores/hook";
 
 const stripePromise = loadStripe(
 	process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,

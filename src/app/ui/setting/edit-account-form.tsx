@@ -9,8 +9,8 @@ import Image from "next/image";
 import { updateUser } from "@/service/userService";
 
 /* redux */
-import { useAppSelector, useAppDispatch } from "@/states/hook";
-import { setUser } from "@/states/features/userSlice";
+import { useAppSelector, useAppDispatch } from "@/stores/hook";
+import { setUser } from "@/stores/features/userSlice";
 
 export default function EditAccountForm() {
 	

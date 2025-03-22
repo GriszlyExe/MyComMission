@@ -1,5 +1,5 @@
 import { Commission, Message, User } from "@/common/model";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import clsx from "clsx";
 import BriefInChat from "./BriefInChat";
 import { getCommissionById } from "@/service/commissionService";
@@ -13,6 +13,7 @@ import CommissionInChat from "./CommissionInChat";
 /* React */
 import React, { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { clipText } from "@/utils/helper";
 
 const MessageItem = ({
 	messageItem,

@@ -6,10 +6,10 @@ import Link from "next/link";
 import { signupSchema } from "../../common/Schemas";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useAppDispatch } from "@/states/hook";
-import { login } from "@/states/features/authSlice"
+import { useAppDispatch } from "@/stores/hook";
+import { login } from "@/stores/features/authSlice"
 import { register } from "@/service/authService";
-import { setUser } from "@/states/features/userSlice";
+import { setUser } from "@/stores/features/userSlice";
 import { User } from "@/common/model";
 
 type RegisterSchema = {

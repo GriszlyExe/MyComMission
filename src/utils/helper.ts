@@ -14,5 +14,10 @@ export const formatDate = (isoString: string, locale: string = "en-US") => {
     }).format(date);
 };
 
+export const clipText = (text: string, n: number) => {
+    if (text.length <= n) return text;
+    return text.slice(0, n) + "...";
+}
+
 
 // export const 

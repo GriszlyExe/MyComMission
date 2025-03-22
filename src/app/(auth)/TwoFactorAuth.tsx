@@ -3,8 +3,8 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { check2FA, sendEmail } from "@/service/authService";
-import { useAppDispatch } from "@/states/hook";
-import { setUser } from "@/states/features/userSlice";
+import { useAppDispatch } from "@/stores/hook";
+import { setUser } from "@/stores/features/userSlice";
 
 export default function TwoFactorAuthPage({ email }: { email: string }) {
 

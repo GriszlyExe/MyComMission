@@ -12,9 +12,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import * as yup from "yup";
 
 /* state */
-import { useAppDispatch } from "@/states/hook";
-import { setUser } from "@/states/features/userSlice";
-import { login } from "@/states/features/authSlice";
+import { useAppDispatch } from "@/stores/hook";
+import { setUser } from "@/stores/features/userSlice";
+import { login } from "@/stores/features/authSlice";
 
 type FormSchema = yup.InferType<typeof loginSchema>;
 
