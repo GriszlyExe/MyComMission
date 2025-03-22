@@ -3,6 +3,7 @@ import PostWidget from "../components/PostWidget";
 import { RiCheckboxMultipleBlankLine } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import { InfoIcon } from "lucide-react";
+import { formatDate } from "@/utils/helper";
 interface BoostedPostProps {
     post: Post;
     user: User;
@@ -14,7 +15,7 @@ export default function ManageBoostedPost({ post, user }: BoostedPostProps) {
         .map((url) => {
             return { file: undefined, preview: url };
         });
-    const expiredDate = new Date(post.boostExpiredDate).toLocaleDateString("en-US");
+    const expiredDate = formatDate(post.boostExpiredDate);
     const openCancelModal = (open: boolean) => {
         if (open) {
             (document.getElementById(

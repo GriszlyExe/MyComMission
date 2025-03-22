@@ -23,7 +23,7 @@ export type Post = {
     postId: string;
     price: number;
     isHide: boolean;
-    boostExpiredDate: Date;
+    boostExpiredDate: string;
     artistId: string;
     postName: string;
     postTags: string[];

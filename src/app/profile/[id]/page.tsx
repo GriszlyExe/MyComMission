@@ -32,22 +32,10 @@ export default function ProfilePage() {
 	const [activeTab, setActiveTab] = useState("posts");
 	const [isReportOpen, setIsReportOpen] = useState(false);
 	const dispatch = useAppDispatch();
+
+	/* path + routes */
 	const { id } = useParams();
 	const router = useRouter();
-	const month = [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
-	];
 
 	const handleTabClick = (tab: string) => {
 		setActiveTab(tab);
@@ -79,6 +67,7 @@ export default function ProfilePage() {
 			console.error(error);
 		}
 	};
+
 	const openBoostPostModal = (modalId: string) => {
 		(document.getElementById(modalId) as HTMLDialogElement)?.showModal();
 	};
@@ -122,7 +111,7 @@ export default function ProfilePage() {
 						<div className="mb-10 flex flex-row">
 							<div>
 								{/* User profile */}
-								<div className="ml-16 mt-16 aspect-square w-40 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
+								<div className="ml-16 mt-16 aspect-square w-50 overflow-hidden rounded-full p-[4px]">
 									<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
 										<img
 											src={userInfo.profileUrl ? userInfo.profileUrl : "/default-profile-2.png"}
