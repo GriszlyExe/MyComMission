@@ -39,7 +39,7 @@ export default function UnboostedPostWidget({ post, user, isChecked, onSelect }:
                     <img
                         src={images[0].preview || "/path/to/default/image.jpg"}
                         alt=""
-                        className="h-full w-full object-cover transition-all duration-300 group-hover:opacity-75 group-hover:brightness-50 cursor-pointer"
+                        className="h-full w-full object-cover transition-all duration-300 group-hover:opacity-75 group-hover:brightness-50 cursor-pointer hover:contrast-50"
                         onClick={() =>
                             (
                                 document.getElementById(
@@ -55,7 +55,7 @@ export default function UnboostedPostWidget({ post, user, isChecked, onSelect }:
                     {/* Checkbox */}
                     <input
                         type="checkbox"
-                        className="absolute left-2 top-2 text-3xl checkbox border-gray-400 bg-white"
+                        className="absolute left-2 top-2 text-3xl checkbox border-gray-400 bg-white hover:bg-slate-200"
                         checked={checked}
                         onChange={handleCheckboxChange}
                     />

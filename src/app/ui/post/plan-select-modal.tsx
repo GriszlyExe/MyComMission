@@ -36,7 +36,8 @@ export default function PlanSelectModal({
 			console.log("Expiration Date:", selectedPlan.expiration);
 			(document.getElementById(modalId) as HTMLDialogElement)?.close();
 			router.push(
-				`/home/payment/boosting-payment?count=${selectedPosts.length}`,
+				`/home/payment/boosting-payment?posts=${encodeURIComponent(JSON.stringify(selectedPosts))}
+				&selectedPlan=${encodeURIComponent(JSON.stringify(selectedPlan))}`
 			);
 		} else {
 			console.log("No plan selected.");

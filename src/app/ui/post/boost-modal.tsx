@@ -81,7 +81,7 @@ export default function BoostModal({ modalId }: ModalProps) {
 				<div className="modal-box h-[80vh] w-11/12 max-w-5xl">
 					{/* Select All Checkbox */}
 
-					<div className="sticky top-0 z-10 flex items-center justify-between border-b bg-white p-1">
+					<div className="sticky top-0 z-10 flex items-center justify-between border-b bg-white">
 						<h1>{selectedPosts.length} Posts Selected</h1>
 						<button
 							className="flex cursor-pointer items-center justify-end rounded-2xl p-4 hover:bg-gray-300"
@@ -98,7 +98,7 @@ export default function BoostModal({ modalId }: ModalProps) {
 
 					{/* Scrollable Post Container */}
 					<div className="mt-1 max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden">
-						<div className="grid grid-cols-3 gap-2">
+						<div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
 							{posts
 								// filter only unboosted posts
 								.filter(

@@ -21,9 +21,8 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { submitReport } from "@/service/reportService";
 import { Ellipsis } from "lucide-react";
 
-import { GrUpgrade } from "react-icons/gr";
 import BoostModal from "@/app/ui/post/boost-modal";
-import PlanSelectModal from "@/app/ui/post/plan-select-modal";
+import PostBoostingButton from "@/app/ui/post/post-boosting-button";
 import { formatDate } from "@/utils/helper";
 
 export default function ProfilePage() {
@@ -224,21 +223,12 @@ export default function ProfilePage() {
 									)}
 
 									{userId === id && (
-										<button
-											className="flex w-1/3 items-center justify-center gap-2 rounded-full border-2 border-green-600 bg-gradient-to-r from-green-500 to-green-600 py-3 text-white hover:from-green-600 hover:to-green-700"
-											type="button"
-											onClick={() =>
-												openBoostPostModal("postBoost")
-											}
-										>
-											<GrUpgrade className="h-5 w-5" />
-											<span>Boost Posts</span>
-										</button>
+										<PostBoostingButton/>
 									)}
 								</div>
 							</div>
 						</div>
-						<BoostModal modalId="postBoost" />
+						{/* <BoostModal modalId="postBoost" /> */}
 						{/* <PostForm /> */}
 
 						{/* Switch Tab */}

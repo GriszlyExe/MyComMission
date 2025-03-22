@@ -77,7 +77,6 @@ export default function BoostedPostWidget({ post, user, isInsideModal = false }:
                                     {user ? user.displayName : "display name"}
                                 </p>
                             </Link>
-                            {/* <p className="text-xs text-gray-500">{`January`}</p> */}
                             <p className="text-xs text-gray-500">{`Sponsored`}</p>
                         </div>
                     </div>

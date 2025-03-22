@@ -1,7 +1,8 @@
 'use client'
 import Breadcrumbs from "@/app/ui/setting/breadcrumbs";
 import { SettingButton } from "@/app/ui/setting/button";
-import { CircleUserRound, CreditCard, SlidersHorizontal, BellIcon, LockIcon,BadgeAlert } from "lucide-react";
+import { ManagerIcon } from "hugeicons-react";
+import { CircleUserRound, CreditCard, SlidersHorizontal, BellIcon, LockIcon, ArrowBigUpDash,BadgeAlert } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 
@@ -33,8 +34,8 @@ export default function SettingsPage() {
             <SettingButton href={pathname + '/privacy-security'}><LockIcon className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">Privacy & Security</span></SettingButton>
 
-            <SettingButton href={pathname}><BellIcon className="w-6 h-6 text-gray-600" />
-                <span className="text-sm font-medium">Notifications</span></SettingButton>
+            <SettingButton href={pathname+'/manage-posts'}><ArrowBigUpDash className="w-6 h-6 text-gray-600" />
+                <span className="text-sm font-medium">Manage Posts Boosting</span></SettingButton>
 
             <SettingButton href={pathname + '/report'}><BadgeAlert className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">Report Problem</span></SettingButton>
