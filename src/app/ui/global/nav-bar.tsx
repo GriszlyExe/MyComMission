@@ -9,27 +9,26 @@ import { useAppSelector } from "@/states/hook";
 import { useRouter } from "next/navigation";
 
 export default function TopNav() {
-
 	const userId = useAppSelector((state) => state.user.user!.userId);
 	const router = useRouter();
 
 	const logout = async () => {
-
 		try {
 			router.push("/");
 		} catch (err) {
 			console.error(err);
 		}
-		
 	};
 
 	return (
 		<div className="mx-auto shadow-md">
 			<div className="grid h-16 grid-cols-3 items-center">
-
 				{/* Search Column */}
-				<div className="flex justify-start px-5">
+				{/* <div className="flex justify-start px-5">
 					<Search placeholder="Search..." />
+				</div> */}
+				<div className="flex justify-start px-10 text-xl font-bold">
+					MyCommission
 				</div>
 
 				{/* Navigation Links Column */}

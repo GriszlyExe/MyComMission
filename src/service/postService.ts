@@ -228,6 +228,34 @@ export const getRandomPosts = async () => {
 
 }
 
+// Use for search & filter post
+export const searchAndFilterPosts = async (searchPost: string, tags: string) => {
+    try {
+
+        const queryParams = new URLSearchParams();
+        if (searchPost) queryParams.append("search", searchPost);
+        if (tags) queryParams.append("tags", tags.replace(/\s/g, "+"));
+
+        console.log(queryParams.get('tags'));
+
+        const options = {
+            method: "GET",
+            url: `${serverAddr}/post?${queryParams.toString()}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        }
+
+        console.log(options.url);
+
+        const { data: { posts }} = await axios.request(options);
+
+        return posts;
+
+    } catch (err) {
+        throw err;
+    }
+}
+
 /* GET boosted posts from a specific user */
 export const getBoostedPostsByUserId = async (userId: string) => {
 	try {
