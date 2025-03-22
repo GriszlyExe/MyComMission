@@ -1,9 +1,10 @@
 "use client";
 
+import { createPostBoostTransaction } from "@/service/payment";
 import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
 
-export default function CreditCardForm() {
+export default function CreditCardForm({selectedPosts,expiration,price,count}:{selectedPosts:any,expiration:Date,price:number,count:number}) {
 	const stripe = useStripe();
 	const elements = useElements();
 	const [loading, setLoading] = useState(false);
@@ -15,15 +16,32 @@ export default function CreditCardForm() {
 
 		setLoading(true);
 		setError(null);
-
+		const redirectUrl = () =>{
+			const payload = {
+				selectedPosts,
+				expiration,
+				amount:price,
+				count
+			}
+			const txnRes = createPostBoostTransaction(payload)
+			console.log(txnRes)
+			return `http://localhost:3000/home`
+		}
 		const res = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
-				return_url: `https://www.youtube.com/watch?v=gDoq3LbEtfk`,
-			},
-		});
 
-		console.log(res)
+				return_url: redirectUrl(),
+			},
+
+		});
+		
+		console.log("NEXTTTTT")
+		if(res.error){
+			setLoading(false)
+			console.log(res.error)
+		}
+		
 	};
 
 	return (

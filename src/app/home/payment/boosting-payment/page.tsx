@@ -21,7 +21,7 @@ const stripePromise = loadStripe(
 export default function PaymentPage() {
 	const userId = useAppSelector((state) => state.user.user!.userId);
 	const searchParams = useSearchParams();
-	const count = parseInt(searchParams.get("count") || "0", 10);
+	// const count = parseInt(searchParams.get("count") || "0", 10);
 
 	const [activeMethod, setActiveMethod] = useState("credit-card");
 	const [clientSecret, setClientSecret] = useState("");
@@ -31,10 +31,9 @@ export default function PaymentPage() {
 		setActiveMethod(method);
 	};
 
-	const handleCreatePaymentIntent = async () => {
-		const res = await createPaymentIntentService(10000);
-		console.log("key = ", process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-		console.log("res =", res);
+	const handleCreatePaymentIntent = async (amount:number) => {
+		const res = await createPaymentIntentService(amount);
+		console.log(res)
 		setClientSecret(res.client_secret);
 	};
 
@@ -45,7 +44,17 @@ export default function PaymentPage() {
 
 	const router = useRouter();
 
-	useEffect(() => {
+	const posts = searchParams.get("posts")
+	const selectedPosts = posts ? JSON.parse(decodeURIComponent(posts as string)) : [];
+	const count = selectedPosts.length
+	const selectedPlan = searchParams.get("selectedPlan")
+	const option = selectedPlan ? JSON.parse(decodeURIComponent(selectedPlan)) : [];
+	
+	// console.log(selectedPosts,count)
+	// console.log(selectedPlan)
+	console.log(option)
+
+	useEffect(() => {	
 		if (activeMethod === "promptpay") {
 			console.log("START FETCHING");
 
@@ -109,7 +118,7 @@ export default function PaymentPage() {
 									<p className="text-lg font-semibold text-gray-700">
 										Total:{" "}
 										<span className="text-blue-600">
-											{count * 100}฿
+											{count * option.price}฿
 										</span>
 									</p>
 								</div>
@@ -122,14 +131,14 @@ export default function PaymentPage() {
 											x{count}
 										</span>{" "}
 										<span className="float-right">
-											{count * 100}฿
+											{count * option.price}฿
 										</span>
 									</p>
 								</div>
 								{activeMethod === "credit-card" && (
 									<button
 										className="rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700"
-										onClick={handleCreatePaymentIntent}
+										onClick={() => handleCreatePaymentIntent(count * option.price*100)}
 									>
 										PROCEED TO PAY
 									</button>
@@ -140,7 +149,8 @@ export default function PaymentPage() {
 											stripe={stripePromise}
 											options={{ clientSecret }}
 										>
-											<CreditCardForm />
+											<CreditCardForm selectedPosts={selectedPosts} expiration={option.expiration}
+											price={option.price} count={count}/>
 										</Elements>
 									)}
 								{activeMethod === "promptpay" && (
