@@ -105,7 +105,7 @@ export default function ProfilePage() {
 
 				{/* Center Feed */}
 				<div className="mt-20 flex w-full max-w-3xl md:mx-4">
-					<div className="w-full rounded-md bg-white-bg bg-[#ffffff]">
+					<div className="bg-white-bg w-full rounded-md bg-[#ffffff]">
 						{/* Profile */}
 						<div className="mb-10 flex flex-row">
 							<div>
@@ -128,9 +128,11 @@ export default function ProfilePage() {
 							</div>
 
 							{/* Information */}
-							<div className={"flex w-full flex-row items-center"}>
+							<div
+								className={"w-full items-center"}
+							>
 								{/* Report */}
-								{/* {userId !== id && (
+								{userId !== id && (
 									<>
 										<div className="relative mt-4">
 											<button
@@ -139,11 +141,23 @@ export default function ProfilePage() {
 												}
 												className="p-3 text-gray-600 hover:text-gray-800"
 											>
-												<Ellipsis className="absolute right-4 top-0 h-6 w-6" />
+												<Ellipsis className="absolute h-6 w-6 md:right-4 md:top-0" />
 											</button>
 										</div>
+
+										{/* Report Popup */}
+										<ReportPopup
+											isOpen={isReportOpen}
+											onClose={() =>
+												setIsReportOpen(false)
+											}
+											onSubmit={handleReportSubmit}
+											title="Report This User"
+											targetId={id as string}
+											targetType="USER"
+										/>
 									</>
-								)} */}
+								)}
 								{/* end of report */}
 								<div className="m-16 flex flex-col gap-2 md:min-w-[370px]">
 									<div>
@@ -154,7 +168,9 @@ export default function ProfilePage() {
 											@{userInfo.displayName}
 										</span>
 									</div>
-									<p className="text-md">{userInfo.description}</p>
+									<p className="text-md">
+										{userInfo.description}
+									</p>
 
 									<div className="flex gap-4 text-base">
 										<div className="flex items-center gap-2">
@@ -239,16 +255,6 @@ export default function ProfilePage() {
 								</button>
 							</div>
 						</div>
-
-						{/* Report Popup */}
-						<ReportPopup
-							isOpen={isReportOpen}
-							onClose={() => setIsReportOpen(false)}
-							onSubmit={handleReportSubmit}
-							title="Report This User"
-							targetId={id as string}
-							targetType="USER"
-						/>
 
 						{/* Feed */}
 						{activeTab === "posts" && <FeedProfile />}

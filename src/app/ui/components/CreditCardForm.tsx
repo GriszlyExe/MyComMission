@@ -1,12 +1,30 @@
 "use client";
 
 import { createPostBoostTransaction } from "@/service/payment";
-import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
+import { useAppSelector } from "@/stores/hook";
+import {
+	useStripe,
+	useElements,
+	PaymentElement,
+} from "@stripe/react-stripe-js";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function CreditCardForm({selectedPosts,expiration,price,count}:{selectedPosts:any,expiration:Date,price:number,count:number}) {
+export default function CreditCardForm({
+	selectedPosts,
+	expiration,
+	price,
+	count,
+}: {
+	selectedPosts: any;
+	expiration: Date;
+	price: number;
+	count: number;
+}) {
 	const stripe = useStripe();
 	const elements = useElements();
+	const router = useRouter();
+	const loggedInUserId = useAppSelector((state) => state.user.user!.userId);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -16,38 +34,39 @@ export default function CreditCardForm({selectedPosts,expiration,price,count}:{s
 
 		setLoading(true);
 		setError(null);
-		const redirectUrl = () =>{
+		const redirectUrl = async () => {
 			const payload = {
 				selectedPosts,
 				expiration,
-				amount:price,
-				count
-			}
-			const txnRes = createPostBoostTransaction(payload)
-			console.log(txnRes)
-			return `http://localhost:3000/home`
-		}
+				amount: price,
+				count,
+			};
+			await createPostBoostTransaction(payload);
+			// console.log(txnRes)
+			return `${window.location.origin}/home`;
+		};
+
 		const res = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
-
-				return_url: redirectUrl(),
+				return_url: await redirectUrl(),
 			},
-
 		});
-		
-		console.log("NEXTTTTT")
-		if(res.error){
-			setLoading(false)
-			console.log(res.error)
+
+		router.push(`/profile/${loggedInUserId}`);
+		// console.log("NEXTTTTT")
+		if (res.error) {
+			setLoading(false);
+			console.log(res.error);
 		}
-		
 	};
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-3">
-			<p className="text-sm text-gray-600">Enter your payment details below:</p>
-			
+			<p className="text-sm text-gray-600">
+				Enter your payment details below:
+			</p>
+
 			{/* Secure Card Input from Stripe */}
 			<PaymentElement />
 

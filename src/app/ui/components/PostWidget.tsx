@@ -21,12 +21,14 @@ interface PostProps {
 	post: Post;
 	user: User;
 	isInsideModal?: boolean; // New prop to prevent pop-up in modal
+	isSponsored?: boolean;
 }
 
 export default function PostWidget({
 	post,
 	user,
 	isInsideModal = false,
+	isSponsored = false,
 }: PostProps) {
 	const [likes, setLikes] = useState(0);
 	const [liked, setLiked] = useState(false);
@@ -100,7 +102,7 @@ export default function PostWidget({
 								</p>
 							</Link>
 							<p className="text-xs text-gray-500">
-								{formatDate(post.createdAt)}
+								{isSponsored ? "Sponsored" : formatDate(post.createdAt)}
 							</p>
 						</div>
 					</div>

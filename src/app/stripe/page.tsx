@@ -5,7 +5,6 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements, useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import axios from "axios";
 
-
 // Load Stripe with your publishable key
 const STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY! as string);
@@ -48,9 +47,9 @@ const CheckoutForm = () => {
         const fetchClientSecret = async () => {
             const res = await mockAPI();
 
-            console.log(res)
+            // console.log(res)
             setClientSecret(res?.data.client_secret)
-            console.log(`clientSecret = ${clientSecret}`)
+            // console.log(`clientSecret = ${clientSecret}`)
         };
 
         fetchClientSecret();

@@ -97,7 +97,7 @@ export default function BoostModal({ modalId }: ModalProps) {
 					</div>
 
 					{/* Scrollable Post Container */}
-					<div className="mt-1 max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden">
+					<div className="mt-1 overflow-y-auto overflow-x-hidden scrollbar-hidden">
 						<div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
 							{posts
 								// filter only unboosted posts
