@@ -58,7 +58,7 @@ export default function SendArtworkInChat() {
                     onClick={() => document.getElementById(acceptArtworkId)?.showModal()}
                 >Accept Artwork</button>} */}
                 <a className="flex flex-row gap-x-3 rounded px-4 py-3 text-white bg-gradient-to-r
-                                                from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+                                                from-blue-500 to-purple-500 hover:from-base-200 hover:to-base-300"
                     href={previewPic} download="artwork.jpg">
 
                     Download Artwork <Download />

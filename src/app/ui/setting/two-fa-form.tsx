@@ -82,7 +82,7 @@ export default function TwoFactorForm() {
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
 					<div className="m-auto w-full max-w-lg rounded-md bg-white p-6 shadow-sm">
 						<h1 className="mb-6 text-center text-3xl font-bold">
-							<span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+							<span className="bg-gradient-to-r from-primary-content to-secondary-content bg-clip-text text-transparent">
 								Check your email
 							</span>
 						</h1>
@@ -129,7 +129,7 @@ export default function TwoFactorForm() {
 											className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${
 												isSubmitting
 													? "cursor-not-allowed bg-gray-400"
-													: "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+													: "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
 											}`}
 										>
 											Submit
@@ -142,7 +142,7 @@ export default function TwoFactorForm() {
 											className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${
 												isSubmitting
 													? "cursor-not-allowed bg-gray-400"
-													: "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+													: "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
 											}`}
 										>
 											Cancel

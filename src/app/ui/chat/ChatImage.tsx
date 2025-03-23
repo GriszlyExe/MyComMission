@@ -63,7 +63,7 @@ export default function ChatImage({ imageUrl }: ChatImageProps) {
                 <button
                     type="button"
                     onClick={handleAccept}
-                    className="w-1/2 rounded px-4 py-3 text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+                    className="w-1/2 rounded px-4 py-3 text-white bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
                 >
                     Accept
                 </button>
@@ -71,7 +71,7 @@ export default function ChatImage({ imageUrl }: ChatImageProps) {
                 <button
                     type="button"
                     onClick={handleReject}
-                    className="w-1/2 rounded px-4 py-3 text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+                    className="w-1/2 rounded px-4 py-3 text-white bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
                 >
                     Reject
                 </button>

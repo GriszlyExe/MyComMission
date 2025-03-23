@@ -22,7 +22,7 @@ export const states = {
 
 const Button = ({ onClick, Icon, text }: any) => (
 	<button
-		className="flex w-1/4 rounded bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-3 text-white hover:from-blue-700 hover:to-purple-700"
+		className="flex w-1/4 rounded bg-gradient-to-r from-primary-content to-secondary-content px-4 py-3 text-white hover:from-base-200 hover:to-base-300"
 		type="button"
 		onClick={onClick}
 	>
@@ -93,7 +93,7 @@ export default function CommissionInChat({
 				<div className="flex justify-end gap-x-2 pr-4">
 					{/* Edit */}
 					{/* {!isArtist && !isCommissionReject(state) && <button className="flex w-1/5 rounded px-4 py-3 text-white bg-gradient-to-r
-                                            from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+                                            from-blue-500 to-purple-500 hover:from-base-200 hover:to-base-300"
                             type='button'
                             onClick={() => openForm('BriefFormInChat')}
                         >

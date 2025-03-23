@@ -29,7 +29,7 @@ export default function NewPassword() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="m-auto w-full rounded-md border-2 border-purple-600 bg-white p-6 md:max-w-lg">
         <h1 className="mb-6 text-center text-3xl font-bold">
-          <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-primary-content to-secondary-content bg-clip-text text-transparent">
             Change Your Password
           </span>
         </h1>
@@ -121,7 +121,7 @@ export default function NewPassword() {
                   className={`w-full rounded px-4 py-3 text-white focus:outline-none ${
                     isSubmitting
                       ? "cursor-not-allowed bg-gray-400"
-                      : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+                      : "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
                   }`}
                 >
                   {isSubmitting ? "Changing..." : "Change Password"}

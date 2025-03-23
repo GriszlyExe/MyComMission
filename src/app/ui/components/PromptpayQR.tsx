@@ -23,7 +23,7 @@ export default function PromptPayQR() {
 			</div>
 			<button
 					type="submit"
-					className="text-white px-4 py-3 font-bold rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+					className="text-white px-4 py-3 font-bold rounded-lg bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
 				>
 					COMPLETE
 				</button>

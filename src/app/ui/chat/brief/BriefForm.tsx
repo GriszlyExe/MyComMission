@@ -159,14 +159,14 @@ export const BriefForm = () => {
 											className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${
 												isSubmitting
 													? "cursor-not-allowed bg-gray-400"
-													: "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+													: "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
 											}`}
 										>
 											Send
 										</button>
 
 										<button
-											className="w-1/2 rounded bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-3 text-white hover:from-blue-700 hover:to-purple-700"
+											className="w-1/2 rounded bg-gradient-to-r from-primary-content to-secondary-content px-4 py-3 text-white hover:from-base-200 hover:to-base-300"
 											type="button"
 											onClick={() => {
 												resetForm();

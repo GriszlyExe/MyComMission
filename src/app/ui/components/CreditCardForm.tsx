@@ -59,7 +59,7 @@ export default function CreditCardForm({selectedPosts,expiration,price,count}:{s
 					className={`w-full rounded px-4 py-3 text-white focus:outline-none ${
 						loading
 							? "cursor-not-allowed bg-gray-400"
-							: "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+							: "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
 					}`}
 				>
 					{loading ? "Processing..." : "PAY NOW"}

@@ -191,7 +191,7 @@ export default function ProfilePage() {
 									{/* Start chat */}
 									{userId !== id ? (
 										<button
-											// className="flex w-1/3 justify-center gap-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 py-3 text-white hover:from-blue-700 hover:to-purple-700"
+											// className="flex w-1/3 justify-center gap-2 rounded bg-gradient-to-r from-primary-content to-secondary-content py-3 text-white hover:from-base-200 hover:to-base-300"
 											className="flex w-1/3 flex-row items-center justify-center gap-2 rounded-md bg-primary p-3 hover:bg-accent"
 											type="button"
 											onClick={() => {
