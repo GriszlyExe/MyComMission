@@ -43,10 +43,10 @@ const ChatWindow = () => {
 		const fetchMessageChatroom = async () => {
 			if (activeRoomId !== undefined) {
 				const res = await getMessageChatroom(activeRoomId);
-				console.log(res);
+				// console.log(res);
 				const { messages, latestCommission } = res;
 				const user = await getUserInfo(receiverId!);
-				console.log(messages);
+				// console.log(messages);
 				dispatch(setLatestCommission(latestCommission));
 				dispatch(setReceiver(user));
 				dispatch(setMessages(messages));
@@ -64,11 +64,12 @@ const ChatWindow = () => {
 		});
 
 		socket.on("receiveMessage", ({ newMessage }) => {
-			const { chatRoomId, commission } = newMessage;
+			const { commission, ...rest } = newMessage;
 			console.log(newMessage);
-			if (chatRoomId === activeRoomId) {
+			if (rest.chatRoomId === activeRoomId) {
+				dispatch(setLatestCommission(commission ? commission : currentCommission));
 				dispatch(addMessage(newMessage));
-				dispatch(updateRoomState({ chatRoomId, message: newMessage, commission: commission ? commission : currentCommission}))
+				dispatch(updateRoomState({ chatRoomId: rest.chatRoomId, message: rest, commission: commission ? commission : currentCommission}));
 			}
 		});
 
@@ -85,11 +86,11 @@ const ChatWindow = () => {
 	}, [messages]);
 
 	return (
-		<div>
-			<div className="h-[500px] max-h-[500px] p-1">
+		<div className="bg-white rounded-md h-full">
+			<div className="md:h-full p-2 flex flex-col">
 				<div
 					ref={containerRef}
-					className="mt-1 max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden"
+					className="mt-1 h-full overflow-y-auto overflow-x-hidden scrollbar-hidden"
 				>
 					{receiver !== null && messages &&
 						messages.map((message) => (
@@ -99,8 +100,8 @@ const ChatWindow = () => {
 							/>
 						))}
 				</div>
+				{activeRoomId && <MessageInput />}
 			</div>
-			{activeRoomId && <MessageInput />}
 		</div>
 	);
 };

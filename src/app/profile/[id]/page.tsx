@@ -105,7 +105,7 @@ export default function ProfilePage() {
 
 				{/* Center Feed */}
 				<div className="mt-20 flex w-full max-w-3xl md:mx-4">
-					<div className="w-full rounded-md bg-base-300">
+					<div className="w-full rounded-md bg-white-bg bg-[#ffffff]">
 						{/* Profile */}
 						<div className="mb-10 flex flex-row">
 							<div>
@@ -128,9 +128,9 @@ export default function ProfilePage() {
 							</div>
 
 							{/* Information */}
-							<div className="flex w-full flex-row items-center">
+							<div className={"flex w-full flex-row items-center"}>
 								{/* Report */}
-								{userId !== id && (
+								{/* {userId !== id && (
 									<>
 										<div className="relative mt-4">
 											<button
@@ -139,13 +139,13 @@ export default function ProfilePage() {
 												}
 												className="p-3 text-gray-600 hover:text-gray-800"
 											>
-												{/* <Ellipsis className="absolute right-4 top-0 h-6 w-6" /> */}
+												<Ellipsis className="absolute right-4 top-0 h-6 w-6" />
 											</button>
 										</div>
 									</>
-								)}
+								)} */}
 								{/* end of report */}
-								<div className="m-16 flex flex-col gap-2">
+								<div className="m-16 flex flex-col gap-2 md:min-w-[370px]">
 									<div>
 										<h1 className="text-2xl font-bold">
 											{`${userInfo.firstName} ${userInfo.lastName}`}
@@ -216,7 +216,7 @@ export default function ProfilePage() {
 						<div className="flex flex-row justify-center p-2">
 							<div className={`w-1/2 pl-5`}>
 								<button
-									className={`font-bold ${activeTab === "posts" ? "border-b-4 border-base-200 text-base-200" : "text-gray-700"}`}
+									className={`font-bold ${activeTab === "posts" ? "border-b-4 border-primary text-primary" : "text-gray-700"}`}
 									onClick={() => handleTabClick("posts")}
 								>
 									POSTS
@@ -224,7 +224,7 @@ export default function ProfilePage() {
 							</div>
 							<div className="w-1/2">
 								<button
-									className={`font-bold ${activeTab === "artworks" ? "border-b-4 border-base-200 text-base-200" : "text-gray-700"}`}
+									className={`font-bold ${activeTab === "artworks" ? "border-b-4 border-primary text-primary" : "text-gray-700"}`}
 									onClick={() => handleTabClick("artworks")}
 								>
 									ARTWORKS
@@ -232,7 +232,7 @@ export default function ProfilePage() {
 							</div>
 							<div className="w-1/2">
 								<button
-									className={`font-bold ${activeTab === "reviews" ? "border-b-4 border-base-200 text-base-200" : "text-gray-700"}`}
+									className={`font-bold ${activeTab === "reviews" ? "border-b-4 border-primary text-primary" : "text-gray-700"}`}
 									onClick={() => handleTabClick("reviews")}
 								>
 									REVIEWS
@@ -241,14 +241,14 @@ export default function ProfilePage() {
 						</div>
 
 						{/* Report Popup */}
-						{/* <ReportPopup
+						<ReportPopup
 							isOpen={isReportOpen}
 							onClose={() => setIsReportOpen(false)}
 							onSubmit={handleReportSubmit}
 							title="Report This User"
 							targetId={id as string}
 							targetType="USER"
-						/> */}
+						/>
 
 						{/* Feed */}
 						{activeTab === "posts" && <FeedProfile />}

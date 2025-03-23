@@ -157,12 +157,15 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 			{/* name + latest message */}
 			<div className="flex flex-grow flex-col p-2">
 				<span className="flex flex-row gap-1 items-center">
+					{/* name */}
 					<Link
 						href={`/profile/${receiver?.userId}`}
-						className="accent font-bold hover:text-accent flex-grow"
+						className="accent font-bold hover:text-accent"
 					>
 						{receiver !== null ? receiver.displayName : ""}
 					</Link>
+					<div className="flex-grow"></div>
+					{/* time stamp */}
 				    <p className="text-xs">{formatChatTimestamp(chatRoom.lastTimeStamp)}</p>		
 				</span>
 				<div className="flex flex-row gap-1">

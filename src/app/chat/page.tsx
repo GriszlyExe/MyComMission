@@ -49,7 +49,7 @@ const Page = () => {
 			</div>
 
 			{/* content */}
-			<div className="mt-20 flex md:max-h-[600px] flex-row bg-gray-100 w-5/6 justify-around gap-3 p-3 overflow-hidden">
+			<div className="mt-20 flex md:h-[580px] rounded-xl flex-row bg-gray-100 w-10/12 justify-around gap-3 p-3 overflow-hidden">
 
 				{/* Chat rooms list */}
 				<div className="flex flex-col w-1/4 gap-2 overflow-y-auto scrollbar-hidden p-3 bg-secondary rounded-lg">
@@ -59,7 +59,7 @@ const Page = () => {
 				</div>
 
 				{/* Chat window */}
-				<div className="flex flex-col-reverse w-3/4 justify-center">
+				<div className="flex flex-col-reverse w-3/4 justify-center bg-secondary p-2 rounded-lg">
 					{activeRoomId !== "" ? <ChatWindow /> : <p>Select a chatroom</p>}
 				</div>
 

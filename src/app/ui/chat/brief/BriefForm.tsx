@@ -72,7 +72,9 @@ export const BriefForm = () => {
 				chatRoomId: activeRoomId,
 			});
 
-			dispatch(setLatestCommission(commission));
+			console.log(commission);
+
+			// dispatch(setLatestCommission(commission));
 			resetForm();
 
 			// @ts-ignore

@@ -12,11 +12,12 @@ import { useAppSelector } from "@/stores/hook";
 
 const ProposalForm = () => {
 
-	const commissionId = useAppSelector(state => state.commission.latestComission!.commissionId);
-	const artistId = useAppSelector(state => state.commission.latestComission!.artistId);
+	const commissionId = useAppSelector(state => state.commission.latestComission?.commissionId);
+	const artistId = useAppSelector(state => state.commission.latestComission?.artistId);
 	const loggedInUserId = useAppSelector(state => state.user.user!.userId);
 
 	if (artistId !== loggedInUserId) {
+		console.log(`${artistId} ${loggedInUserId}`);
 		throw new Error("Not the artist for the commission");
 	}
 	

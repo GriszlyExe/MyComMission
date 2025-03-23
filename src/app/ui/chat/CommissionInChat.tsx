@@ -52,41 +52,33 @@ export default function CommissionInChat({
 					<div className="rounded-md border-2 border-gray-600 p-2">
 						{commission.briefDescription}
 					</div>
-					{isBrief ? (
-						<div className="flex flex-row justify-start">
-							<div className="flex w-1/2 flex-col">
-								<div className="text-base font-bold">
-									Target date
-								</div>
-								<div className="">
-									{formatDate(commission.deadline)}
-								</div>
+					<div className="flex flex-row justify-start">
+						<div className="flex w-1/2 flex-col">
+							<div className="text-base font-bold">
+								{isBrief
+									? "Target date"
+									: "Expected Finish Date"}
 							</div>
-							<div className="flex w-1/2 flex-col">
-								<div className="text-base font-bold">
-									Budget
-								</div>
-								<div className="">{commission.budget}</div>
+							<div className="">
+								{formatDate(
+									isBrief
+										? commission.deadline
+										: commission.expectedDate,
+								)}
 							</div>
 						</div>
-					) : (
-						<>
-							<div className="flex w-1/2 flex-col">
-								<div className="text-base">
-									Expected Finish Date
-								</div>
-								<div className="text-sm">
-									{formatDate(commission.expectedDate)}
-								</div>
+						<div className="flex w-1/2 flex-col">
+							<div className="text-base font-bold">
+								{isBrief ? "Budget" : "Price"}
 							</div>
-							<div className="flex w-1/2 flex-col">
-								<div className="text-base">Price</div>
-								<div className="text-sm">
-									{commission.proposalPrice}
-								</div>
+							<div className="">
+								{isBrief
+									? commission.budget
+									: commission.proposalPrice}
 							</div>
-						</>
-					)}
+						</div>
+					</div>
+
 					<div className="flex flex-row gap-2 p-2">
 						<input
 							className="relative scale-125"
@@ -115,10 +107,9 @@ export default function CommissionInChat({
 							<Button
 								Icon={CheckmarkCircle01Icon}
 								text="Accept"
-								onClick={() => 
-										// @ts-ignore
-										document.getElementById(`proposal-form-${commission.commissionId}`).showModal()
-									
+								onClick={() =>
+									// @ts-ignore
+									document.getElementById(`proposal-form-${commission.commissionId}`)?.showModal()
 								}
 							/>
 							<Button
@@ -128,10 +119,11 @@ export default function CommissionInChat({
 									console.log({ state: states.canceled })
 								}
 							/>
-							<ProposalForm commissionId={commission.commissionId}/>
+							<ProposalForm />
 						</>
 					)}
 
+					{/* Accept Brief Section */}
 					{!isArtist && isProposal && (
 						<>
 							<Button

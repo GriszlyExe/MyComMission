@@ -92,9 +92,9 @@ const MessageItem = ({
 			)}
 
 			{/* commission as brief */}
-			{commission && commission.state === "BRIEF" && (
+			{commission && (
 				<div
-					className="chat-bubble bg-accent text-black"
+					className="chat-bubble bg-accent px-3"
 					onClick={() =>
 						(
 							document.getElementById(
@@ -103,31 +103,10 @@ const MessageItem = ({
 						)?.showModal()
 					}
 				>
-					<button className="w-full rounded-md bg-white hover:bg-gray-300">
-						<div className="flex flex-row items-center justify-center py-1 px-3 gap-2">
+					<button className="w-full rounded-md text-white hover:bg-secondary hover:text-accent">
+						<div className="flex flex-row items-center justify-center gap-2">
 							<IoDocumentText className="text-xl" />
-							<div>{commission.commissionName}(brief)</div>
-						</div>
-					</button>
-				</div>
-			)}
-
-		    {/* commission as proposal */}
-			{commission && commission.state === "PROPOSAL" && (
-				<div
-					className="chat-bubble bg-accent text-black"
-					onClick={() =>
-						(
-							document.getElementById(
-								`commission-modal-${commission.commissionId}`,
-							) as HTMLDialogElement
-						)?.showModal()
-					}
-				>
-					<button className="w-full rounded-md bg-white hover:bg-gray-300">
-						<div className="flex flex-row items-center justify-center py-1 px-2 gap-1">
-							<IoDocumentText className="text-xl" />
-							<div>{commission.commissionName}(proposal)</div>
+							<p>Commission</p>
 						</div>
 					</button>
 				</div>

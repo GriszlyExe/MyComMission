@@ -6,7 +6,9 @@ import { MdStarRate } from "react-icons/md";
 
 const SuggestedArtistWidget = ({ artist }: { artist: User }) => {
 	return (
-		<div className="flex flex-row items-center bg-slate-100 p-1 transition-transform duration-300 hover:scale-105">
+		<div className="bg-secondary rounded-lg p-1 transition-transform duration-300 hover:scale-105">
+
+		<div className="flex flex-row items-center rounded-md bg-white p-1">
 			{/* User profile */}
 			<div className="">
 				<div className="aspect-square w-16 overflow-hidden rounded-full p-[4px]">
@@ -27,19 +29,21 @@ const SuggestedArtistWidget = ({ artist }: { artist: User }) => {
 			</div>
 			{/* Username */}
 			<div className="flex w-full flex-col justify-center p-2">
-					<span className="flex flex-row gap-1">
+					<span className="flex flex-row gap-1 items-center">
 				<Link
 					href={`/profile/${artist.userId}`}
+					className="flex-grow"
 				>
 						<p className="hover:underline text-base font-semibold">
 							{artist.displayName}
 						</p>
 				</Link>
-						<MdStarRate className="text-xl text-yellow-400" />
-						{artist.artistRate.toFixed(2)} / 5.00
+						{artist.artistRate.toFixed(2)}{" "}
+						<MdStarRate className="text-xl text-orange-400" />
 					</span>
 				<span className="text-base">{artist.description}</span>
 			</div>
+		</div>
 		</div>
 	);
 };
