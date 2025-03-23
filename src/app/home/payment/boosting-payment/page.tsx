@@ -154,7 +154,7 @@ export default function PaymentPage() {
 										</Elements>
 									)}
 								{activeMethod === "promptpay" && (
-									<PromptPayQR qrImageSrc={qrImageSrc} />
+									<PromptPayQR />
 								)}
 							</div>
 						</div>

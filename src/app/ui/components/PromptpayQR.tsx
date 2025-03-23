@@ -1,12 +1,3 @@
-import {
-	Elements,
-	useStripe,
-	useElements,
-	PaymentElement,
-} from "@stripe/react-stripe-js";
-import { createPaymentIntentService } from "@/service/stripe";
-import { useState } from "react";
-
 export default function PromptPayQR() {
 	const handleCreatePaymentIntent = async () => {
 		//     const res = await createPaymentIntentService(10000)

@@ -6,44 +6,44 @@ import { MdStarRate } from "react-icons/md";
 
 const SuggestedArtistWidget = ({ artist }: { artist: User }) => {
 	return (
-		<div className="bg-secondary rounded-lg p-1 transition-transform duration-300 hover:scale-105">
-
-		<div className="flex flex-row items-center rounded-md bg-white p-1">
-			{/* User profile */}
-			<div className="">
-				<div className="aspect-square w-16 overflow-hidden rounded-full p-[4px]">
-					<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
-						<img
-							src={
-								artist.profileUrl
-									? artist.profileUrl
-									: "./default-profile-2.png"
-							}
-							alt=""
-							width={60}
-							height={60}
-							className="h-full w-full overflow-hidden rounded-full object-cover"
-						/>
+		<div className="rounded-lg bg-secondary p-1 transition-transform duration-300 hover:scale-105">
+			<div className="flex flex-row items-center rounded-md bg-white">
+				{/* User profile */}
+				<div className="">
+					<div className="aspect-square w-12 overflow-hidden rounded-full p-[4px]">
+						<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
+							<img
+								src={
+									artist.profileUrl
+										? artist.profileUrl
+										: "./default-profile-2.png"
+								}
+								alt=""
+								width={60}
+								height={60}
+								className="h-full w-full overflow-hidden rounded-full object-cover"
+							/>
+						</div>
 					</div>
 				</div>
-			</div>
-			{/* Username */}
-			<div className="flex w-full flex-col justify-center p-2">
-					<span className="flex flex-row gap-1 items-center">
-				<Link
-					href={`/profile/${artist.userId}`}
-					className="flex-grow"
-				>
-						<p className="hover:underline text-base font-semibold">
-							{artist.displayName}
-						</p>
-				</Link>
+				{/* Username */}
+				<div className="flex w-full flex-col justify-center px-2 py-1">
+					<span className="flex flex-row items-center gap-1">
+						<Link
+							href={`/profile/${artist.userId}`}
+							className=""
+						>
+							<p className="text-base font-semibold hover:underline">
+								{artist.displayName}
+							</p>
+						</Link>
+						<div className="flex-grow"></div>
 						{artist.artistRate.toFixed(2)}{" "}
 						<MdStarRate className="text-xl text-orange-400" />
 					</span>
-				<span className="text-base">{artist.description}</span>
+					<span className="text-base">{artist.description}</span>
+				</div>
 			</div>
-		</div>
 		</div>
 	);
 };

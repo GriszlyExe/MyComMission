@@ -8,7 +8,7 @@ import { Upload } from 'lucide-react';
 import { useAppSelector } from '@/stores/hook';
 import { useState, useEffect } from 'react';
 import { isCommissionEnded } from './commissionState';
-import { sendArtwork, uploadArtwork } from '@/service/commissionService';
+// import { sendArtwork, uploadArtwork } from '@/service/commissionService';
 import { createMessage } from '@/service/chatService';
 import { io } from "socket.io-client"
 
@@ -49,14 +49,14 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
     useEffect(() => {
         console.log("aaa");
         if (latestCommission && !isCommissionEnded(latestCommission.state)) {
-            console.log(latestCommission);
-            console.log(new Date(latestCommission.deadline).toISOString().split("T")[0]);
+            // console.log(latestCommission);
+            // console.log(new Date(latestCommission.deadline).toISOString().split("T")[0]);
             setCommission({
                 expectedDate: new Date(latestCommission.deadline).toISOString().split("T")[0],
                 proposalPrice: latestCommission.budget,
                 chatRoomId: activeRoomId
             });
-            console.log(initialValues);
+            // console.log(initialValues);
         }
     
     }, [refresh])
@@ -74,7 +74,7 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
         values: formSchema
     ) => {
         try {
-            const { file, ...others } = values;
+            const { file, ...others } = values as any;
 
             const formData = new FormData();
 
@@ -84,32 +84,32 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
 
             console.log(file);
 
-            const { imageUrl } = await uploadArtwork(formData);
+            // const { imageUrl } = await uploadArtwork(formData);
             
-            const data = {
-                imageUrl: imageUrl,
-                artistHide: false
-            };
+            // // const data = {
+            // //     imageUrl: imageUrl,
+            // //     artistHide: false
+            // // };
 
-            const response = sendArtwork(latestCommission.commissionId, data);
+            // // const response = sendArtwork(latestCommission.commissionId, data);
 
-            console.log(response.data)
+            // console.log(response.data)
 
-            const CM = async () => {
-                const res = await createMessage({
-                    chatRoomId: activeRoomId!,
-                    senderId: loggedInUserId,
-                    content: imageUrl,
-                    messageType: "IMAGE"
-                })
+            // const CM = async () => {
+            //     const res = await createMessage({
+            //         chatRoomId: activeRoomId!,
+            //         senderId: loggedInUserId,
+            //         content: imageUrl,
+            //         messageType: "IMAGE"
+            //     })
 
-                const newMessage = res.newMessage
-                if (newMessage) {
-                    socket.emit("send_message", { newMessage });
-                }
-            }
+            //     const newMessage = res.newMessage
+            //     if (newMessage) {
+            //         socket.emit("send_message", { newMessage });
+            //     }
+            // }
 
-            CM()
+            // CM()
         } catch (err) {
             console.error(err);
         }
@@ -122,7 +122,7 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
                     <div className="m-auto w-full max-w-lg rounded-md bg-white p-6 shadow-sm">
                         <Formik
                             initialValues={initialValues}
-                            // validationSchema={briefSchema}
+                            // @ts-ignore 
                             onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
                         >
                             {({ isSubmitting, resetForm, setFieldValue }) => (
@@ -144,7 +144,9 @@ export const SendArtworkForm = ({ id, refresh }: ModalProps) => {
                                         <button className="w-1/2 rounded px-4 py-3 text-white bg-gradient-to-r
                                          from-blue-500 to-purple-500 hover:from-base-200 hover:to-base-300"
                                             type='button'
-                                            onClick={() => { resetForm(); document.getElementById(id).close() }}
+                                            onClick={() => { resetForm();
+                                                // @ts-ignore
+                                                document.getElementById(id).close() }}
                                         >Cancel</button>
 
                                     </div>

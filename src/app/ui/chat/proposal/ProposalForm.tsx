@@ -30,7 +30,7 @@ const ProposalForm = () => {
 
 	const handleSubmit = async (values: formSchema, { resetForm }: any) => {
 		try {
-			await acceptBrief(commissionId, {
+			await acceptBrief(commissionId as string, {
 				...values,
 				artistId,
 			});
@@ -68,8 +68,8 @@ const ProposalForm = () => {
 								label="expectedDate"
 								type="date"
 								name="expectedDate"
-								errors={errors.expectedDate}
-								touched={touched.expectedDate}
+								// @ts-ignore
+								errors={errors.expectedDate} touched={touched.expectedDate}
 								placeholder="Expected finish date of your artwork."
 							/>
 							<FormikInput

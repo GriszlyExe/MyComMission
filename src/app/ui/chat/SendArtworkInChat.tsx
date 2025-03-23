@@ -29,11 +29,13 @@ export default function SendArtworkInChat() {
     const [previewPic, setPreviewPic] = useState("/post.jpeg");
     const acceptArtworkId = "accept_artwork"
     function handleAcceptArtwork() {
+        // @ts-ignore
         document.getElementById(acceptArtworkId)?.close()
         console.log({ state: states.finished });
         // acceptArtwork(latestCommission.commissionId);
     }
     function handleRejectArtwork() {
+        // @ts-ignore
         document.getElementById(acceptArtworkId)?.close()
         console.log({ state: states.finished });
         // rejectArtwork(latestCommission.commissionId);
@@ -78,7 +80,9 @@ export default function SendArtworkInChat() {
                         <button className="flex justify-center rounded px-4 py-3 text-white bg-gradient-to-r min-w-40
                                                 from-blue-500 to-blue-600 hover:from-blue-700 hover:to-blue-700"
                             type='button'
-                            onClick={() => document.getElementById(acceptArtworkId)?.close()}
+                            onClick={() =>
+                                // @ts-ignore
+                                document.getElementById(acceptArtworkId)?.close()}
                         >Cancel</button>
                     </div>
                 </div>

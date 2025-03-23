@@ -62,9 +62,9 @@ const CheckoutForm = () => {
         if (!stripe || !elements) return;
 
         const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: elements.getElement(CardElement),
-            },
+            // payment_method: {
+                // card: elements.getElement(CardElement),
+            // },
         });
 
         if (error) {

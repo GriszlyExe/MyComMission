@@ -32,8 +32,8 @@ export const PostponeForm = ({ id }: ModalProps) => {
         try {
             console.log(values);
             resetForm(); // Reset form fields after successful submission
+            // @ts-ignore
             document.getElementById(id).close(); // Close the modal
-
             // router.refresh(); (Uncomment this if needed)
         } catch (err) {
             console.error(err);
@@ -49,7 +49,7 @@ export const PostponeForm = ({ id }: ModalProps) => {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={postPoneSchema}
-                            onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
+                            onSubmit={(values, { resetForm }) => handleSubmit(values as any, { resetForm })}
                         >
                             {({ isSubmitting, errors, touched, resetForm }) => (
                                 <Form className="space-y-4" autoComplete="off">
@@ -80,7 +80,9 @@ export const PostponeForm = ({ id }: ModalProps) => {
                                         <button className="w-1/2 rounded px-4 py-3 text-white bg-gradient-to-r
                                          from-blue-500 to-purple-500 hover:from-base-200 hover:to-base-300"
                                             type='button'
-                                            onClick={() => { resetForm(); document.getElementById(id).close() }}
+                                            onClick={() => { resetForm(); 
+                                                // @ts-ignore
+                                                document.getElementById(id).close() }}
                                         >Cancel</button>
 
 

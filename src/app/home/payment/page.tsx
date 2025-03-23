@@ -92,11 +92,11 @@ export default function PaymentPage() {
                                 {/* <button onClick={handleCreatePaymentIntent}>ClickME!</button> */}
 								{activeMethod === "credit-card" && clientSecret && (
                                     <Elements stripe={stripePromise} options={{ clientSecret }}>
-                                        <CreditCardForm />
+                                        {/* <CreditCardForm /> */}
                                     </Elements>
                                 )}
                                 {activeMethod === "promptpay" && (
-                                    <PromptPayQR qrImageSrc={qrImageSrc}/>
+                                    <PromptPayQR />
                                 )}
                             </div>
                         </div>

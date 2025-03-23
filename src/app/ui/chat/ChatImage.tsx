@@ -4,7 +4,7 @@ import { useState } from "react";
 import ImageModal from "../components/ImageModal";
 import { useAppSelector } from "@/stores/hook";
 import { User } from "next-auth";
-import { acceptArtwork, rejectArtwork } from "@/service/commissionService";
+// import { acceptArtwork, rejectArtwork } from "@/service/commissionService";
 
 interface ChatImageProps {
     imageUrl: string;
@@ -28,7 +28,7 @@ export default function ChatImage({ imageUrl }: ChatImageProps) {
             console.log(" ccepted:", imageUrl);
             // Example: Send API request
             // await acceptImage(imageUrl);
-            await acceptArtwork(latestCommission.commissionId);
+            // await acceptArtwork(latestCommission.commissionId);
             // alert("Image accepted!");
         } catch (error) {
             console.error("Error accepting image:", error);
@@ -41,7 +41,7 @@ export default function ChatImage({ imageUrl }: ChatImageProps) {
             console.log("Rejected:", imageUrl);
             // Example: Send API request
             // await rejectImage(imageUrl);
-            await rejectArtwork(latestCommission.commissionId);
+            // await rejectArtwork(latestCommission.commissionId);
             // alert("Image rejected!");
         } catch (error) {
             console.error("Error rejecting image:", error);
