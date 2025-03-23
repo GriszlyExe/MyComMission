@@ -1,9 +1,7 @@
 import { Commission, Message, User } from "@/common/model";
 import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import clsx from "clsx";
-import BriefInChat from "./BriefInChat";
 import { getCommissionById } from "@/service/commissionService";
-import ProposalInChat from "./ProposalInChat";
 import SendArtworkInChat from "./SendArtworkInChat";
 import ImageModal from "../components/ImageModal";
 import ChatImage from "./ChatImage";
@@ -12,8 +10,7 @@ import CommissionInChat from "./CommissionInChat";
 
 /* React */
 import React, { Suspense, useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import { clipText } from "@/utils/helper";
+import { clipText, formatMessageTimestamp } from "@/utils/helper";
 
 const MessageItem = ({
 	messageItem,
@@ -35,7 +32,7 @@ const MessageItem = ({
 	
 	const [commission, setCommission] = useState<Commission | null>(null);
 
-	const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+	// const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchCommission = async () => {
@@ -45,7 +42,7 @@ const MessageItem = ({
 						messageItem.content,
 					);
 
-					console.log(commissionData);
+					// console.log(commissionData);
 					setCommission(commissionData.commission);
 				} catch (error) {
 					console.error("Failed to fetch commission:", error);
@@ -84,7 +81,7 @@ const MessageItem = ({
 				{isMyMessage
 					? loggedInUser!.displayName
 					: receiver?.displayName}
-				<time className="mx-1 text-xs opacity-50">12:45</time>
+				<time className="mx-1 text-xs opacity-50">{formatMessageTimestamp(messageItem.createdAt)}</time>
 			</div>
 
 			{/* plain text */}
@@ -101,7 +98,7 @@ const MessageItem = ({
 					onClick={() =>
 						(
 							document.getElementById(
-								`brief-modal-${commission.artistId}-${commission.commissionName}`,
+								`commission-modal-${commission.commissionId}`,
 							) as HTMLDialogElement
 						)?.showModal()
 					}
@@ -122,7 +119,7 @@ const MessageItem = ({
 					onClick={() =>
 						(
 							document.getElementById(
-								`proposal-modal-${commission.artistId}-${commission.commissionName}`,
+								`commission-modal-${commission.commissionId}`,
 							) as HTMLDialogElement
 						)?.showModal()
 					}
@@ -135,6 +132,7 @@ const MessageItem = ({
 					</button>
 				</div>
 			)}
+
 			{isWorking && (
 				<div className="chat-bubble bg-accent text-black">
 					<SendArtworkInChat />
@@ -147,7 +145,7 @@ const MessageItem = ({
 
 			{/* Modal for brief */}
 			{commission !== null && <dialog
-				id={`brief-modal-${commission.artistId}-${commission.commissionName}`}
+				id={`commission-modal-${commission.commissionId}`}
 				className="modal"
 			>
 				<div className="modal-box max-w-xl">
@@ -159,8 +157,8 @@ const MessageItem = ({
 			</dialog>}
 
 			{/* Modal for proposal */}
-			{commission !== null && <dialog
-				id={`proposal-modal-${commission.artistId}-${commission.commissionName}`}
+			{/* {commission !== null && <dialog
+				id={`proposal-modal-${commission.commissionId}`}
 				className="modal "
 			>
 				<div className="modal-box w-11/12 max-w-xl">
@@ -169,7 +167,7 @@ const MessageItem = ({
 				<form method="dialog" className="modal-backdrop">
 					<button>close</button>
 				</form>
-			</dialog>}
+			</dialog>} */}
 		</div>
 	);
 };

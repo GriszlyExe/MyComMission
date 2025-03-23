@@ -33,7 +33,6 @@ export default function EditAccountForm() {
 		firstName: loggedInUser?.firstName,
 		lastName: loggedInUser?.lastName,
 		birthDate: (loggedInUser?.birthDate as string).split(`T`)[0],
-		description: undefined,
 		phone: loggedInUser?.phone,
 		email: loggedInUser?.email,
 		description: loggedInUser?.description,

@@ -2,7 +2,7 @@ import { Download } from 'lucide-react';
 import React, { useState } from 'react'
 import { states } from './commissionState';
 import 'daisyui'
-import { acceptArtwork, rejectArtwork } from '@/service/commissionService';
+// import { acceptArtwork, rejectArtwork } from '@/service/commissionService';
 import { useAppSelector } from '@/stores/hook';
 export default function SendArtworkInChat() {
 
@@ -31,7 +31,7 @@ export default function SendArtworkInChat() {
     function handleAcceptArtwork() {
         document.getElementById(acceptArtworkId)?.close()
         console.log({ state: states.finished });
-        acceptArtwork(latestCommission.commissionId);
+        // acceptArtwork(latestCommission.commissionId);
     }
     function handleRejectArtwork() {
         document.getElementById(acceptArtworkId)?.close()
@@ -52,11 +52,11 @@ export default function SendArtworkInChat() {
 
 
             <div className='flex flex-row gap-3'>
-                {!isArtist && (latestCommission && latestCommission.state) === "ARTWORK_SHIPPED" && <button className="flex rounded px-4 py-3 text-white bg-gradient-to-r
+                {/* {!isArtist && (latestCommission && latestCommission.state === "ARTWORK_SHIPPED") && <button className="flex rounded px-4 py-3 text-white bg-gradient-to-r
                                                 from-green-500 to-green-600 hover:from-green-700 hover:to-green-700"
                     type='button'
                     onClick={() => document.getElementById(acceptArtworkId)?.showModal()}
-                >Accept Artwork</button>}
+                >Accept Artwork</button>} */}
                 <a className="flex flex-row gap-x-3 rounded px-4 py-3 text-white bg-gradient-to-r
                                                 from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
                     href={previewPic} download="artwork.jpg">

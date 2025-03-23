@@ -12,7 +12,7 @@ import { ChatRoom, User } from "@/common/model";
 import { getUserInfo } from "@/service/userService";
 import clsx from "clsx";
 import Link from "next/link";
-import { clipText } from "@/utils/helper";
+import { clipText, formatChatTimestamp } from "@/utils/helper";
 
 // const
 
@@ -69,21 +69,19 @@ const StateModal = ({
 	roomState?: string;
 	modalId: string;
 }) => {
+
+	// const stateInfo = 
+
 	return (
 		<>
 			<button
-				className="py-3"
+				className="text-xs text-white bg-primary hover:bg-accent px-1 rounded-md"
 				onClick={() =>
 					// @ts-ignore
 					document.getElementById(`status-info-${modalId}`)!.showModal()
 				}
 			>
-				{
-					states.filter((state) => {
-						if (!roomState) return state.name === "IDLE";
-						return state.name === roomState;
-					})[0].icon
-				}
+				Status
 			</button>
 			<dialog id={`status-info-${modalId}`} className="modal">
 				<div className="modal-box">
@@ -158,23 +156,26 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 
 			{/* name + latest message */}
 			<div className="flex flex-grow flex-col p-2">
-				<span className="">
+				<span className="flex flex-row gap-1 items-center">
 					<Link
 						href={`/profile/${receiver?.userId}`}
-						className="accent font-bold hover:underline"
+						className="accent font-bold hover:text-accent flex-grow"
 					>
 						{receiver !== null ? receiver.displayName : ""}
 					</Link>
+				    <p className="text-xs">{formatChatTimestamp(chatRoom.lastTimeStamp)}</p>		
 				</span>
-				<p className="text-sm">{chatRoom.latestMessageType === "COMMISSION" ? "Commission on going" : clipText(chatRoom.latestMessage, 18)}</p>
+				<div className="flex flex-row gap-1">
+					<p className="text-sm flex-grow">{chatRoom.latestMessageType === "COMMISSION" ? "Commission on going" : clipText(chatRoom.latestMessage, 18)}</p>
+					<StateModal
+						roomState={chatRoom.latestCommission?.state}
+						modalId={chatRoom.chatRoomId}
+					/>
+				</div>
 				{/* <p className="text-sm">Hello, How are you?</p> */}
 			</div>
 
 			{/* @ts-ignore */}
-			<StateModal
-				roomState={chatRoom.latestCommission?.state}
-				modalId={chatRoom.chatRoomId}
-			/>
 		</div>
 	);
 };

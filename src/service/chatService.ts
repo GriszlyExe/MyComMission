@@ -54,8 +54,8 @@ export const getMessageChatroom = async (chatroomId: string) => {
 			withCredentials: true,
 		};
 
-		const res = await axios.request(options);
-		return res.data.chatroom;
+		const { data: { chatRoom } } = await axios.request(options);
+		return chatRoom;
 	} catch (error) {
 		throw error;
 	}

@@ -7,7 +7,6 @@ import MessageInput from "./MessageInput";
 import { io } from "socket.io-client";
 import { getMessageChatroom } from "@/service/chatService";
 import SendArtworkInChat from "./SendArtworkInChat";
-import BriefInChat from "./BriefInChat";
 import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import {
 	addMessage,
@@ -16,6 +15,7 @@ import {
 	updateRoomState,
 } from "@/stores/features/chatSlice";
 import { getUserInfo } from "@/service/userService";
+import { setLatestCommission } from "@/stores/features/commisionSlice";
 
 const socket = io(process.env.SERVER_ADDRESS);
 
@@ -42,9 +42,12 @@ const ChatWindow = () => {
 		// Fetch messages from backend
 		const fetchMessageChatroom = async () => {
 			if (activeRoomId !== undefined) {
-				const { messages } = await getMessageChatroom(activeRoomId);
+				const res = await getMessageChatroom(activeRoomId);
+				console.log(res);
+				const { messages, latestCommission } = res;
 				const user = await getUserInfo(receiverId!);
-				// console.log(user);
+				console.log(messages);
+				dispatch(setLatestCommission(latestCommission));
 				dispatch(setReceiver(user));
 				dispatch(setMessages(messages));
 			}
@@ -54,6 +57,12 @@ const ChatWindow = () => {
 	}, [activeRoomId]);
 
 	useEffect(() => {
+		
+		socket.emit("joinRoom", {
+			senderId: loggedInUserId,
+			chatRoomId: activeRoomId,
+		});
+
 		socket.on("receiveMessage", ({ newMessage }) => {
 			const { chatRoomId, commission } = newMessage;
 			console.log(newMessage);
@@ -63,10 +72,6 @@ const ChatWindow = () => {
 			}
 		});
 
-		socket.emit("joinRoom", {
-			senderId: loggedInUserId,
-			chatRoomId: activeRoomId,
-		});
 
 		return () => {
 			socket.off("receiveMessage");
@@ -86,7 +91,7 @@ const ChatWindow = () => {
 					ref={containerRef}
 					className="mt-1 max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden"
 				>
-					{receiver !== null &&
+					{receiver !== null && messages &&
 						messages.map((message) => (
 							<MessageItem
 								messageItem={message}

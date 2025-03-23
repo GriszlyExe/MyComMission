@@ -117,7 +117,7 @@ export default function CommissionInChat({
 								text="Accept"
 								onClick={() => 
 										// @ts-ignore
-										document.getElementById("proposal-form").showModal()
+										document.getElementById(`proposal-form-${commission.commissionId}`).showModal()
 									
 								}
 							/>
@@ -128,7 +128,7 @@ export default function CommissionInChat({
 									console.log({ state: states.canceled })
 								}
 							/>
-							<ProposalForm />
+							<ProposalForm commissionId={commission.commissionId}/>
 						</>
 					)}
 

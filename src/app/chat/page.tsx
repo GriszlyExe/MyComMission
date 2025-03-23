@@ -28,7 +28,7 @@ const Page = () => {
 		
 		const fetchChatrooms = async () => {
 			const chatrooms = await getChatrooms(userId);
-			console.log(chatrooms);
+			// console.log(chatrooms);
 			dispatch(setChatRooms(chatrooms));
 		};
 

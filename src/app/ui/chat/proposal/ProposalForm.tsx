@@ -7,8 +7,19 @@ import { proposalSchema } from "@/app/ui/chat/schemas/FormSchemas";
 /* Formik + yup */
 import { FormikInput } from "../FormikInput";
 import * as yup from "yup";
+import { acceptBrief } from "@/service/commissionService";
+import { useAppSelector } from "@/stores/hook";
 
 const ProposalForm = () => {
+
+	const commissionId = useAppSelector(state => state.commission.latestComission!.commissionId);
+	const artistId = useAppSelector(state => state.commission.latestComission!.artistId);
+	const loggedInUserId = useAppSelector(state => state.user.user!.userId);
+
+	if (artistId !== loggedInUserId) {
+		throw new Error("Not the artist for the commission");
+	}
+	
 	type formSchema = yup.InferType<typeof proposalSchema>;
 
 	const initialValues: formSchema = {
@@ -16,13 +27,24 @@ const ProposalForm = () => {
 		proposalPrice: "",
 	};
 
-	const handleSubmit = (values: formSchema, { resetForm }: any) => {
-		console.log(values);
-		resetForm();
+	const handleSubmit = async (values: formSchema, { resetForm }: any) => {
+		try {
+			await acceptBrief(commissionId, {
+				...values,
+				artistId,
+			});
+			resetForm();
+			// @ts-ignore
+			document.getElementById(`proposal-form-${commissionId}`).close();
+			// @ts-ignore
+			document.getElementById(`commission-modal-${commissionId}`).close();
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	return (
-		<dialog id="proposal-form" className="modal">
+		<dialog id={`proposal-form-${commissionId}`} className="modal">
 			<div className="modal-box">
 				<h3 className="text-xl font-bold">Proposal</h3>
 				<Formik
@@ -76,7 +98,7 @@ const ProposalForm = () => {
 									onClick={() => {
 										resetForm();
                                         // @ts-ignore
-										document.getElementById("proposal-form").close();
+										document.getElementById(`proposal-form-${commissionId}`).close();
 									}}
 								>
 									Cancel

@@ -1,11 +1,7 @@
 import FeedProfileWidget from "../components/FeedProfileWidget";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { useEffect, useState } from "react";
 import { getBoostedPostsByUserId, getPostByUserId } from "@/service/postService";
-import {
-    setLoggedInUserPosts,
-    setPagePosts,
-} from "@/states/features/postSlice";
 import { useParams } from "next/navigation";
 import UnboostedPostWidget from "../components/unboostedPostWidget";
 import ManageBoostedPost from "./manage-boosted-post";
