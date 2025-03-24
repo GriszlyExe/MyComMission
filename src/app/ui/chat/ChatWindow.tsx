@@ -47,7 +47,7 @@ const ChatWindow = () => {
 				const { messages, latestCommission } = res;
 				const user = await getUserInfo(receiverId!);
 				// console.log(messages);
-				dispatch(setLatestCommission(latestCommission));
+				// dispatch(setLatestCommission(latestCommission));
 				dispatch(setReceiver(user));
 				dispatch(setMessages(messages));
 			}
@@ -67,7 +67,7 @@ const ChatWindow = () => {
 			const { commission, ...rest } = newMessage;
 			console.log(newMessage);
 			if (rest.chatRoomId === activeRoomId) {
-				dispatch(setLatestCommission(commission ? commission : currentCommission));
+				// dispatch(setLatestCommission(commission ? commission : currentCommission));
 				dispatch(addMessage(newMessage));
 				dispatch(updateRoomState({ chatRoomId: rest.chatRoomId, message: rest, commission: commission ? commission : currentCommission}));
 			}
@@ -81,6 +81,7 @@ const ChatWindow = () => {
 
 	useEffect(() => {
 		if (containerRef.current) {
+			// console.log(`Scrolling to ${containerRef.current.scrollHeight}`);
 			containerRef.current.scrollTop = containerRef.current.scrollHeight;
 		}
 	}, [messages]);
@@ -90,10 +91,10 @@ const ChatWindow = () => {
 			<div className="md:h-full p-2 flex flex-col">
 				<div
 					ref={containerRef}
-					className="mt-1 h-full overflow-y-auto overflow-x-hidden scrollbar-hidden"
+					className="mt-1 h-full flex flex-col-reverse overflow-y-auto overflow-x-hidden scrollbar-hidden"
 				>
 					{receiver !== null && messages &&
-						messages.map((message) => (
+						[...messages].reverse().map((message) => (
 							<MessageItem
 								messageItem={message}
 								key={message.messageId}

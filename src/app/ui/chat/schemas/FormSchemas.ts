@@ -5,6 +5,8 @@ export const briefSchema = yup.object().shape({
 	commissionName: yup.string().required("Brief name is required"),
 	briefDescription: yup.string().required("Brief details are required"),
 	deadline: yup
+		// .string()
+		// .datetime().min()
 		.date()
 		.min(new Date(), "Deadline cannot be in the past")
 		.required("Deadline is required"),

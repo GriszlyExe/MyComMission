@@ -19,61 +19,23 @@ const stripePromise = loadStripe(
 );
 
 export default function PaymentPage() {
+
 	const userId = useAppSelector((state) => state.user.user!.userId);
 	const searchParams = useSearchParams();
-	// const count = parseInt(searchParams.get("count") || "0", 10);
-
-	const [activeMethod, setActiveMethod] = useState("credit-card");
 	const [clientSecret, setClientSecret] = useState("");
-	const [qrImageSrc, setQrImageSrc] = useState("");
 
-	const handleMethodClick = (method: string) => {
-		setActiveMethod(method);
-	};
-
-	const handleCreatePaymentIntent = async (amount:number) => {
+	const handleCreatePaymentIntent = async (amount: number) => {
 		const res = await createPaymentIntentService(amount);
-		console.log(res)
-		setClientSecret(res.client_secret);
+		const { client_secret, paymentIntent: { id } } = res;
+		setClientSecret(client_secret);
 	};
-
-	const getButtonClass = (method: string) =>
-		`h-12 w-full rounded-md p-3 text-left ${
-			activeMethod === method ? "bg-blue-400 text-white" : "bg-white"
-		}`;
 
 	const router = useRouter();
-
-	const posts = searchParams.get("posts")
+	const posts = searchParams.get("posts");
 	const selectedPosts = posts ? JSON.parse(decodeURIComponent(posts as string)) : [];
-	const count = selectedPosts.length
-	const selectedPlan = searchParams.get("selectedPlan")
+	const count = selectedPosts.length;
+	const selectedPlan = searchParams.get("selectedPlan");
 	const option = selectedPlan ? JSON.parse(decodeURIComponent(selectedPlan)) : [];
-	
-	// console.log(selectedPosts,count)
-	// console.log(selectedPlan)
-	console.log(option)
-
-	useEffect(() => {	
-		if (activeMethod === "promptpay") {
-			console.log("START FETCHING");
-
-			// Direct async call within useEffect
-			const fetchQR = async () => {
-				try {
-					const res = await createQRPayment("0817972894", 100);
-					console.log(res);
-					if (res?.signedUrl) {
-						setQrImageSrc(res.signedUrl); // Set the QR code image URL
-					}
-				} catch (error) {
-					console.error("Error fetching QR:", error);
-				}
-			};
-
-			fetchQR(); // Call the function inside useEffect
-		}
-	}, [activeMethod]);
 
 	return (
 		<div className="m-auto w-3/4">
@@ -85,7 +47,7 @@ export default function PaymentPage() {
 					<div>
 						<button
 							className="btn btn-error text-white"
-							onClick={() => router.push(`/profile/${userId}`)}
+							onClick={() => router.back()}
 						>
 							Cancel Payment
 						</button>
@@ -94,17 +56,8 @@ export default function PaymentPage() {
 				<div className="flex flex-row gap-5">
 					{/* Payment methods */}
 					<div className="flex w-1/2 flex-col gap-3">
-						<button
-							className={getButtonClass("credit-card")}
-							onClick={() => handleMethodClick("credit-card")}
-						>
+						<button className="h-12 w-full rounded-md p-3 text-left bg-blue-400 text-white">
 							Credit Card
-						</button>
-						<button
-							className={getButtonClass("promptpay")}
-							onClick={() => handleMethodClick("promptpay")}
-						>
-							PromptPay
 						</button>
 					</div>
 					{/* Payment Input */}
@@ -112,7 +65,7 @@ export default function PaymentPage() {
 						<div className="flex">
 							<div className="m-auto w-full rounded-md bg-white p-6 md:max-w-full">
 								<div className="mb-4 flex items-center justify-between border-b pb-2">
-									<h2 className="text-xl font-semibold text-gray-700">
+									<h2 className="text-3xl font-semibold text-gray-700">
 										Summary
 									</h2>
 									<p className="text-lg font-semibold text-gray-700">
@@ -135,26 +88,32 @@ export default function PaymentPage() {
 										</span>
 									</p>
 								</div>
-								{activeMethod === "credit-card" && (
-									<button
-										className="rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700"
-										onClick={() => handleCreatePaymentIntent(count * option.price*100)}
+								
+								<button
+									className="rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700"
+									onClick={() =>
+									handleCreatePaymentIntent(
+											count * option.price * 100,
+										)
+									}
+								>
+									PROCEED TO PAY
+								</button>
+								
+								{clientSecret && (
+									<Elements
+										stripe={stripePromise}
+										options={{ clientSecret }}
 									>
-										PROCEED TO PAY
-									</button>
-								)}
-								{activeMethod === "credit-card" &&
-									clientSecret && (
-										<Elements
-											stripe={stripePromise}
-											options={{ clientSecret }}
-										>
-											<CreditCardForm selectedPosts={selectedPosts} expiration={option.expiration}
-											price={option.price} count={count}/>
-										</Elements>
-									)}
-								{activeMethod === "promptpay" && (
-									<PromptPayQR />
+										<CreditCardForm
+											adsPayload={{
+												selectedPosts,
+												expiration: option.expiration,
+												amount: option.price,
+												count,
+											}}
+										/>
+									</Elements>
 								)}
 							</div>
 						</div>

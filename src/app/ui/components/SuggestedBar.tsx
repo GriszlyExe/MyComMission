@@ -54,7 +54,7 @@ const SuggestedBar = () => {
 	useEffect(() => {
 		const fetchSuggestedArtists = async () => {
 			const results = await getSuggestedArtist(5);
-			console.log(results);
+			// console.log(results);
 			setArtists(results);
 		};
 

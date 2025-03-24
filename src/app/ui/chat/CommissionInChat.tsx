@@ -6,6 +6,8 @@ import { formatDate } from "@/utils/helper";
 import { CheckmarkCircle01Icon } from "hugeicons-react";
 import { XSquareIcon } from "lucide-react";
 import ProposalForm from "@/app/ui/chat/proposal/ProposalForm";
+import { useRouter } from "next/navigation";
+import { rejectBrief } from "@/service/commissionService";
 
 export const states = {
 	idle: "IDLE",
@@ -36,10 +38,23 @@ export default function CommissionInChat({
 }: {
 	commission: Commission;
 }) {
+
+	const router = useRouter();
+
 	const loggedInUserId = useAppSelector((state) => state.user.user!.userId);
-	const isArtist = loggedInUserId == commission.artistId;
-	const isBrief = commission.state == "BRIEF";
-	const isProposal = commission.state == "PROPOSAL";
+
+	const isArtist = loggedInUserId === commission.artistId;
+	const isCustomer = loggedInUserId === commission.customerId;
+
+	const isBrief = commission.state === states.brief;
+	const isProposal = commission.state === states.proposal;
+
+	// console.log(`${isCustomer} ${isProposal}`);
+	// console.log(commission);
+
+	const handleAcceptProposal = () => {
+		router.push("/payment");
+	}
 
 	return (
 		<div>
@@ -115,8 +130,10 @@ export default function CommissionInChat({
 							<Button
 								Icon={XSquareIcon}
 								text="Reject"
-								onClick={() =>
-									console.log({ state: states.canceled })
+								onClick={
+									async () => {
+										await rejectBrief(commission.commissionId, {});
+									}
 								}
 							/>
 							<ProposalForm />
@@ -124,11 +141,12 @@ export default function CommissionInChat({
 					)}
 
 					{/* Accept Brief Section */}
-					{!isArtist && isProposal && (
+					{isCustomer && isProposal && (
 						<>
 							<Button
 								Icon={CheckmarkCircle01Icon}
 								text="Accept"
+								onClick={handleAcceptProposal}
 							/>
 							<Button
 								Icon={XSquareIcon}

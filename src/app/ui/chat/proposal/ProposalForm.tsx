@@ -12,14 +12,14 @@ import { useAppSelector } from "@/stores/hook";
 
 const ProposalForm = () => {
 
-	const commissionId = useAppSelector(state => state.commission.latestComission?.commissionId);
-	const artistId = useAppSelector(state => state.commission.latestComission?.artistId);
+	const commissionId = useAppSelector(state => state.chat.activeRoom!.latestCommission.commissionId);
+	const artistId = useAppSelector(state => state.chat.activeRoom!.latestCommission.artistId);
 	const loggedInUserId = useAppSelector(state => state.user.user!.userId);
 
-	if (artistId !== loggedInUserId) {
-		console.log(`${artistId} ${loggedInUserId}`);
-		throw new Error("Not the artist for the commission");
-	}
+	// if (artistId !== loggedInUserId) {
+	// 	console.log(`${artistId} ${loggedInUserId}`);
+	// 	throw new Error("Not the artist for the commission");
+	// }
 	
 	type formSchema = yup.InferType<typeof proposalSchema>;
 

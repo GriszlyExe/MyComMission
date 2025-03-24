@@ -20,7 +20,7 @@ import { getChatroom } from "@/service/chatService";
 export default function ChatOptions() {
 	const loggedInUserId = useAppSelector((state) => state.user.user!.userId);
 	const latestCommission = useAppSelector(
-		(state) => state.commission.latestComission,
+		(state) => state.chat.activeRoom!.latestCommission,
 	);
 	const isCustomer = !latestCommission || loggedInUserId === latestCommission?.customerId || latestCommission.state === states.finished;
 	const canCreateBrief = !latestCommission || (latestCommission && latestCommission.state === states.finished);
@@ -85,9 +85,9 @@ export default function ChatOptions() {
 						<SendIcon size={24} /> <span>Send Artwork</span>
 					</OptionButton>
 				)}
-				<OptionButton onClick={() => setIsReportOpen(true)}>
+				{latestCommission && <OptionButton onClick={() => setIsReportOpen(true)}>
 					<BadgeAlert size={24} /> <span>Report</span>
-				</OptionButton>
+				</OptionButton>}
 				{/* Report Popup */}
 				<ReportPopup
 					isOpen={isReportOpen}

@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { FormikInput, FormikCheckbox, FormikFileInput } from "../FormikInput";
 import {
 	createCommission,
+	editBrief,
 	getCommissionById,
 } from "@/service/commissionService";
 import { useAppDispatch, useAppSelector } from "@/stores/hook";
@@ -38,17 +39,18 @@ export const BriefForm = () => {
 	});
 
 	const latestCommission = useAppSelector(
-		(state) => state.commission.latestComission,
+		(state) => state.chat.activeRoom?.latestCommission,
 	);
 
 	type formSchema = yup.InferType<typeof briefSchema>;
-	const initialValues: formSchema = useAppSelector((state) => {
+	const initialValues = useAppSelector((state) => {
 		if (
-			state.commission.latestComission &&
-			state.commission.latestComission.state !== "FINISHED"
+			state.chat.activeRoom && state.chat.activeRoom.latestCommission &&
+			state.chat.activeRoom.latestCommission.state !== "FINISHED"
 		) {
-            const { commissionName, briefDescription, commercialUse, deadline, budget } = state.commission.latestComission;
-			return { commissionName, briefDescription, commercialUse, deadline: new Date(deadline), budget };
+            const { commissionName, briefDescription, commercialUse, deadline, budget } = state.chat.activeRoom.latestCommission;
+			// console.log(`Deadline: ${new Date(deadline)}`);
+			return { commissionName, briefDescription, commercialUse, deadline: deadline.split(`T`)[0], budget };
 		}
 
 		return {
@@ -60,20 +62,26 @@ export const BriefForm = () => {
 		};
 	});
 
+	console.log(initialValues);
+
 	const handleSubmit = async (
 		values: formSchema,
 		{ resetForm }: { resetForm: () => void }, // Accept resetForm from Formik
 	) => {
-		try {
-			const { commission } = await createCommission({
+		try {	
+			!latestCommission ? await createCommission({
+				...values,
+				artistId: artistId,
+				customerId: loggedInUserId,
+				chatRoomId: activeRoomId,
+			}) : await editBrief(latestCommission!.commissionId, {
 				...values,
 				artistId: artistId,
 				customerId: loggedInUserId,
 				chatRoomId: activeRoomId,
 			});
 
-			console.log(commission);
-
+			// console.log(commission);
 			// dispatch(setLatestCommission(commission));
 			resetForm();
 

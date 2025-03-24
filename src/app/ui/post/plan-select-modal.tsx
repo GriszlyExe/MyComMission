@@ -30,17 +30,18 @@ export default function PlanSelectModal({
 	// Submit function
 	const handleSubmit = () => {
 		if (selectedPlan) {
-			console.log("Selected Plan Details:");
-			console.log("Cost:", selectedPlan.price);
-			console.log("Selected Posts:", selectedPosts);
-			console.log("Expiration Date:", selectedPlan.expiration);
+			// console.log("Selected Plan Details:");
+			// console.log("Cost:", selectedPlan.price);
+			// console.log("Selected Posts:", selectedPosts);
+			// console.log("Expiration Date:", selectedPlan.expiration);
 			(document.getElementById(modalId) as HTMLDialogElement)?.close();
 			router.push(
-				`/home/payment/boosting-payment?posts=${encodeURIComponent(JSON.stringify(selectedPosts))}
+				`/payment/boosting-payment?posts=${encodeURIComponent(JSON.stringify(selectedPosts))}
 				&selectedPlan=${encodeURIComponent(JSON.stringify(selectedPlan))}`
 			);
 		} else {
-			console.log("No plan selected.");
+			// console.log("No plan selected.");
+			window.alert("No plan selected");
 		}
 	};
 	const options = [

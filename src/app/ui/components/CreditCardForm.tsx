@@ -1,6 +1,8 @@
 "use client";
 
-import { createPostBoostTransaction } from "@/service/payment";
+import { Post } from "@/common/model";
+import { acceptProposal } from "@/service/commissionService";
+import { createPaymentTransaction, createPostBoostTransaction } from "@/service/payment";
 import { useAppSelector } from "@/stores/hook";
 import {
 	useStripe,
@@ -10,23 +12,32 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function CreditCardForm({
-	selectedPosts,
-	expiration,
-	price,
-	count,
-}: {
-	selectedPosts: any;
+type AdsPayload = {
+	selectedPosts: Post[];
 	expiration: Date;
-	price: number;
+	amount: number;
 	count: number;
-}) {
+}
+
+type CommissionPayload = {
+	stripeId: string
+}
+
+interface CreditCardFormProps {
+	adsPayload?: AdsPayload;
+	cmPayload?: CommissionPayload;
+}
+
+export default function CreditCardForm({ adsPayload, cmPayload }: CreditCardFormProps) {
 	const stripe = useStripe();
 	const elements = useElements();
 	const router = useRouter();
 	const loggedInUserId = useAppSelector((state) => state.user.user!.userId);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+
+	/* commission */
+	const commission = useAppSelector(state => state.chat.activeRoom!.latestCommission);
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -35,30 +46,28 @@ export default function CreditCardForm({
 		setLoading(true);
 		setError(null);
 		const redirectUrl = async () => {
-			const payload = {
-				selectedPosts,
-				expiration,
-				amount: price,
-				count,
-			};
-			await createPostBoostTransaction(payload);
-			// console.log(txnRes)
+			
+			/* Post advertisement */
+			if (adsPayload) {
+				await createPostBoostTransaction(adsPayload);
+			} else if (cmPayload) {
+				const transactionId = await createPaymentTransaction({ ...commission, stripId: cmPayload.stripeId, paymentMethod: "CREDITCARD" });
+				await acceptProposal(commission.commissionId, { transactionId, customerId: commission.customerId });
+			}
+			
 			return `${window.location.origin}/home`;
 		};
 
-		const res = await stripe.confirmPayment({
+		await stripe.confirmPayment({
 			elements,
 			confirmParams: {
 				return_url: await redirectUrl(),
 			},
 		});
 
-		router.push(`/profile/${loggedInUserId}`);
-		// console.log("NEXTTTTT")
-		if (res.error) {
-			setLoading(false);
-			console.log(res.error);
-		}
+		setLoading(false);
+		router.back();
+		
 	};
 
 	return (
