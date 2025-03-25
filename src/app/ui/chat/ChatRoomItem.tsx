@@ -46,6 +46,7 @@ const states = [
 	{
 		name: "ARTWORK_SHIPPED",
 		icon: <FaBoxOpen fontSize={40} className="text-primary" />,
+		info: "Artist already sent the artwork waiting for customer approval"
 	},
 	{
 		name: "ARTWORK_REJECTED",

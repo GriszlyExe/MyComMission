@@ -6,10 +6,11 @@ import MessageItem from "./MessageItem";
 import MessageInput from "./MessageInput";
 import { io } from "socket.io-client";
 import { getMessageChatroom } from "@/service/chatService";
-import SendArtworkInChat from "./SendArtworkInChat";
+import SendArtworkInChat from "./ArtworkInChat";
 import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import {
 	addMessage,
+	setActiveRoomCommission,
 	setMessages,
 	setReceiver,
 	updateRoomState,
@@ -43,13 +44,16 @@ const ChatWindow = () => {
 		const fetchMessageChatroom = async () => {
 			if (activeRoomId !== undefined) {
 				const res = await getMessageChatroom(activeRoomId);
-				// console.log(res);
+				console.log(res);
 				const { messages, latestCommission } = res;
+				console.log(messages);
 				const user = await getUserInfo(receiverId!);
-				// console.log(messages);
-				// dispatch(setLatestCommission(latestCommission));
+				
 				dispatch(setReceiver(user));
 				dispatch(setMessages(messages));
+				if (latestCommission) {
+					dispatch(setActiveRoomCommission(latestCommission));
+				}
 			}
 		};
 
@@ -93,6 +97,7 @@ const ChatWindow = () => {
 					ref={containerRef}
 					className="mt-1 h-full flex flex-col-reverse overflow-y-auto overflow-x-hidden scrollbar-hidden"
 				>
+					{/* <MessageItem messageItem={{ ...messages[0], messageType: "IMAGE" }}/> */}
 					{receiver !== null && messages &&
 						[...messages].reverse().map((message) => (
 							<MessageItem

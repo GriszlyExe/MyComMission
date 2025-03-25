@@ -51,6 +51,11 @@ const chatSlice = createSlice({
                 }
                 return room;
             })
+        },
+        setActiveRoomCommission(state, action: PayloadAction<Commission>) {
+            if (state.activeRoom) {
+                state.activeRoom.latestCommission = action.payload;
+            }
         }
     },
 });
@@ -62,6 +67,7 @@ export const {
     addMessage,
     setReceiver,
     updateRoomState,
+    setActiveRoomCommission,
 } = chatSlice.actions;
 
 export const chatReducer = chatSlice.reducer;

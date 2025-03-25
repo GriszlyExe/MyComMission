@@ -2,7 +2,8 @@ import { Commission, Message, User } from "@/common/model";
 import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import clsx from "clsx";
 import { getCommissionById } from "@/service/commissionService";
-import SendArtworkInChat from "./SendArtworkInChat";
+// import SendArtworkInChat from "./ArtworkInChat";
+import ArtworkInChat from "./ArtworkInChat";
 import ImageModal from "../components/ImageModal";
 import ChatImage from "./ChatImage";
 import { IoDocumentText } from "react-icons/io5";
@@ -69,9 +70,7 @@ const MessageItem = ({
 					<img
 						alt="profile"
 						src={
-							isMyMessage
-								? loggedInUser!.profileUrl
-								: receiver!.profileUrl
+							isMyMessage ? loggedInUser!.profileUrl : receiver?.profileUrl
 						}
 					/>
 				</div>
@@ -112,14 +111,14 @@ const MessageItem = ({
 				</div>
 			)}
 
-			{isWorking && (
+			{/* {isWorking && (
 				<div className="chat-bubble bg-accent text-black">
 					<SendArtworkInChat />
 				</div>
-			)}
+			)} */}
 			<div className="chat-footer opacity-50">Delivered</div>
 
-			{isImage && <SendArtworkInChat />}
+			{/* {isImage && <SendArtworkInChat />} */}
 			<div className="chat-footer opacity-50">Delivered</div>
 
 			{/* Modal for brief */}
@@ -135,18 +134,10 @@ const MessageItem = ({
 				</form>
 			</dialog>}
 
-			{/* Modal for proposal */}
-			{/* {commission !== null && <dialog
-				id={`proposal-modal-${commission.commissionId}`}
-				className="modal "
-			>
-				<div className="modal-box w-11/12 max-w-xl">
-					<CommissionInChat commission={commission} />
-				</div>
-				<form method="dialog" className="modal-backdrop">
-					<button>close</button>
-				</form>
-			</dialog>} */}
+			{/* Image show */}
+			{isImage && (
+				<ArtworkInChat message={messageItem}/>
+			)}
 		</div>
 	);
 };

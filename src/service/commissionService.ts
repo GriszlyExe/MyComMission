@@ -1,5 +1,5 @@
 import { serverAddr } from ".";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 /* Commission Info */
 export const getCommissionById = async (commissionId: string) => {
@@ -32,9 +32,9 @@ export const createCommission = async (data: any) => {
 			data: data,
 		};
 
-		const commission = await axios.request(options);
+		const { data: { commission } } = await axios.request(options);
 
-		return commission.data;
+		return commission;
 	} catch (error) {
 		throw error;
 	}
@@ -66,3 +66,43 @@ export const rejectBrief = updateStateWrapper(`breif/reject`);
 export const acceptProposal = updateStateWrapper(`proposal/accept`);
 export const editProposal = updateStateWrapper(`proposal/edit`);
 export const rejectProposal = updateStateWrapper(`proposal/reject`);
+
+export const sendArtWork = async ({ commissionId, artwork, artistId }: { commissionId: string, artistId: string, artwork: File }) => {
+	try {
+		const uploadUrlOptions = {
+			method: "GET",
+			url: `${serverAddr}/commission/artwork/upload/url/${commissionId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+			data: {
+				fileType: artwork.type,
+			}
+		};
+
+		const { data: { uploadUrl, artworkPath } } = await axios.request(uploadUrlOptions);
+		
+		await axios.put(uploadUrl, artwork, {
+			headers: {
+				"Content-Type": artwork.type,
+			}
+		});
+
+		const options = {
+			method: "PATCH",
+			url: `${serverAddr}/commission/artwork/send/${commissionId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+			data: {
+				artworkPath,
+				artistId: artistId,
+			}
+		};
+
+		await axios.request(options);
+
+	} catch (err) {
+		throw err;
+	}
+}
+
+export const acceptArtwork = updateStateWrapper(`artwork/accept`);

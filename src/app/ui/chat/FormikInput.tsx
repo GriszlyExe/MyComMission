@@ -77,11 +77,11 @@ interface FileInputProps {
 export const FormikFileInput = ({ label, name, setFieldValue }: FileInputProps) => {
     return (
         <div>
-            {label && <label className="mb-2 block text-sm font-bold text-gray-700">{label}</label>}
+            {/* {label && <label className="mb-2 block text-sm font-bold text-gray-700">{label}</label>} */}
             <input
                 type="file"
                 name={name}
-                className="file-input file-input-bordered w-full"
+                className="file-input file-input-accent w-full"
                 onChange={(event) => {
                     const file = event.currentTarget.files?.[0];
                     setFieldValue(name, file); // Store file in Formik state

@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { io } from "socket.io-client";
 import { createMessage } from "@/service/chatService";
 import { useEffect, useState } from "react";
-import { isCommissionEnded } from "../commissionState";
+import { isCommissionEnded, states } from "../commissionState";
 import { setLatestCommission } from "@/stores/features/commisionSlice";
 
 interface ModalProps {
@@ -68,18 +68,23 @@ export const BriefForm = () => {
 		values: formSchema,
 		{ resetForm }: { resetForm: () => void }, // Accept resetForm from Formik
 	) => {
-		try {	
-			!latestCommission ? await createCommission({
-				...values,
-				artistId: artistId,
-				customerId: loggedInUserId,
-				chatRoomId: activeRoomId,
-			}) : await editBrief(latestCommission!.commissionId, {
-				...values,
-				artistId: artistId,
-				customerId: loggedInUserId,
-				chatRoomId: activeRoomId,
-			});
+		try {
+			if (!latestCommission || latestCommission.state === states.finished) {
+				const commission = await createCommission({
+					...values,
+					artistId: artistId,
+					customerId: loggedInUserId,
+					chatRoomId: activeRoomId,
+				});
+			} else {
+				await editBrief(latestCommission!.commissionId, {
+					...values,
+					artistId: artistId,
+					customerId: loggedInUserId,
+					chatRoomId: activeRoomId,
+				});
+			}
+			// !latestCommission ?  : 
 
 			// console.log(commission);
 			// dispatch(setLatestCommission(commission));

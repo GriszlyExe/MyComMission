@@ -22,10 +22,16 @@ export default function ChatOptions() {
 	const latestCommission = useAppSelector(
 		(state) => state.chat.activeRoom!.latestCommission,
 	);
-	const isCustomer = !latestCommission || loggedInUserId === latestCommission?.customerId || latestCommission.state === states.finished;
-	const canCreateBrief = !latestCommission || (latestCommission && latestCommission.state === states.finished);
-	const isBrief = !latestCommission || latestCommission?.state === states.brief;
+
+	const isFinished = !latestCommission || (latestCommission && latestCommission.state === states.finished); 
+
+	const isCustomer = isFinished || (loggedInUserId === latestCommission?.customerId);
+	const isArtist = latestCommission && (latestCommission.artistId === loggedInUserId);
+	const canCreateBrief = isFinished;
+
+	const isBrief = !latestCommission || latestCommission.state === states.brief;
 	const isWorking = latestCommission && latestCommission.state === states.working;
+
 	const [isReportOpen, setIsReportOpen] = useState(false);
 
 	const chatRoomId = useAppSelector((state) => {
@@ -51,11 +57,14 @@ export default function ChatOptions() {
 			console.log("chatRoomId does not exist");
 		}
 	};
+
+	// console.log(`${isWorking} ${isArtist}`);
+
 	return (
 		<div>
 			<div className="flex w-4/5 justify-around">
 				{/* @ts-ignore */}
-				{isCustomer && isBrief && (
+				{((isCustomer && isBrief) || isFinished)  && (
 					<OptionButton
 						onClick={() =>
 							// @ts-ignore
@@ -72,15 +81,10 @@ export default function ChatOptions() {
                     <AlarmClockIcon size={24} /> <span>Postpone</span>
                 </OptionButton> */}
 
-				{isWorking && !isCustomer && (
+				{isWorking && isArtist && (
 					<OptionButton
-						onClick={() =>
-							(
-								document.getElementById(
-									"SendArtworkForm",
-								) as HTMLDialogElement
-							).showModal()
-						}
+						// @ts-ignore 
+						onClick={() => document.getElementById(`artwork-form-${latestCommission?.commissionId}`)?.showModal()}
 					>
 						<SendIcon size={24} /> <span>Send Artwork</span>
 					</OptionButton>
@@ -99,7 +103,7 @@ export default function ChatOptions() {
 				/>
 				<BriefForm />
 			</div>
-			{/* <SendArtworkForm id='SendArtworkForm' /> */}
+			<SendArtworkForm />
 			{/* <PostponeForm id='PostponeForm' /> */}
 		</div>
 	);
