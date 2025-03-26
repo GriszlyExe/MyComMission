@@ -48,7 +48,7 @@ export default function PlanSelectModal({
 		{
 			label: "One Day",
 			key: "day",
-			price: 7,
+			price: 10,
 			duration: 60 * 60 * 24,
 		},
 		{

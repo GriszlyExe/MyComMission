@@ -17,20 +17,38 @@ import ReportPopup from "@/app/ui/components/ReportPopup";
 import { useAppSelector } from "@/stores/hook";
 import { getChatroom } from "@/service/chatService";
 
-export default function ChatOptions() {
+export default function ChatOptions({ closeOption }: { closeOption: any }) {
 	const loggedInUserId = useAppSelector((state) => state.user.user!.userId);
 	const latestCommission = useAppSelector(
 		(state) => state.chat.activeRoom!.latestCommission,
 	);
 
-	const isFinished = !latestCommission || (latestCommission && latestCommission.state === states.finished); 
+	const isFinished = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return !latestCommission || (latestCommission && latestCommission.state === states.finished);
+	});
 
-	const isCustomer = isFinished || (loggedInUserId === latestCommission?.customerId);
-	const isArtist = latestCommission && (latestCommission.artistId === loggedInUserId);
+	const isCustomer = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return isFinished || (loggedInUserId === latestCommission?.customerId);
+	});
+
+	const isArtist = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return isFinished || (loggedInUserId === latestCommission?.artistId);
+	});
+
 	const canCreateBrief = isFinished;
-
-	const isBrief = !latestCommission || latestCommission.state === states.brief;
-	const isWorking = latestCommission && latestCommission.state === states.working;
+	
+	const isBrief = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return latestCommission && (latestCommission.state === states.brief);
+	});
+	
+	const isWorking = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return latestCommission && (latestCommission.state === states.working);
+	});
 
 	const [isReportOpen, setIsReportOpen] = useState(false);
 
@@ -53,6 +71,7 @@ export default function ChatOptions() {
 			// console.log("chatroom: ", chatroom);
 			reportData.targetId = chatroom.latestCommission.commissionId;
 			await submitReport({ data: reportData });
+			closeOption();
 		} else {
 			console.log("chatRoomId does not exist");
 		}

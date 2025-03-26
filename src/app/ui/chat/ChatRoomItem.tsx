@@ -13,6 +13,7 @@ import { getUserInfo } from "@/service/userService";
 import clsx from "clsx";
 import Link from "next/link";
 import { clipText, formatChatTimestamp } from "@/utils/helper";
+import { getCommissionById } from "@/service/commissionService";
 
 // const
 
@@ -116,6 +117,9 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 	const activeRoomId = useAppSelector(
 		(state) => state.chat.activeRoom?.chatRoomId,
 	);
+	// const roomState = useAppSelector(state => {if (state.chat.activeRoom?.latestCommission) {
+
+	// }})
 
 	useEffect(() => {
 		const fetchUserProfile = async () => {
@@ -134,7 +138,10 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 					"ring-4 ring-primary": chatRoom.chatRoomId === activeRoomId,
 				},
 			)}
-			onClick={() => {
+			onClick={async () => {
+				// const commissionData = await getCommissionById(
+				// 	chatRoom.latestCommission,
+				// );
 				dispatch(setActiveRoom(chatRoom));
 			}}
 		>
