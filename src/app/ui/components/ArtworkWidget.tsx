@@ -42,7 +42,7 @@ export default function ArtworkWidget({ post, user }: PostProps) {
             {/* Modal */}
             <dialog id={`post-modal-${post.postId}`} className="modal">
                 <div className="modal-box w-11/12 max-w-3xl">
-                    <PostWidget key={post.postId} post={post} user={user} isInsideModal={true} />
+                    <PostWidget key={post.postId} post={post} user={user} isInsideModal={false} />
                 </div>
                 <form method="dialog" className="modal-backdrop">
                     <button>close</button>
