@@ -4,6 +4,7 @@ import { RiCheckboxMultipleBlankLine } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import { InfoIcon } from "lucide-react";
 import { formatDate } from "@/utils/helper";
+import { cancelBoostedPostById } from "@/service/postService";
 interface BoostedPostProps {
     post: Post;
     user: User;
@@ -32,7 +33,8 @@ export default function ManageBoostedPost({ post, user }: BoostedPostProps) {
     const handleCancelling = () => {
         // handle cancelling post here
         const postId = post.postId
-        console.log(postId);
+        console.log("boostedpost =",postId);
+        cancelBoostedPostById(postId)
     }
     return (
         <div>
