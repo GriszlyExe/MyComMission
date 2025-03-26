@@ -51,8 +51,8 @@ export default function Feed() {
 						0,
 						maxBoostedToShow,
 					).filter(post => !postIds.has(post.postId));
-					console.log("Filtered Boosted Posts:", selectedBoostedPosts.map(p => p.postId));
-					console.log("Normal Posts:", posts.map(p => p.postId));
+					//console.log("Filtered Boosted Posts:", selectedBoostedPosts.map(p => p.postId));
+					//console.log("Normal Posts:", posts.map(p => p.postId));
 
 					setBoostedPosts(selectedBoostedPosts);
 

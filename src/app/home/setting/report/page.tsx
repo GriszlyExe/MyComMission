@@ -5,11 +5,12 @@ import React, { useState } from "react";
 
 export default function ReportGeneralPage() {
     const [description, setDescription] = useState("");
+    const [showSubmitReport, setShowSubmitReport] = useState(false);
     
     const onSubmit = async (reportData: { targetType: string; targetId:string;description: string }) => {
 		console.log('clicked')
 		await submitReport({ data: reportData });
-	  };
+    };
     
     const handleSubmit = () => {
         if (description && description.trim()!="") {
@@ -18,6 +19,10 @@ export default function ReportGeneralPage() {
           onSubmit({ targetType,targetId, description });
           
           setDescription("");
+          setShowSubmitReport(true);
+          setTimeout(() => {
+            setShowSubmitReport(false);
+          }, 3000);
         }
       };
     
@@ -58,7 +63,11 @@ export default function ReportGeneralPage() {
         </div>
       </div>
 
-
+        { showSubmitReport && <div className="toast">
+            <div className="alert bg-green-500 text-white border-none">
+              <span>The report has been submitted</span>
+            </div>
+          </div> }
         </div>
     )
 }

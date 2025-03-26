@@ -6,19 +6,33 @@ import { MdStarRate } from "react-icons/md";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/stores/hook";
+import { createChatroom } from "@/service/chatService";
 
 /* chat-icon */
 import { Chatting01Icon } from "hugeicons-react";
 import { IoChatbubbleEllipses } from "react-icons/io5";
 
 export default function UserWidget({ userInfo }: { userInfo: User }) {
-	
 	const loggedInUserId = useAppSelector(state => state.user.user!.userId);
 	const router = useRouter();
-	const handleChatClick = (e: React.MouseEvent) => {
+	const handleChatClick = async (e: React.MouseEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
 		router.push("/chat");
+		try {
+			const { chatroom } = await createChatroom({
+				creatorId: loggedInUserId,
+				memberId: userInfo.userId as string,
+			});
+
+			if (!chatroom) {
+				throw new Error("Something went wrong!");
+			}
+
+			router.push("/chat");
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	// console.log(userInfo);

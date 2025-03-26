@@ -24,12 +24,24 @@ export default function ReportPopup({
 }: ReportPopupProps) {
 
 	const [description, setDescription] = useState("");
+	const [showSubmitReport, setShowSubmitReport] = useState(false);
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		if (description && description.trim() != "") {
 			onSubmit({ targetType, targetId, description });
 			setDescription("");
+			setShowSubmitReport(true);
+			
 			onClose();
+
+			await new Promise(resolve => setTimeout(resolve, 3000));
+			setShowSubmitReport(false);
+
+			/* await new Promise(() => {
+				setTimeout(() => {
+					setShowSubmitReport(false);
+				}, 3000);
+			}) */
 		}
 	};
 
@@ -39,38 +51,45 @@ export default function ReportPopup({
 	};
 
 	return (
-		<div className={clsx("fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70", {
-            "hidden": !isOpen,
-        })}>
-			<div className="relative w-1/2 max-w-[700px] rounded-lg bg-white p-6 shadow-lg">
-				<h2 className="mb-4 text-xl font-semibold">{title}</h2>{" "}
+		<>
+			<div className={clsx("fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70", {
+				"hidden": !isOpen,
+			})}>
+				<div className="relative w-1/2 max-w-[700px] rounded-lg bg-white p-6 shadow-lg">
+					<h2 className="mb-4 text-xl font-semibold">{title}</h2>{" "}
 
-				{/* Description Input */}
-				<label className="mb-2 block text-sm font-medium text-gray-700">
-					Description
-				</label>
-				<textarea
-					value={description}
-					onChange={(e) => setDescription(e.target.value)}
-					className="mb-4 w-full rounded-md border border-gray-300 p-2"
-					placeholder="Describe the issue..."
-				/>
-				{/* Action Buttons */}
-				<div className="flex justify-end space-x-2">
-					<button
-						onClick={handleCancel}
-						className="rounded bg-gray-300 px-4 py-2 hover:bg-gray-400"
-					>
-						Cancel
-					</button>
-					<button
-						onClick={handleSubmit}
-						className="rounded bg-primary px-4 py-2 text-white hover:bg-accent hover:text-secondary"
-					>
-						Submit
-					</button>
+					{/* Description Input */}
+					<label className="mb-2 block text-sm font-medium text-gray-700">
+						Description
+					</label>
+					<textarea
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
+						className="mb-4 w-full rounded-md border border-gray-300 p-2"
+						placeholder="Describe the issue..."
+					/>
+					{/* Action Buttons */}
+					<div className="flex justify-end space-x-2">
+						<button
+							onClick={handleCancel}
+							className="rounded bg-gray-300 px-4 py-2 hover:bg-gray-400"
+						>
+							Cancel
+						</button>
+						<button
+							onClick={handleSubmit}
+							className="rounded bg-primary px-4 py-2 text-white hover:bg-accent hover:text-secondary"
+						>
+							Submit
+						</button>
+					</div>
 				</div>
 			</div>
-		</div>
+			{ showSubmitReport && <div className="toast">
+				<div className="alert bg-green-500 text-white border-none">
+					<span>The report has been submitted</span>
+				</div>
+			</div> }
+		</>
 	);
 }

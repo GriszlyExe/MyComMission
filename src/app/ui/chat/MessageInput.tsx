@@ -72,7 +72,7 @@ const MessageInput = () => {
 					Send
 				</button>
 			</form>
-			{showOptions && <div className="flex justify-around py-1"> <ChatOptions /> </div>}
+			{showOptions && <div className="flex justify-around py-1"> <ChatOptions closeOption={() => setShowOptions(false)} /> </div>}
 		</div>
 	);
 };
