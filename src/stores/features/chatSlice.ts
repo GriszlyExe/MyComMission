@@ -50,7 +50,10 @@ const chatSlice = createSlice({
                     }
                 }
                 return room;
-            })
+            });
+            if (state.activeRoom && state.activeRoom.latestCommission && state.activeRoom.chatRoomId === chatRoomId) {
+                state.activeRoom.latestCommission = commission;
+            }
         },
         setActiveRoomCommission(state, action: PayloadAction<Commission>) {
             if (state.activeRoom) {
