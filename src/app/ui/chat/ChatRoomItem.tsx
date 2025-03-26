@@ -116,6 +116,9 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 	const activeRoomId = useAppSelector(
 		(state) => state.chat.activeRoom?.chatRoomId,
 	);
+	// const roomState = useAppSelector(state => {if (state.chat.activeRoom?.latestCommission) {
+
+	// }})
 
 	useEffect(() => {
 		const fetchUserProfile = async () => {

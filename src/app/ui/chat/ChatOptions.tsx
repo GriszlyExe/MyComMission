@@ -23,14 +23,32 @@ export default function ChatOptions() {
 		(state) => state.chat.activeRoom!.latestCommission,
 	);
 
-	const isFinished = !latestCommission || (latestCommission && latestCommission.state === states.finished); 
+	const isFinished = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return !latestCommission || (latestCommission && latestCommission.state === states.finished);
+	});
 
-	const isCustomer = isFinished || (loggedInUserId === latestCommission?.customerId);
-	const isArtist = latestCommission && (latestCommission.artistId === loggedInUserId);
+	const isCustomer = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return isFinished || (loggedInUserId === latestCommission?.customerId);
+	});
+
+	const isArtist = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return isFinished || (loggedInUserId === latestCommission?.artistId);
+	});
+
 	const canCreateBrief = isFinished;
-
-	const isBrief = !latestCommission || latestCommission.state === states.brief;
-	const isWorking = latestCommission && latestCommission.state === states.working;
+	
+	const isBrief = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return latestCommission && (latestCommission.state === states.brief);
+	});
+	
+	const isWorking = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return latestCommission && (latestCommission.state === states.working);
+	});
 
 	const [isReportOpen, setIsReportOpen] = useState(false);
 

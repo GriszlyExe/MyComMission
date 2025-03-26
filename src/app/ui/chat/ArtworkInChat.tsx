@@ -25,6 +25,10 @@ export default function ArtworkInChat({ message }: { message: Message }) {
 	const userId = useAppSelector((state) => state.user.user?.userId);
 	const isArtist = artistId === userId;
 	const isCustomer = customerId === userId;
+	const isShipped = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return latestCommission && (latestCommission.state === states.artwork_shipped);
+	});
 
 	const latestCommission = useAppSelector((state) => {
 		if (state.chat.activeRoom?.latestCommission) {
@@ -45,18 +49,7 @@ export default function ArtworkInChat({ message }: { message: Message }) {
 			console.error(err);
 		}
 	}
-	// function handleAcceptArtwork() {
-	// 	// @ts-ignore
-	// 	document.getElementById(acceptArtworkId)?.close();
-	// 	console.log({ state: states.finished });
-	// 	// acceptArtwork(latestCommission.commissionId);
-	// }
-	// function handleRejectArtwork() {
-	// 	// @ts-ignore
-	// 	document.getElementById(acceptArtworkId)?.close();
-	// 	console.log({ state: states.finished });
-	// 	// rejectArtwork(latestCommission.commissionId);
-	// }
+
 	return (
 		<div className="flex flex-col items-center gap-4 rounded-md bg-white">
 			{/* <h1 className='font-bold text-lg text-white'>Artwork</h1> */}
@@ -76,7 +69,7 @@ export default function ArtworkInChat({ message }: { message: Message }) {
 						A card component has a figure, a body part, and inside
 						body there are title and actions parts
 					</p>
-					{isCustomer && <div className="card-actions justify-end">
+					{isCustomer && isShipped && <div className="card-actions justify-end">
 						{/* @ts-ignore */}
 						<div className="badge badge-outline" onClick={() => document.getElementById(acceptArtworkId)!.show()}>Accept</div>
 						<div className="badge badge-outline">Reject</div>

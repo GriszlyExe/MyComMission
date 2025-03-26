@@ -15,6 +15,7 @@ import { createMessage } from "@/service/chatService";
 import { useEffect, useState } from "react";
 import { isCommissionEnded, states } from "../commissionState";
 import { setLatestCommission } from "@/stores/features/commisionSlice";
+import { setActiveRoomCommission } from "@/stores/features/chatSlice";
 
 interface ModalProps {
 	id: string;
@@ -76,6 +77,7 @@ export const BriefForm = () => {
 					customerId: loggedInUserId,
 					chatRoomId: activeRoomId,
 				});
+				dispatch(setActiveRoomCommission(commission));
 			} else {
 				await editBrief(latestCommission!.commissionId, {
 					...values,
@@ -113,6 +115,7 @@ export const BriefForm = () => {
 							validationSchema={briefSchema}
 							enableReinitialize={true}
 							onSubmit={(values, { resetForm }) =>
+								// @ts-ignore
 								handleSubmit(values, { resetForm })
 							}
 						>
