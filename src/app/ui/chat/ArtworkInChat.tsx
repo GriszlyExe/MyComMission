@@ -10,12 +10,12 @@ import { Message } from "@/common/model";
 import { acceptArtwork } from "@/service/commissionService";
 
 export default function ArtworkInChat({ message }: { message: Message }) {
-	const artistId = useAppSelector((state) => {
-		if (state.chat.activeRoom?.user2) {
-			return state.chat.activeRoom.user2.userId;
-		}
-		return null;
-	});
+	// const artistId = useAppSelector((state) => {
+	// 	if (state.chat.activeRoom?.user2) {
+	// 		return state.chat.activeRoom.user2.userId;
+	// 	}
+	// 	return null;
+	// });
 	const customerId = useAppSelector((state) => {
 		if (state.chat.activeRoom?.latestCommission) {
 			return state.chat.activeRoom.latestCommission.customerId;
@@ -23,7 +23,7 @@ export default function ArtworkInChat({ message }: { message: Message }) {
 		return null;
 	});
 	const userId = useAppSelector((state) => state.user.user?.userId);
-	const isArtist = artistId === userId;
+	// const isArtist = artistId === userId;
 	const isCustomer = customerId === userId;
 	const isShipped = useAppSelector(state => {
 		const latestCommission = state.chat.activeRoom!.latestCommission;

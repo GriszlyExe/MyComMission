@@ -17,6 +17,7 @@ import {
 } from "@/stores/features/chatSlice";
 import { getUserInfo } from "@/service/userService";
 import { setLatestCommission } from "@/stores/features/commisionSlice";
+import { states } from "./commissionState";
 
 const socket = io(process.env.SERVER_ADDRESS);
 
@@ -46,7 +47,7 @@ const ChatWindow = () => {
 				const res = await getMessageChatroom(activeRoomId);
 				console.log(res);
 				const { messages, latestCommission } = res;
-				console.log(messages);
+				// console.log(messages);
 				const user = await getUserInfo(receiverId!);
 				
 				dispatch(setReceiver(user));
@@ -72,6 +73,9 @@ const ChatWindow = () => {
 			console.log(newMessage);
 			if (rest.chatRoomId === activeRoomId) {
 				// dispatch(setLatestCommission(commission ? commission : currentCommission));
+				if (commission && commission.state === states.brief) {
+					dispatch(setActiveRoomCommission(commission));
+				}
 				dispatch(addMessage(newMessage));
 				dispatch(updateRoomState({ chatRoomId: rest.chatRoomId, message: rest, commission: commission ? commission : currentCommission}));
 			}
@@ -81,6 +85,7 @@ const ChatWindow = () => {
 		return () => {
 			socket.off("receiveMessage");
 		};
+
 	}, [loggedInUserId, activeRoomId]);
 
 	useEffect(() => {

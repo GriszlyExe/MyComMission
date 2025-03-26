@@ -43,7 +43,6 @@ const MessageItem = ({
 						messageItem.content,
 					);
 
-					// console.log(commissionData);
 					setCommission(commissionData.commission);
 				} catch (error) {
 					console.error("Failed to fetch commission:", error);
@@ -136,7 +135,7 @@ const MessageItem = ({
 
 			{/* Image show */}
 			{isImage && (
-				<ArtworkInChat message={messageItem}/>
+				<ArtworkInChat message={messageItem} />
 			)}
 		</div>
 	);

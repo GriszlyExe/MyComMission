@@ -17,7 +17,7 @@ import ReportPopup from "@/app/ui/components/ReportPopup";
 import { useAppSelector } from "@/stores/hook";
 import { getChatroom } from "@/service/chatService";
 
-export default function ChatOptions() {
+export default function ChatOptions({ closeOption }: { closeOption: any }) {
 	const loggedInUserId = useAppSelector((state) => state.user.user!.userId);
 	const latestCommission = useAppSelector(
 		(state) => state.chat.activeRoom!.latestCommission,
@@ -71,6 +71,7 @@ export default function ChatOptions() {
 			// console.log("chatroom: ", chatroom);
 			reportData.targetId = chatroom.latestCommission.commissionId;
 			await submitReport({ data: reportData });
+			closeOption();
 		} else {
 			console.log("chatRoomId does not exist");
 		}
