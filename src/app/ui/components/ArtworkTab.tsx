@@ -1,35 +1,27 @@
 import ArtworkWidget from "./ArtworkWidget";
-import { useAppDispatch, useAppSelector } from "@/stores/hook";
-import { useEffect } from "react";
-import { getPostByUserId } from "@/service/postService";
-import {
-    setLoggedInUserPosts,
-    setPagePosts,
-} from "@/stores/features/postSlice";
+import { useAppSelector } from "@/stores/hook";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { getArtworksByUserId } from "@/service/commissionService";
 
 export default function ArtworkTab() {
-    const dispatch = useAppDispatch();
-    const posts = useAppSelector((state) => state.post.pagePosts);
+    const [artworks, setArtworks] = useState([]);
     const loggedInUser = useAppSelector((state) => state.user.user!);
     const { id } = useParams();
 
     useEffect(() => {
 
-        getPostByUserId(loggedInUser.userId).then(({ posts, artist }) => {
-            
-            if (id && id === loggedInUser.userId) {
-                dispatch(setLoggedInUserPosts(posts));
-            }
-            dispatch(setPagePosts(posts));
+        getArtworksByUserId(loggedInUser.userId).then(({ artworks, artist }) => {
+            setArtworks(artworks || []);
+            console.log("Artworks:", artworks)
         });
         
     }, []);
 
     return (
         <div className="grid grid-cols-3 gap-2 p-4">
-            {posts.map((post) => (
-                <ArtworkWidget key={post.postId} post={post} user={loggedInUser} />
+            {artworks.map((artwork: any) => (
+                <ArtworkWidget key={artwork.artworkId} artwork={artwork} user={loggedInUser} />
             ))}
         </div>
     );

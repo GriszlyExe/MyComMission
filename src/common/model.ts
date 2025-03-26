@@ -37,6 +37,18 @@ export type Post = {
     artist: User;
 }
 
+export type Artwork = {
+    artworkId: string;
+    artistId: string;
+    imageUrl: string;
+    customerHide: boolean;
+    artistHide: boolean;
+    createdAt: string;
+    updatedAt: string;
+    artist: User;
+    commission: Commission | null; // Include relation with commission if necessary
+}
+
 export type Review = {
     reviewId: string;
     reviewerId: string;

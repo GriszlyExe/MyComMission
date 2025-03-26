@@ -106,3 +106,19 @@ export const sendArtWork = async ({ commissionId, artwork, artistId }: { commiss
 }
 
 export const acceptArtwork = updateStateWrapper(`artwork/accept`);
+
+/* GET artworks from a specific user */
+export const getArtworksByUserId = async (userId: string) => {
+    try {
+        const options: AxiosRequestConfig = {
+            method: "GET",
+            url: `${serverAddr}/commission/artwork/from/${userId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        };
+        const { data } = await axios.request(options);
+        return data
+    } catch (err) {
+        throw err;
+    }
+};
