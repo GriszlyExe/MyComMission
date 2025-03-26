@@ -6,12 +6,11 @@ import { getArtworksByUserId } from "@/service/commissionService";
 
 export default function ArtworkTab() {
     const [artworks, setArtworks] = useState([]);
-    const loggedInUser = useAppSelector((state) => state.user.user!);
-    const { id } = useParams();
+    const { id } = useParams() as { id: string };
 
     useEffect(() => {
 
-        getArtworksByUserId(loggedInUser.userId).then(({ artworks, artist }) => {
+        getArtworksByUserId(id).then(({ artworks, artist }) => {
             setArtworks(artworks || []);
             console.log("Artworks:", artworks)
         });
@@ -21,7 +20,7 @@ export default function ArtworkTab() {
     return (
         <div className="grid grid-cols-3 gap-2 p-4">
             {artworks.map((artwork: any) => (
-                <ArtworkWidget key={artwork.artworkId} artwork={artwork} user={loggedInUser} />
+                <ArtworkWidget key={artwork.artworkId} artwork={artwork} user={artwork.artist} />
             ))}
         </div>
     );
