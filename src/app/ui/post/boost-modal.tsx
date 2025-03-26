@@ -78,7 +78,7 @@ export default function BoostModal({ modalId }: ModalProps) {
 	return (
 		<div>
 			<dialog id={modalId} className="modal">
-				<div className="modal-box h-[80vh] w-11/12 max-w-5xl">
+				<div className="modal-box h-[80vh] w-11/12 max-w-5xl py-0">
 					{/* Select All Checkbox */}
 
 					<div className="sticky top-0 z-10 flex items-center justify-between border-b bg-white">
