@@ -22,7 +22,7 @@ export type Post = {
     createdAt: string;
     updatedAt: string;
     postId: string;
-    price: number;
+    postPrice: number;
     isHide: boolean;
     boostExpiredDate: string;
     artistId: string;

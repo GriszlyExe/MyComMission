@@ -61,7 +61,7 @@ export default function PostWidget({
 	const editFormProps = {
 		postDescription: post.postDescription!,
 		images: images!,
-		price: post.price!,
+		postPrice: post.postPrice!,
 		postTags: post.postTags!,
 	};
 
@@ -178,6 +178,10 @@ export default function PostWidget({
 
 				{/* Post Content */}
 				<p className="mt-2 text-gray-800">{post.postDescription}</p>
+				{/* Display Price (Only if greater than 0) */}
+				{post.postPrice > 0 && (
+					<p className="mt-1 text-gray-700 font-bold">฿{post.postPrice}</p>
+				)}
 				{/* Display multiple images */}
 
 				{images.length > 0 && (
@@ -226,10 +230,10 @@ export default function PostWidget({
 						)}
 						<span>{likes}</span>
 					</button>
-					<button className="btn btn-ghost btn-sm flex items-center space-x-2">
+					{/* <button className="btn btn-ghost btn-sm flex items-center space-x-2">
 						<FaRegCommentDots className="h-5 w-5 text-gray-600" />
 						<span>Comment</span>
-					</button>
+					</button> */}
 				</div>
 
 				{/* Image Modal */}
