@@ -37,7 +37,7 @@ export default function CreditCardForm({ adsPayload, cmPayload }: CreditCardForm
 	const [error, setError] = useState<string | null>(null);
 
 	/* commission */
-	const commission = useAppSelector(state => state.chat.activeRoom!.latestCommission);
+	const commission = useAppSelector(state => state.chat.activeRoom?.latestCommission);
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		try {
@@ -54,7 +54,8 @@ export default function CreditCardForm({ adsPayload, cmPayload }: CreditCardForm
 					await createPostBoostTransaction(adsPayload);
 				} else if (cmPayload) {
 					const transactionId = await createPaymentTransaction({ ...commission, stripId: cmPayload.stripeId, paymentMethod: "CREDITCARD" });
-					await acceptProposal(commission.commissionId, { transactionId, customerId: commission.customerId });
+					/* @ts-ignore */
+					await acceptProposal(commission?.commissionId, { transactionId, customerId: commission?.customerId });
 				}
 				
 				return `${window.location.origin}/home`;
