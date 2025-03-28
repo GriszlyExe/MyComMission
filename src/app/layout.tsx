@@ -3,7 +3,7 @@
 import "@/app/ui/global/globals.css";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import store, { persistor } from "@/states/store";
+import store, { persistor } from "@/stores/store";
 
 export default function RootLayout({
   children,

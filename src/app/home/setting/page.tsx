@@ -1,7 +1,8 @@
 'use client'
 import Breadcrumbs from "@/app/ui/setting/breadcrumbs";
 import { SettingButton } from "@/app/ui/setting/button";
-import { CircleUserRound, CreditCard, SlidersHorizontal, BellIcon, LockIcon } from "lucide-react";
+import { ManagerIcon } from "hugeicons-react";
+import { CircleUserRound, CreditCard, SlidersHorizontal, BellIcon, LockIcon, ArrowBigUpDash,BadgeAlert } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 
@@ -10,7 +11,7 @@ export default function SettingsPage() {
     const pathname = usePathname();
     return (<>
 
-        <div className="max-w-7/12 mx-auto p-6 space-y-2">
+        <div className="max-w-7/12 w-1/3 mx-auto p-6 space-y-2">
             <Breadcrumbs
                 breadcrumbs={[
                     { label: 'Home', href: '/home' },
@@ -33,8 +34,12 @@ export default function SettingsPage() {
             <SettingButton href={pathname + '/privacy-security'}><LockIcon className="w-6 h-6 text-gray-600" />
                 <span className="text-sm font-medium">Privacy & Security</span></SettingButton>
 
-            <SettingButton href={pathname}><BellIcon className="w-6 h-6 text-gray-600" />
-                <span className="text-sm font-medium">Notifications</span></SettingButton>
+            <SettingButton href={pathname+'/manage-posts'}><ArrowBigUpDash className="w-6 h-6 text-gray-600" />
+                <span className="text-sm font-medium">Manage Posts Boosting</span></SettingButton>
+
+            <SettingButton href={pathname + '/report'}><BadgeAlert className="w-6 h-6 text-gray-600" />
+                <span className="text-sm font-medium">Report Problem</span></SettingButton>
+
 
         </div >
     </>

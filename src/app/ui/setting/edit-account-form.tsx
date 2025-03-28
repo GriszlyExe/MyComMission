@@ -9,17 +9,21 @@ import Image from "next/image";
 import { updateUser } from "@/service/userService";
 
 /* redux */
-import { useAppSelector, useAppDispatch } from "@/states/hook";
-import { setUser } from "@/states/features/userSlice";
+import { useAppSelector, useAppDispatch } from "@/stores/hook";
+import { setUser } from "@/stores/features/userSlice";
+import AccountFormikInput from "./account-formik-input";
 
 export default function EditAccountForm() {
-	
-	const loggedInUser = useAppSelector(state => state.user.user);
+	const loggedInUser = useAppSelector((state) => state.user.user);
 	const router = useRouter();
 
 	const dispatch = useAppDispatch();
 
-	const [previewPic, setPreviewPic] = useState(() => loggedInUser?.profileUrl ? loggedInUser?.profileUrl : "/default-profile-2.png");
+	const [previewPic, setPreviewPic] = useState(() =>
+		loggedInUser?.profileUrl
+			? loggedInUser?.profileUrl
+			: "/default-profile-2.png",
+	);
 	const [showSubmitPopup, setShowSubmitPopup] = useState(false);
 
 	type formSchema = yup.InferType<typeof accountSchema>;
@@ -31,15 +35,15 @@ export default function EditAccountForm() {
 		birthDate: (loggedInUser?.birthDate as string).split(`T`)[0],
 		phone: loggedInUser?.phone,
 		email: loggedInUser?.email,
+		description: loggedInUser?.description,
+		location: loggedInUser?.location,
 	};
 
 	const handleSubmit = async (
 		values: formSchema,
 		actions: FormikHelpers<formSchema>,
 	) => {
-
 		try {
-			
 			const { profilePic, ...others } = values;
 			const data = {
 				...others,
@@ -64,11 +68,9 @@ export default function EditAccountForm() {
 			}, 3000);
 
 			// router.refresh();
-			
 		} catch (err) {
 			console.error(err);
 		}
-
 	};
 
 	return (
@@ -97,157 +99,110 @@ export default function EditAccountForm() {
 										height={100}
 									/>
 								</div>
+								<fieldset className="fieldset flex flex-col">
+									<legend className="fieldset-legend font-semibold">
+										Pick a file
+									</legend>
+									<input
+										type="file"
+										name="profilePic"
+										accept="image/*"
+										onChange={(event) => {
+											const file =
+												event.target.files?.[0];
+											if (file) {
+												setFieldValue(
+													"profilePic",
+													file,
+												);
 
-								<input
-									type="file"
-									name="profilePic"
-									accept="image/*"
-									onChange={(event) => {
-										const file = event.target.files?.[0];
-										if (file) {
-											setFieldValue("profilePic", file);
-
-											// Generate preview URL
-											const reader = new FileReader();
-											reader.onloadend = () => {
-												if (
-													typeof reader.result ===
-													"string"
-												) {
-													setPreviewPic(
-														reader.result,
-													);
-												}
-											};
-											reader.readAsDataURL(file);
-										}
-									}}
-									className="mt-2 rounded p-3 text-sm font-bold"
-								/>
+												// Generate preview URL
+												const reader = new FileReader();
+												reader.onloadend = () => {
+													if (
+														typeof reader.result ===
+														"string"
+													) {
+														setPreviewPic(
+															reader.result,
+														);
+													}
+												};
+												reader.readAsDataURL(file);
+											}
+										}}
+										className="file-input max-w-60 max-h-10 ml-0 pl-0 file-input-primary"
+									/>
+									<label className="fieldset-label font-semibold">
+										Max size 2MB
+									</label>
+								</fieldset>
 							</div>
-							<div>
-								<label className="mb-2 block text-sm font-bold text-gray-700">
-									Display Name
-								</label>
-								<Field
-									type="text"
-									name="displayName"
-									required
-									className={`input input-bordered w-full ${
-										errors.displayName &&
-										touched.displayName
-											? "input-error"
-											: "input-primary"
-									}`}
-								/>
-								<ErrorMessage
-									name="displayName"
-									component="p"
-									className="text-xs text-error"
-								/>
-							</div>
-							<div>
-								<label className="mb-2 block text-sm font-bold text-gray-700">
-									Firstname
-								</label>
-								<Field
-									type="text"
-									name="firstName"
-									required
-									className={`input input-bordered w-full ${
-										errors.firstName && touched.firstName
-											? "input-error"
-											: "input-primary"
-									}`}
-								/>
-								<ErrorMessage
-									name="firstName"
-									component="p"
-									className="text-xs text-red-500"
-								/>
-							</div>
-							<div>
-								<label className="mb-2 block text-sm font-bold text-gray-700">
-									Lastname
-								</label>
-								<Field
-									type="text"
-									name="lastName"
-									required
-									className={`input input-bordered w-full ${
-										errors.lastName && touched.lastName
-											? "input-error"
-											: "input-primary"
-									}`}
-								/>
-								<ErrorMessage
-									name="lastName"
-									component="p"
-									className="text-xs text-red-500"
-								/>
+							<AccountFormikInput
+								label="Display Name"
+								type="text"
+								name="displayName"
+								errors={errors.displayName}
+								touched={touched.displayName}
+							/>
+							<div className="flex flex-row justify-between">
+								<div className="flex flex-col gap-2">
+									<AccountFormikInput
+										label="First Name"
+										type="text"
+										name="firstName"
+										errors={errors.firstName}
+										touched={touched.firstName}
+									/>
+									<AccountFormikInput
+										label="Birth Date"
+										type="date"
+										name="birthDate"
+										errors={errors.birthDate}
+										touched={touched.birthDate}
+									/>
+								</div>
+								<div className="flex flex-col gap-2">
+									<AccountFormikInput
+										label="Last Name"
+										type="text"
+										name="lastName"
+										errors={errors.lastName}
+										touched={touched.lastName}
+									/>
+									<AccountFormikInput
+										label="Phone Number"
+										type="tel"
+										name="phone"
+										errors={errors.phone}
+										touched={touched.phone}
+									/>
+								</div>
 							</div>
 
-							<div>
-								<label className="mb-2 block text-sm font-bold text-gray-700">
-									Birth Date
-								</label>
-								<Field
-									type="date"
-									name="birthDate"
-									required
-									className={`input input-bordered w-full ${
-										errors.birthDate && touched.birthDate
-											? "input-error"
-											: "input-primary"
-									}`}
-								/>
-								<ErrorMessage
-									name="birthDate"
-									component="p"
-									className="text-xs text-red-500"
-								/>
-							</div>
-							<div>
-								<label className="mb-2 block text-sm font-bold text-gray-700">
-									Phone Number
-								</label>
-								<Field
-									type="tel"
-									name="phone"
-									required
-									className={`input input-bordered w-full ${
-										errors.phone && touched.phone
-											? "input-error"
-											: "input-primary"
-									}`}
-								/>
-								<ErrorMessage
-									name="phone"
-									component="p"
-									className="text-xs text-red-500"
-								/>
-							</div>
+							<AccountFormikInput
+								label="Email"
+								type="email"
+								name="email"
+								errors={errors.email}
+								touched={touched.email}
+							/>
 
-							<div>
-								<label className="mb-2 block text-sm font-bold text-gray-700">
-									Email
-								</label>
-								<Field
-									type="email"
-									name="email"
-									required
-									className={`input input-bordered w-full ${
-										errors.email && touched.email
-											? "input-error"
-											: "input-primary"
-									}`}
-								/>
-								<ErrorMessage
-									name="email"
-									component="p"
-									className="text-xs text-red-500"
-								/>
-							</div>
+							<AccountFormikInput
+								label="Description"
+								type="text"
+								name="description"
+								errors={errors.description}
+								touched={touched.description}
+							/>
+							<AccountFormikInput
+								label="Location"
+								type="text"
+								name="location"
+								errors={errors.location}
+								touched={touched.location}
+							/>
+
 							<div className="flex items-center justify-center">
 								<button
 									type="submit"
@@ -255,7 +210,7 @@ export default function EditAccountForm() {
 									className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${
 										isSubmitting
 											? "cursor-not-allowed bg-gray-400"
-											: "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+											: "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
 									}`}
 								>
 									Save Changes

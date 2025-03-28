@@ -4,8 +4,8 @@ import Link from "next/link";
 import Head from "next/head";
 import { useEffect } from "react";
 import { clearAuthToken } from "@/service/authService";
-import { resetState } from "@/states/store";
-import { useAppDispatch } from "@/states/hook";
+import { resetState } from "@/stores/store";
+import { useAppDispatch } from "@/stores/hook";
 
 type Image = {
 	id: number;
@@ -15,7 +15,13 @@ type Image = {
 const ImageCard = ({ img }: { img: Image }) => {
 	return (
 		<div className="h-min w-full rounded-md">
-			<img src={img.src} alt="" className="rounded-md" />
+			<div className="aspect-square rounded-lg bg-white p-1 shadow-lg">
+				<img
+					src={img.src}
+					alt=""
+					className="h-full w-full rounded-md object-cover hover:ring-8 hover:ring-white"
+				/>
+			</div>
 		</div>
 	);
 };
@@ -47,9 +53,6 @@ export default function Home() {
 			return { id: idx + 1, src: `${idx + 1}.png` };
 		});
 
-	// console.log(`Number of images: ${tmp.length}`);
-	// console.log(tmp);
-
 	while (tmp.length) {
 		mocks.push(tmp.splice(0, 4));
 	}
@@ -64,42 +67,45 @@ export default function Home() {
 			<Head>
 				<title>MyCommission</title>
 			</Head>
-			<div className="h-full bg-[#2F2F2F] p-10">
+			<div className="from- via- to- h-full bg-gradient-to-r from-primary-content via-neutral-900 to-secondary-content px-10">
 				<div className="flex h-full flex-row">
-					<div className="flex w-5/12 flex-col gap-7 p-10">
+					<div className="flex w-full flex-col gap-7 p-10 md:w-5/12">
 						{/* */}
-						<div className="flex flex-col justify-center gap-7 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text p-5 text-transparent">
-							{/* <span className="text-8xl font-bold text-[#6BDFDA]"> */}
-							<span className="text-7xl font-bold">Wealth</span>
-							<span className="text-7xl font-bold">
-								{/* <h1 className="text-8xl font-bold text-[#9AD7F3]"> */}
-								Fame
-							</span>
-							{/* <h1 className="text-8xl font-bold text-[#FEC3C7]"> */}
-							<span className="text-7xl font-bold">Power</span>
-						</div>
+						{/* <div className="flex flex-col justify-center gap-7 bg-gradient-to-r
+						 from-blue-500 to-purple-500 bg-clip-text p-5 text-transparent" */}
+						<div
+							className="flex flex-col justify-center gap-7 p-5 text-white shadow-lg"
+							style={{
+								textShadow: "initial",
+							}}
+						>
 
-						<div className="">
-							<p className="text-left text-2xl text-white">
-							"You want my treasure? You can have it. 
-							I left everything I gathered together in one place, now you just have to find it".
-							These words lured men to the Grand Line in pursuit of dreams greater than they'd ever dared to imagine. 
-							This is the time known as the great pirate era.
+							{["Art is not a thing,", "It is a way."].map(word => (
+								<span className="text-7xl font-bold" key={`root-title-${word}`}>{word}</span>
+							))}
+							
+						</div>
+						<div className="rounded-2xl p-4 shadow-md backdrop-blur-md">
+							<p className="text-left text-xl font-bold text-white">
+								"MyCommission is the platform for artists and customers to connect, 
+								collaborate, and bring creative visions to life. Post commissions, chat directly, 
+								and hire talented artists effortlessly. Whether you're looking for a custom artwork 
+								or offering your artistic services, MyCommission makes the process seamless and inspiring!"
 							</p>
 						</div>
 
 						<div>
-							<button className="w-1/3 rounded-lg bg-white px-5 py-4">
-								<Link
-									href={`/login`}
-									className="text-2xl font-bold"
-								>
+							<Link
+								href={`/login`}
+								className="text-2xl font-bold"
+							>
+								<button className="w-full rounded-lg bg-white px-5 py-4 text-black hover:bg-accent hover:text-white md:w-1/3">
 									Get started
-								</Link>
-							</button>
+								</button>
+							</Link>
 						</div>
 					</div>
-					<div className="w-7/12 p-10">
+					<div className="hidden w-7/12 p-10 md:block">
 						<Images sources={mocks} />
 					</div>
 				</div>

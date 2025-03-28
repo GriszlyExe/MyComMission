@@ -1,5 +1,4 @@
 import TopNav from '@/app/ui/global/nav-bar';
-import { Mail01Icon, Call02Icon, Location01Icon } from 'hugeicons-react';
 
 export const experimental_ppr = true
 

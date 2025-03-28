@@ -1,12 +1,12 @@
 import ReviewForm from "./ReviewForm";
 import ReviewWidget from "./ReviewWidget";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { useEffect } from "react";
 import { getReviewByUserId } from "@/service/reviewService";
 import {
 	setLoggedInUserReviews,
 	setPageReviews,
-} from "@/states/features/reviewSlice"
+} from "@/stores/features/reviewSlice"
 import { useParams } from "next/navigation";
 
 export default function Review() {

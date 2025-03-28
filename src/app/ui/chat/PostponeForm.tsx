@@ -1,6 +1,6 @@
 'use client'
 import 'daisyui'
-import { postPoneSchema } from './FormSchemas';
+import { postPoneSchema } from './schemas/FormSchemas';
 import { Formik, Form } from 'formik';
 import * as yup from "yup";
 import { FormikInput } from './FormikInput';
@@ -32,8 +32,8 @@ export const PostponeForm = ({ id }: ModalProps) => {
         try {
             console.log(values);
             resetForm(); // Reset form fields after successful submission
+            // @ts-ignore
             document.getElementById(id).close(); // Close the modal
-
             // router.refresh(); (Uncomment this if needed)
         } catch (err) {
             console.error(err);
@@ -49,7 +49,7 @@ export const PostponeForm = ({ id }: ModalProps) => {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={postPoneSchema}
-                            onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
+                            onSubmit={(values, { resetForm }) => handleSubmit(values as any, { resetForm })}
                         >
                             {({ isSubmitting, errors, touched, resetForm }) => (
                                 <Form className="space-y-4" autoComplete="off">
@@ -70,7 +70,7 @@ export const PostponeForm = ({ id }: ModalProps) => {
                                             disabled={isSubmitting}
                                             className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${isSubmitting
                                                 ? "cursor-not-allowed bg-gray-400"
-                                                : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+                                                : "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
                                                 }`}
 
                                         >
@@ -78,9 +78,11 @@ export const PostponeForm = ({ id }: ModalProps) => {
                                         </button>
 
                                         <button className="w-1/2 rounded px-4 py-3 text-white bg-gradient-to-r
-                                         from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+                                         from-blue-500 to-purple-500 hover:from-base-200 hover:to-base-300"
                                             type='button'
-                                            onClick={() => { resetForm(); document.getElementById(id).close() }}
+                                            onClick={() => { resetForm(); 
+                                                // @ts-ignore
+                                                document.getElementById(id).close() }}
                                         >Cancel</button>
 
 

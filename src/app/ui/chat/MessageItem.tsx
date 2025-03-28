@@ -1,53 +1,49 @@
-import { Message, User } from "@/common/model";
-import { useAppSelector } from "@/states/hook";
+import { Commission, Message, User } from "@/common/model";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
-import BriefInChat from "./BriefInChat";
 import { getCommissionById } from "@/service/commissionService";
-import ProposalInChat from "./ProposalInChat";
-import SendArtworkInChat from "./SendArtworkInChat";
+// import SendArtworkInChat from "./ArtworkInChat";
+import ArtworkInChat from "./ArtworkInChat";
 import ImageModal from "../components/ImageModal";
 import ChatImage from "./ChatImage";
+import { IoDocumentText } from "react-icons/io5";
+import CommissionInChat from "./CommissionInChat";
 
+/* React */
+import React, { Suspense, useEffect, useState } from "react";
+import { clipText, formatMessageTimestamp } from "@/utils/helper";
 
-const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: User}) => {
-
-    const userId = useAppSelector(state => state.user.user!.userId);
-	const loggedInUser = useAppSelector(state => state.user.user); 
-	const receiver = useAppSelector(state => state.chat.activeReceiver);
+const MessageItem = ({
+	messageItem,
+	sender,
+}: {
+	messageItem: Message;
+	sender?: User;
+}) => {
+	const dispatch = useAppDispatch();
+	const userId = useAppSelector((state) => state.user.user!.userId);
+	const loggedInUser = useAppSelector((state) => state.user.user);
+	const receiver = useAppSelector((state) => state.chat.activeReceiver);
+	
 	const isMyMessage = messageItem.senderId === userId;
 
-	// console.log(messageItem.messageType);
-	const is_message = messageItem.messageType == "MESSAGE";
-	const is_brief = messageItem.messageType == "BRIEF";
-	const is_proposal = messageItem.messageType == "PROPOSAL";
-	const is_working = messageItem.messageType == "WORKING";
-	const is_image = messageItem.messageType == "IMAGE";
+	const isMessage = messageItem.messageType == "MESSAGE";
+	const isWorking = false;
+	const isImage = messageItem.messageType == "IMAGE";
+	
+	const [commission, setCommission] = useState<Commission | null>(null);
 
-	// console.log("message" + is_message);
-	// console.log("brief" + is_brief);
-	const [commission, setCommission] = useState({
-		commissionName: "",
-		briefDescription: "",
-		deadline: "",
-		budget: "",
-		commercialUse: false,
-		expectedDate: "",
-		proposalPrice: "",
-		artistId: "",
-		state: "",
-	});
-    
-    const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+	// const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchCommission = async () => {
-			if (!is_message && !is_image) {
+			if (messageItem.messageType === "COMMISSION") {
 				try {
-					const commissionData = await getCommissionById(messageItem.content);
+					const commissionData = await getCommissionById(
+						messageItem.content,
+					);
 
 					setCommission(commissionData.commission);
-					// console.log(commission)
 				} catch (error) {
 					console.error("Failed to fetch commission:", error);
 				}
@@ -56,52 +52,91 @@ const MessageItem = ({ messageItem, sender }: { messageItem: Message, sender?: U
 
 		fetchCommission();
 	}, [messageItem]);
-
-	// console.log(commission)
+	
+	if (messageItem.messageType === "COMMISSION" && !commission) {
+		return <div><span className="loading loading-spinner loading-xl"></span></div>;
+	}
 
 	return (
-		<div className={clsx(`chat`, {
-            'chat-start': !isMyMessage,
-            'chat-end': isMyMessage,
-        })}>
+		<div
+		className={clsx(`chat`, {
+			"chat-start": !isMyMessage,
+				"chat-end": isMyMessage,
+			})}
+		>
 			<div className="avatar chat-image">
 				<div className="w-10 rounded-full">
 					<img
 						alt="profile"
-						src={isMyMessage ? loggedInUser!.profileUrl : receiver!.profileUrl}
+						src={
+							isMyMessage ? loggedInUser!.profileUrl : receiver?.profileUrl
+						}
 					/>
 				</div>
 			</div>
 			<div className="chat-header">
-                {/*  */}
-				{isMyMessage ? loggedInUser!.displayName : receiver?.displayName}
-				<time className="mx-1 text-xs opacity-50">12:45</time>
+				{/*  */}
+				{isMyMessage
+					? loggedInUser!.displayName
+					: receiver?.displayName}
+				<time className="mx-1 text-xs opacity-50">{formatMessageTimestamp(messageItem.createdAt)}</time>
 			</div>
-			{is_message&& <div className="chat-bubble bg-accent text-white">{messageItem.content}</div>}
-			{is_brief && <div className="chat-bubble w-2/3 bg-accent text-black"> <BriefInChat
-                            commissionName={commission.commissionName}
-                            briefDescription={commission.briefDescription}
-                            dueDate={commission.deadline || ""}
-                            budget={commission.budget}
-                            commercialUse={commission.commercialUse}
-                            artistId={commission.artistId}
-                            state={commission.state || ""}
-                        />  </div>  }
-			{is_proposal && <div className="chat-bubble bg-accent text-black"> <ProposalInChat
-                            commissionName={commission.commissionName}
-                            briefDescription={commission.briefDescription}
-                            expectedDate={commission.expectedDate || ""}
-                            proposalPrice={commission.proposalPrice}
-                            commercialUse={commission.commercialUse}
-                            artistId={commission.artistId}
-                            state_={commission.state || ""}
-                        />  </div>  }
-			{is_working&& <div className="chat-bubble bg-accent text-black"><SendArtworkInChat /></div>}
+
+			{/* plain text */}
+			{isMessage && (
+				<div className="chat-bubble bg-accent text-white">
+					{messageItem.content}
+				</div>
+			)}
+
+			{/* commission as brief */}
+			{commission && (
+				<div
+					className="chat-bubble bg-accent px-3"
+					onClick={() =>
+						(
+							document.getElementById(
+								`commission-modal-${commission.commissionId}`,
+							) as HTMLDialogElement
+						)?.showModal()
+					}
+				>
+					<button className="w-full rounded-md text-white hover:bg-secondary hover:text-accent">
+						<div className="flex flex-row items-center justify-center gap-2">
+							<IoDocumentText className="text-xl" />
+							<p>Commission</p>
+						</div>
+					</button>
+				</div>
+			)}
+
+			{/* {isWorking && (
+				<div className="chat-bubble bg-accent text-black">
+					<SendArtworkInChat />
+				</div>
+			)} */}
 			<div className="chat-footer opacity-50">Delivered</div>
-            {/* {is_image && <ChatImage imageUrl={messageItem.content} />}
-            <div className="chat-footer opacity-50">Delivered</div> */}
-            {is_image && <SendArtworkInChat />}
-            <div className="chat-footer opacity-50">Delivered</div>
+
+			{/* {isImage && <SendArtworkInChat />} */}
+			<div className="chat-footer opacity-50">Delivered</div>
+
+			{/* Modal for brief */}
+			{commission !== null && <dialog
+				id={`commission-modal-${commission.commissionId}`}
+				className="modal"
+			>
+				<div className="modal-box max-w-xl">
+					<CommissionInChat commission={commission} />
+				</div>
+				<form method="dialog" className="modal-backdrop">
+					<button>close</button>
+				</form>
+			</dialog>}
+
+			{/* Image show */}
+			{isImage && (
+				<ArtworkInChat message={messageItem} />
+			)}
 		</div>
 	);
 };

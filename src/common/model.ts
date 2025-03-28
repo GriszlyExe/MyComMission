@@ -1,6 +1,8 @@
 export type User = {
     userId: string;
     birthDate: Date | string;
+    description: string;
+    location: string;
     firstName: string;
     lastName: string;
     artistFlag: Boolean;
@@ -12,16 +14,17 @@ export type User = {
     pdfUrl: string;
     artistRate: number;
     enabled2FA: boolean;
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: string;
+    updatedAt: string;
 }
 
 export type Post = {
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     postId: string;
-    price: number;
+    postPrice: number;
     isHide: boolean;
+    boostExpiredDate: string;
     artistId: string;
     postName: string;
     postTags: string[];
@@ -34,20 +37,49 @@ export type Post = {
     artist: User;
 }
 
+export type Artwork = {
+    artworkId: string;
+    artistId: string;
+    imageUrl: string;
+    customerHide: boolean;
+    artistHide: boolean;
+    createdAt: string;
+    updatedAt: string;
+    artist: User;
+    commission: Commission | null; // Include relation with commission if necessary
+}
+
 export type Review = {
     reviewId: string;
     reviewerId: string;
     revieweeId: string;
     rating: number;
     description: string | null;
-    createdAt: Date
+    createdAt: string;
+}
+
+export type Commission = {
+    commissionId: string;
+    customerId: string;
+    artistId: string;
+    chatRoomId: string;
+    state: "BRIEF" | "BRIEF_REJECTED" | "PROPOSAL" | "PROPOSAL_REJECTED" | "WORKING" | "FINISHED" | "CANCELLED";
+    transactionId: string;
+    artworkId: string;
+    commissionName: string;
+    briefDescription: string;
+    budget: number;
+    deadline: string;
+    commercialUse: boolean;
+    expectedDate: string;
+    proposalPrice: number;
 }
 
 export type Message = {
     messageId: string;
     chatRoomId: string;
     senderId: string;
-    type: "MESSAGE" | "BRIEF" | "PROPOSAL" | "IMAGE";
+    messageType: "MESSAGE" | "COMMISSION" | "IMAGE";
     content: string;
     createdAt: string;
 }
@@ -56,4 +88,8 @@ export type ChatRoom = {
     chatRoomId: string;
     user1: User;
     user2: User;
+    latestCommission: Commission;
+    lastTimeStamp: string;
+    latestMessage: string;
+    latestMessageType: string;
 }

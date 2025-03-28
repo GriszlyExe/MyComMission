@@ -123,10 +123,14 @@ export const accountSchema = yup.object().shape({
 
     profilePic: yup
         .string(),
+
+    location: yup.string().max(100, "Location is too long").required("location is required"),
+    description: yup.string().max(100, "Description is too long").required("description is required")
 })
 
 export const postSchema = yup.object().shape({
     postDescription: yup.string().required("Description is required"), // Now required
     postTags: yup.array().of(yup.string()).min(1, "Please select at least one tag").required(), // Now required  
+    postPrice: yup.number().positive("Price must be greater than 0").optional(), // Now optional,
     images: yup.array().of(yup.mixed<FilePreview>()).default([]).optional(), // Now optional,
 });

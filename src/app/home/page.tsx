@@ -1,8 +1,8 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/states/hook";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import PostForm from "../ui/post/create-form";
-import { setLoggedInUserPosts } from "@/states/features/postSlice";
+import { setLoggedInUserPosts } from "@/stores/features/postSlice";
 import { useEffect } from "react";
 import { getPostByUserId } from "@/service/postService";
 import Feed from "../ui/components/Feed";

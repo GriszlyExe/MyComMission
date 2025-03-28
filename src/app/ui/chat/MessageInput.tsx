@@ -1,12 +1,10 @@
-import { Message } from "@/common/model";
+// import { Message } from "@/common/model";
 import { createMessage } from "@/service/chatService";
 import React, { useState } from "react";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import { Divide, Plus, X } from "lucide-react";
 import ChatOptions from "./ChatOptions";
-import { useAppSelector } from "@/states/hook";
-
-const socket = io(process.env.SERVER_ADDRESS);
+import { useAppSelector } from "@/stores/hook";
 
 const MessageInput = () => {
 
@@ -20,34 +18,27 @@ const MessageInput = () => {
 		return null;
 	});
 
+	const sendMessage = async (message: string) => {
+		await createMessage({
+			chatRoomId: activeRoomId!,
+			senderId: loggedInUserId,
+			content: message,
+			messageType: "MESSAGE"
+		})
+	}
+
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
 		if (!message.trim()) return;
-
-		const CM = async () => {
-			const res = await createMessage({
-				chatRoomId: activeRoomId!,
-				senderId: loggedInUserId,
-				content: message,
-				messageType: "MESSAGE"
-			})
-
-			const newMessage = res.newMessage
-			if (newMessage) {
-				socket.emit("send_message", { newMessage });
-			}
-		}
-
-		CM()
-
-		setMessage("")
+		sendMessage(message);
+		setMessage("");
 	};
 
 	return (
 		<div>
 			<form
 				onSubmit={handleSubmit}
-				className="p-1 flex flex-row items-center gap-2 border-t border-gray-200"
+				className="pb-1 pt-2 px-2 flex flex-row items-center justify-around gap-2 border-t border-gray-200"
 			>
 
 				{/* add button Section */}
@@ -75,13 +66,13 @@ const MessageInput = () => {
 				/>
 				<button
 					type="submit"
-					className="ml-3 rounded-md bg-primary px-8 py-3 text-white hover:bg-accent 
+					className="ml-1 rounded-lg bg-primary px-8 py-3 text-white hover:bg-accent 
                             focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
 				>
 					Send
 				</button>
 			</form>
-			{showOptions && <div className="flex justify-center"> <ChatOptions /> </div>}
+			{showOptions && <div className="flex justify-around py-1"> <ChatOptions closeOption={() => setShowOptions(false)} /> </div>}
 		</div>
 	);
 };

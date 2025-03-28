@@ -1,50 +1,129 @@
-import React, { useState } from 'react'
-import { XSquareIcon, TextSelect, SendIcon, AlarmClockIcon } from "lucide-react";
-import { OptionButton } from './Button';
+import React, { useState } from "react";
+import {
+	XSquareIcon,
+	TextSelect,
+	SendIcon,
+	AlarmClockIcon,
+	BadgeAlert,
+} from "lucide-react";
+import { OptionButton } from "./Button";
 import "daisyui";
-import { BriefForm } from './BriefForm';
-import { SendArtworkForm } from './SendArtworkForm';
-import { PostponeForm } from './PostponeForm';
-import { states, isBriefExist } from './commissionState';
-export default function ChatOptions() {
+import { BriefForm } from "@/app/ui/chat/brief/BriefForm";
+import { SendArtworkForm } from "./SendArtworkForm";
+import { PostponeForm } from "./PostponeForm";
+import { states, isBriefExist } from "./commissionState";
+import { submitReport } from "@/service/reportService";
+import ReportPopup from "@/app/ui/components/ReportPopup";
+import { useAppSelector } from "@/stores/hook";
+import { getChatroom } from "@/service/chatService";
 
-    const [isBriefCreated, setisBriefCreated] = useState(false);
-    const state = states.brief
-    const [refresh, setRefresh] = useState(false);
-    function openForm(file_name: string) {
-        const form = document.getElementById(file_name)
-        if (form != null) {
-            setRefresh(prev => !prev);
-            form.showModal();
-        }
-    }
+export default function ChatOptions({ closeOption }: { closeOption: any }) {
+	const loggedInUserId = useAppSelector((state) => state.user.user!.userId);
+	const latestCommission = useAppSelector(
+		(state) => state.chat.activeRoom!.latestCommission,
+	);
 
-    return (
-        <div>
-            <div className="flex justify-around w-4/5 min-h-12 mb-5">
+	const isFinished = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return !latestCommission || (latestCommission && latestCommission.state === states.finished);
+	});
 
-                <OptionButton onClick={() => openForm('BriefForm')} >
-                    {/* <TextSelect size={24} /> <span>{isBriefExist(state) ? "Create Brief" : "Edit Brief"}</span> */}
-                    <TextSelect size={24} /> <span>Create Brief</span>
-                </OptionButton>
-                {/* <OptionButton onClick={() => openForm('PostponeForm')}>
+	const isCustomer = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return isFinished || (loggedInUserId === latestCommission?.customerId);
+	});
+
+	const isArtist = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return isFinished || (loggedInUserId === latestCommission?.artistId);
+	});
+
+	const canCreateBrief = isFinished;
+	
+	const isBrief = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return latestCommission && (latestCommission.state === states.brief);
+	});
+	
+	const isWorking = useAppSelector(state => {
+		const latestCommission = state.chat.activeRoom!.latestCommission;
+		return latestCommission && (latestCommission.state === states.working);
+	});
+
+	const [isReportOpen, setIsReportOpen] = useState(false);
+
+	const chatRoomId = useAppSelector((state) => {
+		if (state.chat?.activeRoom) {
+			return state.chat.activeRoom.chatRoomId;
+		}
+		return null;
+	});
+
+	const handleReportSubmit = async (reportData: {
+		targetType: string;
+		targetId: string;
+		description: string;
+	}) => {
+		console.log("clicked");
+		if (chatRoomId) {
+			// console.log("chatroomId: ", chatRoomId);
+			const chatroom = await getChatroom(chatRoomId);
+			// console.log("chatroom: ", chatroom);
+			reportData.targetId = chatroom.latestCommission.commissionId;
+			await submitReport({ data: reportData });
+			closeOption();
+		} else {
+			console.log("chatRoomId does not exist");
+		}
+	};
+
+	// console.log(`${isWorking} ${isArtist}`);
+
+	return (
+		<div>
+			<div className="flex w-4/5 justify-around">
+				{/* @ts-ignore */}
+				{((isCustomer && isBrief) || isFinished)  && (
+					<OptionButton
+						onClick={() =>
+							// @ts-ignore
+							document.getElementById("brief-form").showModal()
+						}
+					>
+						<TextSelect size={24} />{" "}
+						<span>
+							{canCreateBrief ? "Create Brief" : "Edit Brief"}
+						</span>
+					</OptionButton>
+				)}
+				{/* <OptionButton onClick={() => openForm('PostponeForm')}>
                     <AlarmClockIcon size={24} /> <span>Postpone</span>
                 </OptionButton> */}
 
-                <OptionButton>
-                    <XSquareIcon size={24} /> <span>Reject</span>
-                </OptionButton>
-                <OptionButton onClick={() => openForm('SendArtworkForm')} >
-                    <SendIcon size={24} /> <span>Send Artwork</span>
-                </OptionButton>
-
-
-            </div>
-            <BriefForm id='BriefForm' refresh={refresh}></BriefForm>
-            <SendArtworkForm id='SendArtworkForm' />
-            {/* <PostponeForm id='PostponeForm' /> */}
-
-        </div>
-    )
+				{isWorking && isArtist && (
+					<OptionButton
+						// @ts-ignore 
+						onClick={() => document.getElementById(`artwork-form-${latestCommission?.commissionId}`)?.showModal()}
+					>
+						<SendIcon size={24} /> <span>Send Artwork</span>
+					</OptionButton>
+				)}
+				{latestCommission && <OptionButton onClick={() => setIsReportOpen(true)}>
+					<BadgeAlert size={24} /> <span>Report</span>
+				</OptionButton>}
+				{/* Report Popup */}
+				<ReportPopup
+					isOpen={isReportOpen}
+					onClose={() => setIsReportOpen(false)}
+					onSubmit={handleReportSubmit}
+					title="Report This Commission"
+					targetId=""
+					targetType="COMMISSION"
+				/>
+				<BriefForm />
+			</div>
+			<SendArtworkForm />
+			{/* <PostponeForm id='PostponeForm' /> */}
+		</div>
+	);
 }
-

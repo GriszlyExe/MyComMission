@@ -7,8 +7,8 @@ import TagSelector from "./tags";
 import FileUpload from "./file-upload";
 import { X } from "lucide-react";
 import { createPost } from "@/service/postService";
-import { useAppDispatch } from "@/states/hook";
-import { addPost } from "@/states/features/postSlice";
+import { useAppDispatch } from "@/stores/hook";
+import { addPost } from "@/stores/features/postSlice";
 
 type FormSchema = yup.InferType<typeof postSchema>;
 

@@ -12,8 +12,8 @@ import { postSchema } from "@/common/Schemas";
 import { EditIcon } from "lucide-react";
 import { Post } from "@/common/model";
 import { updatePostInfoById } from "@/service/postService";
-import { useAppDispatch, useAppSelector } from "@/states/hook";
-import { editPagePost, editUserPost } from "@/states/features/postSlice";
+import { useAppDispatch, useAppSelector } from "@/stores/hook";
+import { editPagePost, editUserPost } from "@/stores/features/postSlice";
 import { useParams } from "next/navigation";
 
 type EditFormSchema = yup.InferType<typeof postSchema>;
@@ -137,17 +137,18 @@ export default function EditPostForm({ postId, post }: EditPostProps) {
                             </div>
 
                             {/* Price section */}
-                            {/* <div className="flex flex-col mb-4">
+                            <div className="flex items-center mb-4">
                                 <h2 className="mr-2">Price:</h2>
                                 <input 
-                                    className="border h-7 w-40 resize-none overflow-hidden rounded-md pl-1"
-                                    placeholder="Price..."
+                                    className="border h-8 w-25 resize-none overflow-hidden rounded-md px-3 text-right"
+                                    placeholder="0"
                                     type="number"
                                     min={0}
-                                    {...register("price")}
+                                    {...register("postPrice")}
                                 />
-                                {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
-                            </div> */}
+                                <span className="ml-2">Baht</span>
+                                {errors.postPrice && <p className="text-red-500 text-sm">{errors.postPrice.message}</p>}
+                            </div>
 
                             {/* Sample image section */}
                             <Controller 

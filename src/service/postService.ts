@@ -87,7 +87,7 @@ export const getPostByUserId = async (userId: string) => {
         }
 
         const { data: { posts, artist } } = await axios.request(options);
-
+        // console.log("get post by id", posts);
         return {
             posts: posts ? posts : [],
             artist,
@@ -218,7 +218,7 @@ export const getRandomPosts = async () => {
             withCredentials: true,
         }
 
-        const { data: { posts }} = await axios.request(options);
+        const { data: { posts } } = await axios.request(options);
 
         return posts;
 
@@ -247,11 +247,124 @@ export const searchAndFilterPosts = async (searchPost: string, tags: string) => 
 
         console.log(options.url);
 
-        const { data: { posts }} = await axios.request(options);
+        const { data: { posts } } = await axios.request(options);
 
         return posts;
 
     } catch (err) {
         throw err;
     }
+}
+
+/* GET boosted posts from a specific user */
+export const getBoostedPostsByUserId = async (userId: string) => {
+    try {
+        const options: AxiosRequestConfig = {
+            method: "GET",
+            url: `${serverAddr}/post/boost/from/${userId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        };
+        const { data } = await axios.request(options);
+        return data
+    } catch (err) {
+        throw err;
+    }
+};
+
+/* GET all boosted posts */
+export const getAllBoostedPosts = async () => {
+    try {
+        const options: AxiosRequestConfig = {
+            method: "GET",
+            url: `${serverAddr}/post/get/boost`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        };
+
+        const {
+            data: { posts },
+        } = await axios.request(options);
+        return posts;
+    } catch (err) {
+        throw err;
+    }
+};
+
+/* GET all non-boosted posts */
+export const getAllNonBoostedPosts = async () => {
+    try {
+        const options: AxiosRequestConfig = {
+            method: "GET",
+            url: `${serverAddr}/post/get/non-boost`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        };
+
+        const {
+            data: { posts },
+        } = await axios.request(options);
+        return posts;
+    } catch (err) {
+        throw err;
+    }
+};
+
+/* GET random boosted posts */
+export const getRandomBoostedPosts = async () => {
+    try {
+        const options: AxiosRequestConfig = {
+            method: "GET",
+            url: `${serverAddr}/post/random/boost`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        };
+
+        const {
+            data: { posts },
+        } = await axios.request(options);
+        return posts;
+    } catch (err) {
+        throw err;
+    }
+};
+
+/* GET random non-boosted posts */
+export const getRandomNonBoostedPosts = async () => {
+    try {
+        const options: AxiosRequestConfig = {
+            method: "GET",
+            url: `${serverAddr}/post/random/non-boost`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        };
+
+        const {
+            data: { posts },
+        } = await axios.request(options);
+        return posts;
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const cancelBoostedPostById = async (postId: string) => {
+    // console.log("aaa",postId);
+    try {
+        const options = {
+            method: "PATCH",
+            url: `${serverAddr}/post/cancel-boost/${postId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            // data: others,
+        }
+
+        const { data: { post } } = await axios.request(options);
+
+        return post;
+
+    } catch (err) {
+        console.error(err);
+    }
+
 }

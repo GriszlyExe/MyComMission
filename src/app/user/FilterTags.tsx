@@ -58,7 +58,7 @@ export default function FilterTags() {
 						onClick={() => toggleTag(tag)}
 						className={`rounded-full border px-4 py-2 ${
 							selectedTags.includes(tag)
-								? "border-purple-400 bg-purple-400 text-white"
+								? "border-accent bg-primary text-white"
 								: "border-gray-300 bg-white text-gray-700"
 						}`}
 					>

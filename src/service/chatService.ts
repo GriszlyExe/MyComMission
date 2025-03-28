@@ -15,16 +15,31 @@ export const getChatrooms = async (userId: string) => {
 		} = await axios.request(options);
 
 		return chatrooms.map((chatRoom: any) => {
+			const { users, ...rest } = chatRoom;
 			return {
-				chatRoomId: chatRoom.chatRoomId,
-				createdAt: chatRoom.createdAt,
+				...rest,
 				user2:
 					chatRoom.users[0].userId === userId
 						? chatRoom.users[1]
 						: chatRoom.users[0],
-				latestCommission: chatRoom.latestCommission,
 			};
 		});
+	} catch (error) {
+		throw error;
+	}
+};
+
+export const getChatroom = async (chatroomId: string) => {
+	try {
+		const options = {
+			method: "GET",
+			url: `${serverAddr}/chat/chatroom/get/${chatroomId}`,
+			headers: { "Content-Type": "application/json" },
+			withCredentials: true,
+		};
+
+		const res = await axios.request(options);
+		return res.data.chatroom;
 	} catch (error) {
 		throw error;
 	}
@@ -39,8 +54,8 @@ export const getMessageChatroom = async (chatroomId: string) => {
 			withCredentials: true,
 		};
 
-		const res = await axios.request(options);
-		return res.data.chatroom;
+		const { data: { chatRoom } } = await axios.request(options);
+		return chatRoom;
 	} catch (error) {
 		throw error;
 	}
@@ -58,24 +73,24 @@ export const createMessage = async ({
 	messageType: "MESSAGE" | "BRIEF" | "PROPOSAL" | "IMAGE";
 }) => {
 	try {
-		const json = {
+		const body = {
 			chatRoomId,
 			senderId,
 			content,
 			messageType,
 		};
-		console.log(json);
+		
 		const options = {
 			method: "POST",
 			url: `${serverAddr}/chat/message`,
 			headers: { "Content-Type": "application/json" },
 			withCredentials: true,
-			data: json,
+			data: body,
 		};
 
-		const res = await axios.request(options);
+		const { data } = await axios.request(options);
 
-		return res.data;
+		return data;
 	} catch (error) {
 		throw error;
 	}

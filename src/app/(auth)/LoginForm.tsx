@@ -12,9 +12,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import * as yup from "yup";
 
 /* state */
-import { useAppDispatch } from "@/states/hook";
-import { setUser } from "@/states/features/userSlice";
-import { login } from "@/states/features/authSlice";
+import { useAppDispatch } from "@/stores/hook";
+import { setUser } from "@/stores/features/userSlice";
+import { login } from "@/stores/features/authSlice";
 
 type FormSchema = yup.InferType<typeof loginSchema>;
 
@@ -62,9 +62,9 @@ export default function LoginForm({
 
 	return (
 		<div className="flex min-h-screen items-center justify-center">
-			<div className="m-auto w-full max-w-lg rounded-md border-2 border-purple-600 bg-white p-6 shadow-md">
+			<div className="m-auto w-full max-w-lg rounded-md border-2 border-primary-content bg-white p-6 shadow-md">
 				<h1 className="mb-6 text-center text-3xl font-bold">
-					<span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+					<span className="text-primary">
 						Log In
 					</span>
 				</h1>
@@ -85,7 +85,7 @@ export default function LoginForm({
 									name="email"
 									placeholder="Enter your email"
 									required
-									className={`input input-bordered w-full ${errors?.email && touched?.email ? "input-error" : "input-primary"}`}
+									className={`input input-bordered w-full ${errors?.email && touched?.email ? "input-error" : "input-secondary"}`}
 								/>
 								<ErrorMessage
 									name="email"
@@ -107,7 +107,7 @@ export default function LoginForm({
 										name="password"
 										placeholder="Enter password"
 										required
-										className={`input input-bordered w-full ${errors?.password && touched?.password ? "input-error" : "input-primary"}`}
+										className={`input input-bordered w-full ${errors?.password && touched?.password ? "input-error" : "input-secondary"}`}
 									/>
 									<button
 										type="button"
@@ -147,7 +147,7 @@ export default function LoginForm({
 									</span>
 								</label>
 								<Link
-									className="text-xs text-gray-600 hover:text-blue-600 hover:underline"
+									className="text-xs text-gray-600 hover:text-primary hover:underline"
 									href="/forget-password"
 								>
 									Forget Password?
@@ -157,10 +157,10 @@ export default function LoginForm({
 								<button
 									type="submit"
 									disabled={isSubmitting}
-									className={`w-full rounded px-4 py-3 text-white focus:outline-none ${
+									className={`w-full rounded px-4 py-3 text-white font-bold focus:outline-none hover:text-primary ${
 										isSubmitting
 											? "cursor-not-allowed bg-gray-400"
-											: "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-700 hover:to-purple-700"
+											: "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
 									}`}
 								>
 									{isSubmitting ? "Signing In..." : "Sign In"}
@@ -172,7 +172,7 @@ export default function LoginForm({
 				<p className="mt-4 text-center text-sm text-gray-600">
 					Don’t have an account?
 					<Link
-						className="ml-2 text-blue-500 hover:underline"
+						className="ml-2 text-primary-content hover:underline"
 						href="/signup"
 					>
 						Sign Up

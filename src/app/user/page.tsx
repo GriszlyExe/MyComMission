@@ -13,7 +13,7 @@ export default function UserPage() {
 				{/* <SuggestedBar className="w-1/4" /> */}
 				<div className="flex w-full md:w-1/2 flex-col gap-3 p-2">
 					<div className="w-full">
-						<Search placeholder="Search Display name" />
+						<Search placeholder="Discover your artists..." />
 					</div>
 
 					{/* Show all username match the search */}

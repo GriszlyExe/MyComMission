@@ -1,83 +1,79 @@
+import { User } from "@/common/model";
+import { getSuggestedArtist } from "@/service/userService";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { MdStarRate } from "react-icons/md";
 
-export default function SuggestedBar() {
+const SuggestedArtistWidget = ({ artist }: { artist: User }) => {
 	return (
-		<div className="sticky hidden rounded-md bg-base-300 p-4 md:mx-4 md:block">
-			<h2 className="text-xl font-bold">Suggested Artist</h2>
-			<ul className="mt-4 space-y-2">
-				<li>
-					<div className="flex flex-row">
-						{/* User profile */}
-						<div>
-							<div className="aspect-square w-16 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
-								<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
-									<img
-										src="/avatar.png"
-										alt=""
-										width={64}
-										height={64}
-										className="h-full w-full overflow-hidden rounded-full object-cover"
-									/>
-								</div>
-							</div>
-						</div>
-						{/* Username */}
-						<div className="m-auto mx-5 w-full">
-							<Link href="#" className="hover:text-blue-500">
-								<span className="text-base">Artist1</span>
-							</Link>
+		<div className="rounded-lg bg-secondary p-1 transition-transform duration-300 hover:scale-105">
+			<div className="flex flex-row items-center rounded-md bg-white">
+				{/* User profile */}
+				<div className="">
+					<div className="aspect-square w-12 overflow-hidden rounded-full p-[4px]">
+						<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
+							<img
+								src={
+									artist.profileUrl
+										? artist.profileUrl
+										: "./default-profile-2.png"
+								}
+								alt=""
+								width={60}
+								height={60}
+								className="h-full w-full overflow-hidden rounded-full object-cover"
+							/>
 						</div>
 					</div>
-				</li>
-				<li>
-					<div className="flex flex-row">
-						{/* User profile */}
-						<div>
-							<div className="aspect-square w-16 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
-								<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
-									<img
-										src="/avatar.png"
-										alt=""
-										width={64}
-										height={64}
-										className="h-full w-full overflow-hidden rounded-full object-cover"
-									/>
-								</div>
-							</div>
-						</div>
-						{/* Username */}
-						<div className="m-auto mx-5 w-full">
-							<Link href="#" className="hover:text-blue-500">
-								<span className="text-base">Artist2</span>
-							</Link>
-						</div>
-					</div>
-				</li>
-				<li>
-					<div className="flex flex-row">
-						{/* User profile */}
-						<div>
-							<div className="aspect-square w-16 overflow-hidden rounded-full bg-gradient-to-b from-violet-500 via-white to-blue-500 p-[4px]">
-								<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
-									<img
-										src="/avatar.png"
-										alt=""
-										width={64}
-										height={64}
-										className="h-full w-full overflow-hidden rounded-full object-cover"
-									/>
-								</div>
-							</div>
-						</div>
-						{/* Username */}
-						<div className="m-auto mx-5 w-full">
-							<Link href="#" className="hover:text-blue-500">
-								<span className="text-base">Artist3</span>
-							</Link>
-						</div>
-					</div>
-				</li>
-			</ul>
+				</div>
+				{/* Username */}
+				<div className="flex w-full flex-col justify-center px-2 py-1">
+					<span className="flex flex-row items-center gap-1">
+						<Link
+							href={`/profile/${artist.userId}`}
+							className=""
+						>
+							<p className="text-base font-semibold hover:underline">
+								{artist.displayName}
+							</p>
+						</Link>
+						<div className="flex-grow"></div>
+						{artist.artistRate.toFixed(2)}{" "}
+						<MdStarRate className="text-xl text-orange-400" />
+					</span>
+					<span className="text-base">{artist.description}</span>
+				</div>
+			</div>
 		</div>
 	);
-}
+};
+
+const SuggestedBar = () => {
+	const [artists, setArtists] = useState<User[]>([]);
+
+	useEffect(() => {
+		const fetchSuggestedArtists = async () => {
+			const results = await getSuggestedArtist(5);
+			// console.log(results);
+			setArtists(results);
+		};
+
+		fetchSuggestedArtists();
+	}, []);
+
+	return (
+		<div className="flex flex-col gap-3 rounded-lg bg-white p-3">
+			{artists &&
+				artists.map((artist) => {
+					return (
+						<SuggestedArtistWidget
+							artist={artist}
+							key={`suggested-artist-${artist.userId}`}
+						/>
+					);
+				})}
+		</div>
+	);
+};
+
+export default SuggestedBar;
