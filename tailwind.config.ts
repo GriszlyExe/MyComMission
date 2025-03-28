@@ -30,7 +30,7 @@ export default {
           "secondary-content": "#ad46ff",
           "base-300": "#8200db",
           primary: "#5e548e",
-          secondary: "rgb(195, 188, 234)",
+          secondary:"rgb(195, 188, 234)",
           accent: "#231942",
           neutral: "#272136",
           "base-100": "#ffffff",
@@ -41,8 +41,8 @@ export default {
           body: {
             "background-color": "#ffffff",
           },
-          chat: {
-
+          chat:{
+            
           }
         },
       },

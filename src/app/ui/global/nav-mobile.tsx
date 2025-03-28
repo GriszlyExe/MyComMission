@@ -12,7 +12,7 @@ import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { useAppSelector } from "@/states/hook";
+import { useAppSelector } from "@/stores/hook";
 import { useRouter } from "next/navigation";
 
 export default function NavMobile() {
@@ -58,7 +58,7 @@ export default function NavMobile() {
                                         className={clsx(
                                             "z-20 flex flex-col items-center justify-center p-3 text-xs font-medium hover:bg-secondary hover:text-accent",
                                             {
-                                                "bg-[#e0aaff] text-accent": pathname === link.href,
+                                                "bg-primary text-secondary": pathname === link.href,
                                             },
                                         )}
                                     >
