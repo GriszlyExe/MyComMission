@@ -11,7 +11,7 @@ export default function UserPage() {
 			</div>
 			<div className="flex flex-row justify-center">
 				{/* <SuggestedBar className="w-1/4" /> */}
-				<div className="flex w-1/2 flex-col gap-3 p-2">
+				<div className="flex w-full md:w-1/2 flex-col gap-3 p-2">
 					<div className="w-full">
 						<Search placeholder="Discover your artists..." />
 					</div>

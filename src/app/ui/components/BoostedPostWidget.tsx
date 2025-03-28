@@ -52,7 +52,7 @@ export default function BoostedPostWidget({ post, user, isInsideModal = false }:
     const editFormProps = {
         postDescription: post.postDescription!,
         images: images!,
-        price: post.price!,
+        price: post.postPrice!,
         postTags: post.postTags!,
     };
 

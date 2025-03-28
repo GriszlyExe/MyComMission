@@ -37,36 +37,46 @@ export default function CreditCardForm({ adsPayload, cmPayload }: CreditCardForm
 	const [error, setError] = useState<string | null>(null);
 
 	/* commission */
-	const commission = useAppSelector(state => state.chat.activeRoom!.latestCommission);
+	const commission = useAppSelector(state => state.chat.activeRoom?.latestCommission);
 
 	const handleSubmit = async (event: React.FormEvent) => {
-		event.preventDefault();
-		if (!stripe || !elements) return;
+		try {
+			event.preventDefault();
+			if (!stripe || !elements) return;
 
-		setLoading(true);
-		setError(null);
-		const redirectUrl = async () => {
+			setLoading(true);
+			setError(null);
+
+			const confirmTransaction = async () => {
+				
+				/* Post advertisement */
+				if (adsPayload) {
+					await createPostBoostTransaction(adsPayload);
+				} else if (cmPayload) {
+					const transactionId = await createPaymentTransaction({ ...commission, stripId: cmPayload.stripeId, paymentMethod: "CREDITCARD" });
+					/* @ts-ignore */
+					await acceptProposal(commission?.commissionId, { transactionId, customerId: commission?.customerId });
+				}
+				
+				return `${window.location.origin}/home`;
+			};
+
+			const { error } = await stripe.confirmPayment({
+				elements,
+				redirect: "if_required",
+			});
+
+			if (error) 
+				throw error;
+
+			await confirmTransaction();
+			router.back();
 			
-			/* Post advertisement */
-			if (adsPayload) {
-				await createPostBoostTransaction(adsPayload);
-			} else if (cmPayload) {
-				const transactionId = await createPaymentTransaction({ ...commission, stripId: cmPayload.stripeId, paymentMethod: "CREDITCARD" });
-				await acceptProposal(commission.commissionId, { transactionId, customerId: commission.customerId });
-			}
-			
-			return `${window.location.origin}/home`;
-		};
-
-		await stripe.confirmPayment({
-			elements,
-			confirmParams: {
-				return_url: await redirectUrl(),
-			},
-		});
-
+		} catch (err) {
+			console.error(err);
+		}
+		
 		setLoading(false);
-		router.back();
 		
 	};
 

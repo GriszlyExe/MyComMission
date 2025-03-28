@@ -25,13 +25,15 @@ export default {
     themes: [
       {
         myTheme: {
+          "primary-content": "#2b7fff",
+          "base-200": "#1447e6",
+          "secondary-content": "#ad46ff",
+          "base-300": "#8200db",
           primary: "#5e548e",
-          secondary: "#5e548e",
+          secondary:"rgb(195, 188, 234)",
           accent: "#231942",
           neutral: "#272136",
           "base-100": "#ffffff",
-          "base-200": "#231942",
-          "base-300": "#ffffff",
           info: "#778ad4",
           success: "#23b893",
           warning: "#f79926",

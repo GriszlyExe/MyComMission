@@ -25,21 +25,23 @@ export default function Page() {
 
 	return (
 		<>
-			{/* <div>Hello World!</div> */}
+			<div className="md:hidden mb-4">
+				<Search placeholder="Search Post" />
+				<FilterTags />
+			</div>
 			<div className="flex flex-row justify-between">
-				<div className="w-1/4 border">
+				<div className="w-1/4 border hidden md:block">
 					<SuggestedBar />
 				</div>
-				<div className="flex w-1/2 md:w-5/12 flex-col gap-3 bg-white rounded-md py-4">
+				<div className="flex w-full md:w-5/12 flex-col gap-3 bg-white rounded-md py-4">
 					<PostForm />
 					<Feed />
 				</div>
-				<div className="w-1/4">
+				<div className="hidden md:block w-1/4">
 					<Search placeholder="Search Post" />
 					<FilterTags />
 				</div>
 			</div>
-			{/* <EditPostForm post={dummy_data} /> */}
 		</>
 	);
 }

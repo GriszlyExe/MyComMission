@@ -80,19 +80,17 @@ export default function Home() {
 							}}
 						>
 
-							{["Wealth", "Fame", "Power"].map(word => (
+							{["Art is not a thing,", "It is a way."].map(word => (
 								<span className="text-7xl font-bold" key={`root-title-${word}`}>{word}</span>
 							))}
 							
 						</div>
 						<div className="rounded-2xl p-4 shadow-md backdrop-blur-md">
 							<p className="text-left text-xl font-bold text-white">
-								"You want my treasure? You can have it. I left
-								everything I gathered together in one place, now
-								you just have to find it". These words lured men
-								to the Grand Line in pursuit of dreams greater
-								than they'd ever dared to imagine. This is the
-								time known as the great pirate era.
+								"MyCommission is the platform for artists and customers to connect, 
+								collaborate, and bring creative visions to life. Post commissions, chat directly, 
+								and hire talented artists effortlessly. Whether you're looking for a custom artwork 
+								or offering your artistic services, MyCommission makes the process seamless and inspiring!"
 							</p>
 						</div>
 

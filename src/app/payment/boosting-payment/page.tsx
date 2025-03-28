@@ -93,7 +93,7 @@ export default function PaymentPage() {
 									className="rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700"
 									onClick={() =>
 									handleCreatePaymentIntent(
-											count * option.price * 100,
+											count * option.price,
 										)
 									}
 								>

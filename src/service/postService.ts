@@ -247,7 +247,7 @@ export const searchAndFilterPosts = async (searchPost: string, tags: string) => 
 
         console.log(options.url);
 
-        const { data: { posts }} = await axios.request(options);
+        const { data: { posts } } = await axios.request(options);
 
         return posts;
 
@@ -347,3 +347,24 @@ export const getRandomNonBoostedPosts = async () => {
         throw err;
     }
 };
+
+export const cancelBoostedPostById = async (postId: string) => {
+    // console.log("aaa",postId);
+    try {
+        const options = {
+            method: "PATCH",
+            url: `${serverAddr}/post/cancel-boost/${postId}`,
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            // data: others,
+        }
+
+        const { data: { post } } = await axios.request(options);
+
+        return post;
+
+    } catch (err) {
+        console.error(err);
+    }
+
+}

@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import PostWidget from "./PostWidget";
-import PostForm from "../post/create-form";
 import { useEffect, useState } from "react";
 import {
 	getPostByUserId,
@@ -27,7 +26,7 @@ export default function Feed() {
 	const shuffleArray = (array: any[]) => {
 		return [...array].sort(() => Math.random() - 0.5);
 	};
-	
+
 	// Use to search and filter post
 	useEffect(() => {
 
@@ -36,23 +35,46 @@ export default function Feed() {
 				dispatch(setPagePosts(posts));
 			});
 		} else {
-			getRandomNonBoostedPosts().then((posts) => {
-			dispatch(setPagePosts(posts));
+			getRandomPosts().then((posts) => {
+				dispatch(setPagePosts(posts));
 
-			// After setting non-boosted posts, fetch random boosted posts
-			getRandomBoostedPosts().then((boostedPosts) => {
-				const maxBoostedToShow = Math.max(
-					1,
-					Math.floor(posts.length / 5),
-				);
-				const selectedBoostedPosts = shuffleArray(boostedPosts).slice(
-					0,
-					maxBoostedToShow,
-				);
-				setBoostedPosts(selectedBoostedPosts);
-				
+				// After setting non-boosted posts, fetch random boosted posts
+				getRandomBoostedPosts().then((boostedPosts) => {
+
+					const postIds = new Set(posts.map((post: { postId: string; }) => post.postId))
+					// console.log(postIds);
+					const maxBoostedToShow = Math.max(
+						1,
+						Math.floor(posts.length / 5),
+					);
+					const selectedBoostedPosts = shuffleArray(boostedPosts).slice(
+						0,
+						maxBoostedToShow,
+					).filter(post => !postIds.has(post.postId));
+					//console.log("Filtered Boosted Posts:", selectedBoostedPosts.map(p => p.postId));
+					//console.log("Normal Posts:", posts.map(p => p.postId));
+
+					setBoostedPosts(selectedBoostedPosts);
+
+				});
 			});
-		});
+			// getRandomPosts().then((posts) => {
+			// 	dispatch(setPagePosts(posts));
+
+			// 	// After setting non-boosted posts, fetch random boosted posts
+			// 	getRandomBoostedPosts().then((boostedPosts) => {
+			// 		const maxBoostedToShow = Math.max(1, Math.floor(posts.length / 5));
+
+			// 		// Convert posts array to a Set of IDs (assuming each post has a unique 'id')
+			// 		const postIds = new Set(posts.map((post: { id: any; }) => post.id));
+			// 		console.log(postIds);
+			// 		const selectedBoostedPosts = shuffleArray(boostedPosts)
+			// 			.filter(post => !postIds.has(post.id)) // Correct filtering
+			// 			.slice(0, maxBoostedToShow);
+
+			// 		setBoostedPosts(selectedBoostedPosts);
+			// 	});
+			// });
 		}
 	}, [searchParams, tagsParams]);
 
@@ -88,10 +110,12 @@ export default function Feed() {
 			boostedIndex++;
 		}
 	}
-
+	const uniqueInterleavedPosts = Array.from(
+		new Map(interleavedPosts.map(post => [post.postId, post])).values()
+	);
 	return (
 		<div className="flex w-full flex-col items-center space-y-4 p-4">
-			{interleavedPosts.map((post) =>
+			{uniqueInterleavedPosts.map((post) =>
 				<PostWidget key={post.postId} post={post} user={post.artist} isSponsored={boostedPostIds.has(post.postId)} />
 			)}
 		</div>
