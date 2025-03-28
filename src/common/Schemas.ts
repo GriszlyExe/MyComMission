@@ -10,6 +10,16 @@ export const loginSchema = yup.object().shape({
     password: yup.string().required("Password is required"),
 });
 
+export const adminLoginSchema = yup.object().shape({
+    email: yup
+        .string()
+        .email("Invalid email format")
+        .matches(/^[a-zA-Z0-9._%+-]+@admin$/, "Invalid email format")
+        .required("Email is required"),
+
+    password: yup.string().required("Password is required"),
+});
+
 export const signupSchema = yup.object().shape({
     firstName: yup.string().required("First name is required"),
 
