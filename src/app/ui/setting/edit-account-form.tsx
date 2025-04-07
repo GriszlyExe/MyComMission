@@ -82,7 +82,7 @@ export default function EditAccountForm() {
 					onSubmit={handleSubmit as any}
 				>
 					{({ isSubmitting, errors, touched, setFieldValue }) => (
-						<Form className="space-y-4" autoComplete="off">
+						<Form className="space-y-2" autoComplete="off">
 							<div className="flex flex-col items-center">
 								<label className="mb-2 block text-sm font-bold text-gray-700">
 									Profile Picture
@@ -131,7 +131,7 @@ export default function EditAccountForm() {
 												reader.readAsDataURL(file);
 											}
 										}}
-										className="file-input max-w-60 max-h-10 ml-0 pl-0 file-input-primary"
+										className="file-input file-input-primary ml-0 max-h-10 max-w-60 pl-0"
 									/>
 									<label className="fieldset-label font-semibold">
 										Max size 2MB
@@ -145,8 +145,9 @@ export default function EditAccountForm() {
 								errors={errors.displayName}
 								touched={touched.displayName}
 							/>
-							<div className="flex flex-row justify-between">
-								<div className="flex flex-col gap-2">
+							<div className="flex flex-col justify-between md:flex-row">
+								{/* Desktop Version - Visible only on desktop */}
+								<div className="hidden w-full flex-col gap-2 md:flex md:w-1/2">
 									<AccountFormikInput
 										label="First Name"
 										type="text"
@@ -162,7 +163,7 @@ export default function EditAccountForm() {
 										touched={touched.birthDate}
 									/>
 								</div>
-								<div className="flex flex-col gap-2">
+								<div className="hidden w-full flex-col gap-2 md:flex md:w-1/2">
 									<AccountFormikInput
 										label="Last Name"
 										type="text"
@@ -174,6 +175,40 @@ export default function EditAccountForm() {
 										label="Phone Number"
 										type="tel"
 										name="phone"
+										errors={errors.phone}
+										touched={touched.phone}
+									/>
+								</div>
+
+								{/* Mobile Version - Visible only on mobile */}
+								<div className="flex w-full flex-col gap-2 md:hidden">
+									<AccountFormikInput
+										label="First Name"
+										type="text"
+										name="firstNameMobile"
+										errors={errors.firstName}
+										touched={touched.firstName}
+									/>
+									<AccountFormikInput
+										label="Last Name"
+										type="text"
+										name="lastNameMobile"
+										errors={errors.lastName}
+										touched={touched.lastName}
+									/>
+								</div>
+								<div className="flex w-full flex-col gap-2 md:hidden">
+									<AccountFormikInput
+										label="Birth Date"
+										type="date"
+										name="birthDateMobile"
+										errors={errors.birthDate}
+										touched={touched.birthDate}
+									/>
+									<AccountFormikInput
+										label="Phone Number"
+										type="tel"
+										name="phoneMobile"
 										errors={errors.phone}
 										touched={touched.phone}
 									/>
@@ -207,7 +242,7 @@ export default function EditAccountForm() {
 								<button
 									type="submit"
 									disabled={isSubmitting}
-									className={`w-1/2 rounded px-4 py-3 text-white focus:outline-none ${
+									className={`mt-2 w-3/4 md:w-1/2 rounded px-4 py-3 text-white focus:outline-none ${
 										isSubmitting
 											? "cursor-not-allowed bg-gray-400"
 											: "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"
