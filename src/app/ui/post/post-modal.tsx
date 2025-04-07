@@ -93,25 +93,6 @@ export default function PostModal({
 							)}
 						</div>
 
-						{/* Tags */}
-						<div className="mb-4 flex flex-col">
-							<h2 className="mr-1">Tags:</h2>
-							<Controller
-								name="postTags"
-								control={control}
-								render={({ field }) => (
-									<TagSelector
-										selectedTags={field.value}
-										setSelectedTags={field.onChange}
-									/>
-								)}
-							/>
-							{errors.postTags && (
-								<p className="text-sm text-red-500">
-									{errors.postTags.message}
-								</p>
-							)}
-						</div>
 
 						{/* Image Upload */}
 						<Controller

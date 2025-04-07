@@ -7,16 +7,14 @@ import { postSchema } from "@/common/Schemas";
 import { createPost } from "@/service/postService";
 import { useAppDispatch } from "@/stores/hook";
 import { addPost } from "@/stores/features/postSlice";
-import { useRef, useState } from "react";
-import PostModal from "./post-modal";
-import { Link02Icon } from "hugeicons-react";
+import TagSelector from "./tags";
+import FileUpload from "./file-upload";
 
 type FormSchema = yup.InferType<typeof postSchema>;
 
 export default function PostForm() {
 
     // const textareaRef = useRef(null);
-	const [isOpen, setIsOpen] = useState(false);
 	const dispatch = useAppDispatch();
 
 	// React Hook Form setup with correct types
@@ -57,7 +55,7 @@ export default function PostForm() {
 					</h1> */}
 
 					{/* Description section */}
-					<div className="mb-4">
+					<div className="mb-1">
 						{/* <h2 className="mb-2 mr-2 ml-1">Commission description:</h2> */}
 						<textarea
 							className="w-full h-24 resize-none rounded-md border px-3 pt-2"
@@ -71,12 +69,48 @@ export default function PostForm() {
 						)}
 					</div>
 
+					{/* Tags */}
+					<div className="mb-1 flex flex-col">
+						<h2 className="mr-1">Tags:</h2>
+						<Controller
+							name="postTags"
+							control={control}
+							render={({ field }) => (
+								<TagSelector
+									selectedTags={field.value}
+									setSelectedTags={field.onChange}
+								/>
+							)}
+						/>
+						{errors.postTags && (
+							<p className="text-sm text-red-500">
+								{errors.postTags.message}
+							</p>
+						)}
+					</div>
+
+					{/* Image Upload */}
+					<Controller
+						name="images"
+						control={control}
+						render={({ field }) => (
+							<FileUpload
+								value={field.value!.filter(
+									(fpv) =>
+										fpv !== null && fpv !== undefined,
+								)}
+								onChange={field.onChange}
+							/>
+						)}
+					/>
+					{errors.images && (
+						<p className="text-sm text-red-500">
+							{errors.images.message}
+						</p>
+					)}
+
 					{/* Open Modal via Link Icon */}
 					<div className="bottom-0 right-0 mt-4 flex flex-row justify-end">
-						<Link02Icon
-							className="text-primary mr-4 mt-2 scale-125 cursor-pointer hover:opacity-60"
-							onClick={() => setIsOpen(true)}
-						/>
 						<button
 							type="submit"
 							className="rounded-md bg-primary px-4 py-2 text-white hover:bg-accent active:bg-primary"
@@ -87,22 +121,6 @@ export default function PostForm() {
 				</form>
 			</div>
 
-			{/* PostModal with shared form state */}
-			{isOpen && (
-				<PostModal
-					isOpen={isOpen}
-					setIsOpen={setIsOpen}
-					initialData={{
-						postDescription: watch("postDescription"), // Get the current value
-						postTags: [],
-						images: [],
-					}}
-					resetForm={reset} // Pass reset function to modal
-					setDescription={(value: string) =>
-						setValue("postDescription", value)
-					} // Sync modal changes
-				/>
-			)}
 		</div>
 	);
 }

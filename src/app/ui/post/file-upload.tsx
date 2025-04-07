@@ -3,83 +3,79 @@ import { X } from "lucide-react"; // Import close icon
 import { FilePreview } from "@/common/interface";
 
 interface FileUploadProps {
-    selectedFiles: FilePreview[];
-    setSelectedFiles: (files: FilePreview[]) => void;
+	value: FilePreview[];
+	onChange: (files: FilePreview[]) => void;
 }
 
-export default function FileUpload({ selectedFiles, setSelectedFiles }: FileUploadProps) {
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
+export default function FileUpload({ value, onChange }: FileUploadProps) {
+	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) {
-            const newFiles = Array.from(event.target.files).map(file => ({
-                file,
-                preview: URL.createObjectURL(file),
-            }));
+	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files) {
+			const newFiles = Array.from(event.target.files).map((file) => ({
+				file,
+				preview: URL.createObjectURL(file),
+			}));
 
-            // Prevent exceeding 4 files
-            if (selectedFiles.length + newFiles.length > 4) {
-                alert("You can upload a maximum of 4 images.");
-                return;
-            }
+			if (value.length + newFiles.length > 4) {
+				alert("You can upload a maximum of 4 images.");
+				return;
+			}
 
-            setSelectedFiles([...selectedFiles, ...newFiles]);
-        }
-    };
+			onChange([...value, ...newFiles]); // 🔥 use onChange from react-hook-form
+		}
+	};
 
-    // Remove selected image
-    const removeImage = (index: number) => {
-        /* @ts-ignore */
-        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
-    };
+	const removeImage = (index: number) => {
+		const updated = value.filter((_, i) => i !== index);
+		onChange(updated); // 🔥 use onChange from react-hook-form
+	};
 
-    return (
-        <div className="flex flex-col items-center">
-            {/* Hidden File Input */}
-            <input 
-                type="file" 
-                ref={fileInputRef} 
-                className="hidden" 
-                accept="image/*" 
-                onChange={handleFileChange} 
-                multiple 
-            />
+	return (
+		<div className="flex flex-col items-center">
+			<input
+				type="file"
+				ref={fileInputRef}
+				className="hidden"
+				accept="image/*"
+				onChange={handleFileChange}
+				multiple
+			/>
 
-            {/* Clickable Upload Area */}
-            <div 
-                className={`border-2 border-dashed p-4 rounded-md text-center cursor-pointer 
-                            ${selectedFiles.length >= 4 ? "border-gray-300 cursor-not-allowed" : "hover:border-blue-500"}`} 
-                onClick={() => {
-                    if (selectedFiles.length < 4) {
-                        fileInputRef.current?.click();
-                    }
-                }}
-            >
-                {selectedFiles.length < 4 ? "Click to upload files (Max: 4)" : "Maximum limit reached"}
-            </div>
+			<div
+				className={`cursor-pointer rounded-md border-2 border-dashed p-4 text-center ${value.length >= 4 ? "cursor-not-allowed border-gray-300" : "hover:border-blue-500"}`}
+				onClick={() => {
+					if (value.length < 4) {
+						fileInputRef.current?.click();
+					}
+				}}
+			>
+				{value.length < 4
+					? "Click to upload files (Max: 4)"
+					: "Maximum limit reached"}
+			</div>
 
-            {/* Image Previews */}
-            {selectedFiles && selectedFiles.length > 0 && (
-                <div className="grid grid-cols-4 gap-4 mt-4">
-                    {selectedFiles.map((file, index) => (
-                        <div key={index} className="relative group">
-                            <img 
-                                src={file.preview} 
-                                alt="preview" 
-                                className="w-36 h-36 object-cover rounded-md border shadow-md"
-                            />
-                            {/* Remove Button */}
-                            <button 
-                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
-                                type="button"
-                                onClick={() => removeImage(index)}
-                            >
-                                <X size={14} />
-                            </button>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
+			{value.length > 0 && (
+				<div className="mt-4 grid grid-cols-4 gap-4">
+					{value.map((file, index) => (
+						<div key={index} className="group relative">
+							<img
+								src={file.preview}
+								alt="preview"
+								className="h-28 w-28 md:h-36 md:w-36 rounded-md border object-cover shadow-md"
+							/>
+							<button
+								className="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white 
+                                            opacity-100 md:opacity-0 transition md:group-hover:opacity-100"
+								type="button"
+								onClick={() => removeImage(index)}
+							>
+								<X size={14} />
+							</button>
+						</div>
+					))}
+				</div>
+			)}
+		</div>
+	);
 }

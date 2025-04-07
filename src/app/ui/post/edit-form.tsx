@@ -88,7 +88,7 @@ export default function EditPostForm({ postId, post }: EditPostProps) {
             {/* Post Box Modal */}
             {isOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
-                    <div className="bg-white p-4 rounded-lg shadow-lg w-[460px] h-4/5 relative overflow-auto">
+                    <div className="bg-white p-4 rounded-lg shadow-lg w-4/5 md:w-1/3 max-h-[90vh] relative overflow-auto">
                         {/* Close Button */}
                         <button 
                             onClick={() => closeForm()}
@@ -113,18 +113,19 @@ export default function EditPostForm({ postId, post }: EditPostProps) {
                             </div> */}
 
                             {/* Description section */}
-                            <div className="mb-4">
+                            <div className="mb-1">
                                 <h2 className="mr-2 mb-2">Commission description:</h2>
                                 <textarea 
-                                    className="border flex-grow w-full h-32 resize-none rounded-md pl-3 pt-2"
+                                    className="w-full h-24 resize-none rounded-md border px-3 pt-2"
                                     placeholder="Description..."
                                     {...register("postDescription")}
                                     {...register("postDescription")}
                                 />
+                                {errors.postDescription && <p className="text-red-500 text-sm">{errors.postDescription.message}</p>}
                             </div>
 
                             {/* Tags section */}
-                            <div className="flex flex-col mb-4">
+                            <div className="flex flex-col mb-1">
                                 <h2 className="mr-1">Tags:</h2>
                                 <Controller 
                                     name="postTags"
@@ -137,7 +138,7 @@ export default function EditPostForm({ postId, post }: EditPostProps) {
                             </div>
 
                             {/* Price section */}
-                            <div className="flex items-center mb-4">
+                            {/* <div className="flex items-center mb-4">
                                 <h2 className="mr-2">Price:</h2>
                                 <input 
                                     className="border h-8 w-25 resize-none overflow-hidden rounded-md px-3 text-right"
@@ -148,17 +149,17 @@ export default function EditPostForm({ postId, post }: EditPostProps) {
                                 />
                                 <span className="ml-2">Baht</span>
                                 {errors.postPrice && <p className="text-red-500 text-sm">{errors.postPrice.message}</p>}
-                            </div>
+                            </div>} */}
 
                             {/* Sample image section */}
                             <Controller 
                                 name="images"
                                 control={control}
                                 render={({ field }) => (
-                                    <FileUpload selectedFiles={field.value.filter((file): file is FilePreview => file !== undefined)} setSelectedFiles={field.onChange} />
+                                    <FileUpload value={field.value.filter((file): file is FilePreview => file !== undefined)} onChange={field.onChange} />
                                 )}
                             />
-                            {/* {errors.images && <p className="text-red-500 text-sm">{errors.images.message}</p>} */}
+                            {errors.images && <p className="text-red-500 text-sm">{errors.images.message}</p>}
 
                             {/* Save Changes Button */}
                             <div className="flex justify-end bottom-0 right-0 mt-3">

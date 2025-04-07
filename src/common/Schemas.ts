@@ -139,8 +139,6 @@ export const accountSchema = yup.object().shape({
 })
 
 export const postSchema = yup.object().shape({
-    postDescription: yup.string().required("Description is required"), // Now required
-    postTags: yup.array().of(yup.string()).min(1, "Please select at least one tag").required(), // Now required  
-    postPrice: yup.number().positive("Price must be greater than 0").optional(), // Now optional,
-    images: yup.array().of(yup.mixed<FilePreview>()).default([]).optional(), // Now optional,
-});
+    postDescription: yup.string().required("Description is required"),
+    postTags: yup.array().of(yup.string()).min(1, "Please select at least one tag").required(),
+    images: yup.array().of(yup.mixed<FilePreview>()).min(1, "Please upload at least one image").required("Images are required"),});
