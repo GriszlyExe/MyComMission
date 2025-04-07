@@ -15,7 +15,7 @@ export default function Page() {
 	const dispatch = useAppDispatch();
 
 	const fetchPostInfo = async () => {
-		const { posts, artist } = await getPostByUserId(userId);
+		const { posts } = await getPostByUserId(userId);
 		dispatch(setLoggedInUserPosts(posts));
 	};
 
@@ -24,24 +24,25 @@ export default function Page() {
 	}, []);
 
 	return (
-		<>
-			<div className="md:hidden mb-4">
-				<Search placeholder="Search Post" />
-				<FilterTags />
+		<div className="flex flex-col md:flex-row justify-between gap-4">
+			{/* SuggestedBar - Top on mobile, Left on desktop */}
+			<div className="order-2 md:order-none w-full md:w-1/4 border">
+				<SuggestedBar />
 			</div>
-			<div className="flex flex-row justify-between">
-				<div className="w-1/4 border hidden md:block">
-					<SuggestedBar />
-				</div>
-				<div className="flex w-full md:w-5/12 flex-col gap-3 bg-white rounded-md py-4">
-					<PostForm />
-					<Feed />
-				</div>
-				<div className="hidden md:block w-1/4">
+
+			{/* Feed - Middle content */}
+			<div className="order-3 md:order-none w-full md:w-5/12 flex flex-col gap-3 bg-white rounded-md py-4">
+				<PostForm />
+				<Feed />
+			</div>
+
+			{/* Search + FilterTags - Top on mobile, Right on desktop */}
+			<div className="order-1 md:order-none w-full md:w-1/4">
+				<div className="sticky top-0 md:static">
 					<Search placeholder="Search Post" />
 					<FilterTags />
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }

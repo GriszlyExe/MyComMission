@@ -143,34 +143,6 @@ export default function ProfilePage() {
 							<div
 								className={"w-full items-center"}
 							>
-								{/* Report */}
-								{userId !== id && (
-									<>
-										<div className="relative mt-4">
-											<button
-												onClick={() =>
-													setIsReportOpen(true)
-												}
-												className="p-3 text-gray-600 hover:text-gray-800"
-											>
-												<Ellipsis className="absolute h-6 w-6 md:right-4 md:top-0" />
-											</button>
-										</div>
-
-										{/* Report Popup */}
-										<ReportPopup
-											isOpen={isReportOpen}
-											onClose={() =>
-												setIsReportOpen(false)
-											}
-											onSubmit={handleReportSubmit}
-											title="Report This User"
-											targetId={id as string}
-											targetType="USER"
-										/>
-									</>
-								)}
-								{/* end of report */}
 								<div className="m-16 flex flex-col gap-2 md:min-w-[370px]">
 									<div>
 										<h1 className="text-2xl font-bold">
@@ -218,21 +190,47 @@ export default function ProfilePage() {
 
 									{/* Start chat */}
 									{userId !== id ? (
-										<button
-											className="mt-6 flex w-1/2 md:w-1/3 justify-center gap-2 rounded bg-primary hover:bg-accent"
-											type="button"
-											onClick={() => {
-												handleTabCreateChat();
-											}}
-										>
-											<Message01Icon className="scale-120 font-bold text-white" />
-											<span className="text-md text-white">
-												Message
-											</span>
-										</button>
+										<div className="flex">
+											<button
+												className="mt-6 flex w-1/2 md:w-1/3 py-2 justify-center gap-2 rounded bg-primary hover:bg-accent"
+												type="button"
+												onClick={() => {
+													handleTabCreateChat();
+												}}
+											>
+												<Message01Icon className="scale-120 font-bold text-white" />
+												<span className="text-md text-white">
+													Message
+												</span>
+											</button>
+
+											<div className="mt-8 ml-4">
+												<button
+													onClick={() =>
+														setIsReportOpen(true)
+													}
+													className="text-gray-600 hover:text-gray-800"
+												>
+													<Ellipsis className="" />
+												</button>
+											</div>
+
+											{/* Report Popup */}
+											<ReportPopup
+												isOpen={isReportOpen}
+												onClose={() =>
+													setIsReportOpen(false)
+												}
+												onSubmit={handleReportSubmit}
+												title="Report This User"
+												targetId={id as string}
+												targetType="USER"
+											/>
+										</div>
 									) : (
 										<PostBoostingButton />
 									)}
+	
 								</div>
 							</div>
 						</div>
