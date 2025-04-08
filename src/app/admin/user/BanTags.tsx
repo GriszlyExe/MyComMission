@@ -5,12 +5,10 @@ import { useState } from "react";
 const availableTags = ["Banned", "Unbanned"];
 
 export default function BanTags() {
-	const [selectedTags, setSelectedTags] = useState<string[]>([]);
+	const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
 	const toggleTag = (tag: string) => {
-		setSelectedTags((prev) =>
-			prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-		);
+		setSelectedTag((prev) => (prev === tag ? null : tag));
 	};
 
 	return (
@@ -21,10 +19,10 @@ export default function BanTags() {
 					<button
 						key={tag}
 						onClick={() => toggleTag(tag)}
-						className={`rounded-full border px-4 py-2 ${
-							selectedTags.includes(tag)
+						className={`rounded-full border px-4 py-2 transition ${
+							selectedTag === tag
 								? "border-accent bg-primary text-white"
-								: "border-gray-300 bg-white text-gray-700"
+								: "border-secondary bg-white text-primary"
 						}`}
 					>
 						{tag}
