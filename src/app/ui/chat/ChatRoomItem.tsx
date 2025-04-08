@@ -47,7 +47,7 @@ const states = [
 	{
 		name: "ARTWORK_SHIPPED",
 		icon: <FaBoxOpen fontSize={40} className="text-primary" />,
-		info: "Artist already sent the artwork waiting for customer approval"
+		info: "Artist already sent the artwork waiting for customer approval",
 	},
 	{
 		name: "ARTWORK_REJECTED",
@@ -71,13 +71,12 @@ const StateModal = ({
 	roomState?: string;
 	modalId: string;
 }) => {
-
-	// const stateInfo = 
+	// const stateInfo =
 
 	return (
 		<>
 			<button
-				className="text-xs text-white bg-primary hover:bg-accent px-1 rounded-md"
+				className="rounded-md bg-primary px-1 text-xs text-white hover:bg-accent"
 				onClick={() =>
 					// @ts-ignore
 					document.getElementById(`status-info-${modalId}`)!.showModal()
@@ -87,23 +86,33 @@ const StateModal = ({
 			</button>
 			<dialog id={`status-info-${modalId}`} className="modal">
 				<div className="modal-box">
-					<h3 className="text-lg font-bold flex flex-row gap-1 items-center">{states.filter((state) => {
-						if (!roomState) return state.name === "IDLE";
-						return state.name === roomState;
-					})[0].icon}{roomState}</h3>
-					<div className="flex flex-row gap-1 items-center">
-					<p className="py-4 flex-grow">
-						{states.filter((state) => {
-						if (!roomState) return state.name === "IDLE";
-						return state.name === roomState;
-					})[0].info}
-					</p>
-					<div className="modal-action">
-						<form method="dialog">
-							{/* if there is a button in form, it will close the modal */}
-							<button className="btn text-white">Close</button>
-						</form>
-					</div>
+					<h3 className="flex flex-row items-center gap-1 text-lg font-bold">
+						{
+							states.filter((state) => {
+								if (!roomState) return state.name === "IDLE";
+								return state.name === roomState;
+							})[0].icon
+						}
+						{roomState}
+					</h3>
+					<div className="flex flex-row items-center gap-1">
+						<p className="flex-grow py-4">
+							{
+								states.filter((state) => {
+									if (!roomState)
+										return state.name === "IDLE";
+									return state.name === roomState;
+								})[0].info
+							}
+						</p>
+						<div className="modal-action">
+							<form method="dialog">
+								{/* if there is a button in form, it will close the modal */}
+								<button className="btn text-white">
+									Close
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</dialog>
@@ -111,15 +120,18 @@ const StateModal = ({
 	);
 };
 
-const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
+const ChatRoomItem = ({
+	chatRoom,
+	onClick,
+}: {
+	chatRoom: ChatRoom;
+	onClick?: () => void;
+}) => {
 	const dispatch = useAppDispatch();
 	const [receiver, setReceiver] = useState<User | null>(null);
 	const activeRoomId = useAppSelector(
 		(state) => state.chat.activeRoom?.chatRoomId,
 	);
-	// const roomState = useAppSelector(state => {if (state.chat.activeRoom?.latestCommission) {
-
-	// }})
 
 	useEffect(() => {
 		const fetchUserProfile = async () => {
@@ -130,20 +142,20 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 		fetchUserProfile();
 	}, [chatRoom.chatRoomId]);
 
+	const handleClick = async () => {
+		dispatch(setActiveRoom(chatRoom));
+		if (onClick) onClick();
+	};
+
 	return (
 		<div
 			className={clsx(
-				"flex flex-row md:min-h-[60px] items-center justify-between gap-2 rounded-md bg-white px-1 transition-transform duration-300 hover:scale-105",
+				"flex cursor-pointer flex-row items-center justify-between gap-2 rounded-md bg-white px-1 transition-transform duration-300 hover:scale-105 md:min-h-[60px]",
 				{
 					"ring-4 ring-primary": chatRoom.chatRoomId === activeRoomId,
 				},
 			)}
-			onClick={async () => {
-				// const commissionData = await getCommissionById(
-				// 	chatRoom.latestCommission,
-				// );
-				dispatch(setActiveRoom(chatRoom));
-			}}
+			onClick={handleClick}
 		>
 			{/* profile avatar */}
 			<div>
@@ -164,31 +176,37 @@ const ChatroomItem = ({ chatRoom }: { chatRoom: ChatRoom }) => {
 
 			{/* name + latest message */}
 			<div className="flex flex-grow flex-col p-2">
-				<span className="flex flex-row gap-1 items-center">
+				<span className="flex flex-row items-center gap-1">
 					{/* name */}
 					<Link
 						href={`/profile/${receiver?.userId}`}
 						className="accent font-bold hover:text-accent"
+						onClick={(e) => e.stopPropagation()}
 					>
 						{receiver !== null ? receiver.displayName : ""}
 					</Link>
 					<div className="flex-grow"></div>
 					{/* time stamp */}
-				    <p className="text-xs">{formatChatTimestamp(chatRoom.lastTimeStamp)}</p>		
+					<p className="text-xs">
+						{formatChatTimestamp(chatRoom.lastTimeStamp)}
+					</p>
 				</span>
-				<div className="flex flex-row gap-1">
-					<p className="text-sm flex-grow">{chatRoom.latestMessageType === "COMMISSION" ? "Commission on going" : clipText(chatRoom.latestMessage, 18)}</p>
-					<StateModal
-						roomState={chatRoom.latestCommission?.state}
-						modalId={chatRoom.chatRoomId}
-					/>
+				<div className="flex flex-row gap-1 items-center">
+					<p className="flex-grow text-sm w-6">
+						{chatRoom.latestMessageType === "COMMISSION"
+							? "Commission on going"
+							: clipText(chatRoom.latestMessage, 12)}
+					</p>
+					<div>
+						<StateModal
+							roomState={chatRoom.latestCommission?.state}
+							modalId={chatRoom.chatRoomId}
+						/>
+					</div>
 				</div>
-				{/* <p className="text-sm">Hello, How are you?</p> */}
 			</div>
-
-			{/* @ts-ignore */}
 		</div>
 	);
 };
 
-export default ChatroomItem;
+export default ChatRoomItem;

@@ -33,7 +33,7 @@ export default function NavMobile() {
         { name: "Artist", href: "/user", icon: PaintBoardIcon },
         { name: "Chat", href: "/chat", icon: Chatting01Icon },
         { name: "Account", href: `/profile/${userId}`, icon: UserAccountIcon },
-        { name: "Settings", href: "/home/setting", icon: Settings01Icon },
+        { name: "Setting", href: "/home/setting", icon: Settings01Icon },
     ];
 
 	return (

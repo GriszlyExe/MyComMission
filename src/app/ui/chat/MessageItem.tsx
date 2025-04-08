@@ -84,7 +84,7 @@ const MessageItem = ({
 
 			{/* plain text */}
 			{isMessage && (
-				<div className="chat-bubble bg-accent text-white">
+				<div className="break-words chat-bubble max-w-60 md:max-w-sm bg-accent text-white">
 					{messageItem.content}
 				</div>
 			)}

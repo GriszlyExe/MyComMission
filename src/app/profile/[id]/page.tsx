@@ -192,7 +192,7 @@ export default function ProfilePage() {
 									{userId !== id ? (
 										<div className="flex">
 											<button
-												className="mt-6 flex w-1/2 md:w-1/3 py-2 justify-center gap-2 rounded bg-primary hover:bg-accent"
+												className="mt-6 flex w-1/2 md:w-1/3 py-3 justify-center gap-2 rounded bg-primary hover:bg-accent"
 												type="button"
 												onClick={() => {
 													handleTabCreateChat();

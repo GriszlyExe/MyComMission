@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Divide, Plus, X } from "lucide-react";
 import ChatOptions from "./ChatOptions";
 import { useAppSelector } from "@/stores/hook";
+import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 
 const MessageInput = () => {
 
@@ -38,7 +39,7 @@ const MessageInput = () => {
 		<div>
 			<form
 				onSubmit={handleSubmit}
-				className="pb-1 pt-2 px-2 flex flex-row items-center justify-around gap-2 border-t border-gray-200"
+				className="pb-1 pt-2 px-2 flex flex-row items-center justify-around gap-1 border-none"
 			>
 
 				{/* add button Section */}
@@ -49,7 +50,7 @@ const MessageInput = () => {
 						<button
 							onClick={() => setShowOptions(!showOptions)}
 							type="button"
-							className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-transform duration-300"
+							className="p-1 md:p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-transform duration-300"
 						>
 							{showOptions ? <X size={20} className="transform rotate-180 transition-all duration-300" /> : <Plus size={20} className="transition-all duration-300" />}
 						</button>
@@ -64,13 +65,24 @@ const MessageInput = () => {
 					onChange={(e) => setMessage(e.target.value)}
 					className="input input-bordered input-primary w-full focus:ring-primary"
 				/>
+
+				{/* Send Button */}
 				<button
 					type="submit"
-					className="ml-1 rounded-lg bg-primary px-8 py-3 text-white hover:bg-accent 
+					className="md:block hidden ml-1 rounded-lg bg-primary px-8 py-3 text-white hover:bg-accent 
                             focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
 				>
 					Send
 				</button>
+				{/* For mobile */}
+				<button
+					type="submit"
+					className="block md:hidden ml-1 rounded-lg bg-primary px-4 py-2 text-white hover:bg-accent 
+						focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+				>
+					<PaperAirplaneIcon className="w-4 transform -rotate-45" />
+				</button>
+				
 			</form>
 			{showOptions && <div className="flex justify-around py-1"> <ChatOptions closeOption={() => setShowOptions(false)} /> </div>}
 		</div>
