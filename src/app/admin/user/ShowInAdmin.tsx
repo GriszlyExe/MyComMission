@@ -1,27 +1,48 @@
-import UserWidgetForAdmin from "./UserWidgetForAdmin";
+import UserWidgetLarge from "./UserWidgetLarge";
+import UserWidgetSmall from "./UserWidgetSmall";
 
 export default function ShowInAdmin() {
 	return (
-		<div className="overflow-x-auto border border-purple-700 hidden sm:block">
-			<table className="table">
-				{/* head */}
-				<thead>
-					<tr>
-						<th>DisplayName</th>
-						<th>Email</th>
-						<th>Status</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{/* Show all users here */}
-					<UserWidgetForAdmin />
-					<UserWidgetForAdmin />
-					<UserWidgetForAdmin />
-					<UserWidgetForAdmin />
-					<UserWidgetForAdmin />
-				</tbody>
-			</table>
-		</div>
+		<>
+			{/* large table */}
+			<div className="overflow-x-auto border border-primary-content hidden min-[570px]:block">
+				<table className="table">
+					<thead>
+						<tr>
+							<th>Display name</th>
+							<th>Email</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						{/* all users */}
+						<UserWidgetLarge />
+						<UserWidgetLarge />
+						<UserWidgetLarge />
+						<UserWidgetLarge />
+						<UserWidgetLarge />
+					</tbody>
+				</table>
+			</div>
+			{/* small table */}
+			<div className="overflow-x-auto border border-primary-content block min-[570px]:hidden">
+				<table className="table">
+					<thead>
+						<tr>
+							<th>User Info</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						{/* all users */}
+						<UserWidgetSmall />
+						<UserWidgetSmall />
+						<UserWidgetSmall />
+						<UserWidgetSmall />
+						<UserWidgetSmall />
+					</tbody>
+				</table>
+			</div>
+		</>
 	);
 }
