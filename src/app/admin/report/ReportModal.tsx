@@ -1,6 +1,7 @@
 import ReportUserWidget from "./ReportUserWidget";
-import { LinkForwardIcon } from "hugeicons-react";
+import { Report } from "@/common/model";
 import { User } from "@/common/model";
+import ReportStatus from "./ReportStatus";
 
 const dummyUser: User = {
     userId: "user_123456",
@@ -23,29 +24,21 @@ const dummyUser: User = {
 };
 
 
-export default function ReportModal() {
-    let isResolved = false
-    let hasReportee = true
-    let hasPost = false
-    let hasCommission = true
+export default function ReportModal({report}: {report: Report}) {
+    let hasReportee = report.reporteeId
+    let hasPost = report.postId
+    let hasCommission = report.commissionId
 
 	return (
 		<>
             <div className="modal-box">
                 <div className="flex justify-between">
                     {/* Report Type */}
-                    <h3 className="font-bold text:md md:text-lg mt-1 md:mt-0">Type: Post Report</h3>
+                    <h3 className="font-bold text:md md:text-lg mt-1 md:mt-0">Type: {report.reportType}</h3>
 
                     {/* Report Status */}
-                    {isResolved ? (
-                        <button className="btn btn-sm border-none bg-success font-md text-sm md:text-lg text-white hover:bg-green-800">
-                            Resolved
-                        </button>
-                    ) : (
-                        <button className="btn btn-sm border-none bg-error text-sm md:text-lg text-white hover:bg-pink-800">
-                            Pending
-                        </button>
-                    )}
+                    <ReportStatus reportStatus={report.reportStatus}/>
+
                 </div>
 
                 {/* Reporter */}
@@ -57,11 +50,7 @@ export default function ReportModal() {
                 {/* Report Description */}
                 <p className="my-2">Description:</p>
                 <p className="border-2 rounded-md p-2">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                    Quis exercitationem illum facilis, iste blanditiis libero 
-                    aliquam molestiae consequuntur eligendi possimus tenetur 
-                    esse, corrupti accusamus sapiente perspiciatis dignissimos 
-                    commodi quasi. Fuga!
+                    {report.reportDescription}
                 </p>
 
                 {/* Reportee (if any) */}

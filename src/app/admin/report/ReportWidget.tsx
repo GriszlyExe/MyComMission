@@ -1,9 +1,11 @@
 'use client'
 
 import ReportModal from "./ReportModal";
+import { Report } from "@/common/model";
+import ReportStatus from "./ReportStatus";
 
-export default function ReportWidget({ reportId }: { reportId: string }) {
-	let isResolved = false;
+export default function ReportWidget({ report }: { report: Report }) {
+
 	return (
 		<tr>
 			<td>
@@ -29,23 +31,15 @@ export default function ReportWidget({ reportId }: { reportId: string }) {
 			</td>
 			<td>
 				<div className="items-center">
-					<button className="btn btn-sm text-white bg-blue-600" type="button" onClick={()=>(document.getElementById(reportId) as HTMLDialogElement)!.showModal()}>View</button>
-					<dialog id={reportId} className="modal modal-middle">
-						<ReportModal />
+					<button className="btn btn-sm text-white bg-primary hover:bg-secondary hover:text-primary" type="button" onClick={()=>(document.getElementById(report.reportId) as HTMLDialogElement)!.showModal()}>View</button>
+					<dialog id={report.reportId} className="modal modal-middle">
+						<ReportModal report={report} />
 					</dialog>
 					<br />
 				</div>
 			</td>
 			<td>
-				{isResolved ? (
-					<button className="btn btn-sm border-none bg-success text-white hover:bg-green-800">
-						Resolved
-					</button>
-				) : (
-					<button className="btn btn-sm border-none bg-error text-white hover:bg-pink-800">
-						Pending
-					</button>
-				)}
+				<ReportStatus reportStatus={report.reportStatus}/>
 			</td>
 		</tr>
 	);
