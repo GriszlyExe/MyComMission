@@ -3,7 +3,7 @@
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import { useRouter } from "next/navigation";
 import { loginService } from "@/service/authService";
-import { MdEmail } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { adminLoginSchema } from "@/common/Schemas";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -17,13 +17,7 @@ import { login } from "@/stores/features/authSlice";
 
 type FormSchema = yup.InferType<typeof adminLoginSchema>;
 
-export default function AdminLoginForm({
-    toggleShowLogin,
-    setEmail,
-}: {
-    toggleShowLogin: () => void;
-    setEmail: Dispatch<SetStateAction<string>>;
-}) {
+export default function AdminLoginForm() {
     const [isError, setError] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
@@ -32,28 +26,14 @@ export default function AdminLoginForm({
         setShowPassword((prev) => !prev);
     };
 
-    const dispatch = useAppDispatch();
+    // const dispatch = useAppDispatch();
 
     const handleSubmit = async (
         values: FormSchema,
         actions: FormikHelpers<FormSchema>,
     ) => {
         try {
-            const { email, password } = values;
-            const { user, token } = await loginService({
-                email,
-                password,
-            });
-
-            if (token) {
-                dispatch(login(token));
-                dispatch(setUser(user));
-                actions.resetForm();
-                router.push("/home");
-            } else {
-                setEmail(email);
-                toggleShowLogin();
-            }
+            console.log(values);
         } catch (err) {
             setError(true);
         }
@@ -68,7 +48,7 @@ export default function AdminLoginForm({
                     </span>
                 </h1>
                 <Formik
-                    initialValues={{ email: "", password: "" }}
+                    initialValues={{ username: "", password: "" }}
                     validationSchema={adminLoginSchema}
                     onSubmit={handleSubmit}
                 >
@@ -76,18 +56,18 @@ export default function AdminLoginForm({
                         <Form className="space-y-4" autoComplete="off">
                             <div>
                                 <label className="mb-2 block text-sm font-bold text-gray-700">
-                                    <MdEmail className="mr-2 inline-block" />
-                                    Email
+                                    <FaUser className="mr-2 inline-block" />
+                                    Username
                                 </label>
                                 <Field
-                                    type="input"
-                                    name="email"
-                                    placeholder="Enter your email"
+                                    type="text"
+                                    name="username"
+                                    placeholder="Enter your username"
                                     required
-                                    className={`input input-bordered w-full ${errors?.email && touched?.email ? "input-error" : "input-secondary"}`}
+                                    className={`input input-bordered w-full ${errors?.username && touched?.username ? "input-error" : "input-secondary"}`}
                                 />
                                 <ErrorMessage
-                                    name="email"
+                                    name="username"
                                     component="p"
                                     className="text-xs text-error"
                                 />
@@ -128,7 +108,7 @@ export default function AdminLoginForm({
                             <div className="">
                                 {isError && (
                                     <span className="font-bold text-error">
-                                        Wrong email or password
+                                        Wrong username or password
                                     </span>
                                 )}
                             </div>

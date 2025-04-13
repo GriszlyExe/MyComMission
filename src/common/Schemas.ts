@@ -11,7 +11,7 @@ export const loginSchema = yup.object().shape({
 });
 
 export const adminLoginSchema = yup.object().shape({
-    email: yup
+    username: yup
         .string()
         // .email("Invalid email format")
         // .matches(/^[a-zA-Z0-9._%+-]+@admin$/, "Invalid email format")
