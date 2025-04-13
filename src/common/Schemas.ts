@@ -13,9 +13,9 @@ export const loginSchema = yup.object().shape({
 export const adminLoginSchema = yup.object().shape({
     email: yup
         .string()
-        .email("Invalid email format")
-        .matches(/^[a-zA-Z0-9._%+-]+@admin$/, "Invalid email format")
-        .required("Email is required"),
+        // .email("Invalid email format")
+        // .matches(/^[a-zA-Z0-9._%+-]+@admin$/, "Invalid email format")
+        .required("username is required"),
 
     password: yup.string().required("Password is required"),
 });

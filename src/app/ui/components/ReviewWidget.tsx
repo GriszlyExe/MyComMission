@@ -33,7 +33,7 @@ export default function ReviewWidget( { review }: ReviewProps ) {
     }, [review.reviewerId]);
 	
 	return (
-		<div className="card w-full border-2 border-primary bg-white p-4">
+		<div className="card w-full rounded-md shadow-md bg-white p-4">
 			{/* Review Header */}
 			<div className="flex items-center justify-between">
 				<div className="flex items-center space-x-3">
@@ -54,14 +54,14 @@ export default function ReviewWidget( { review }: ReviewProps ) {
 						/>
 					</div>
 					<div>
-						{/* <Link href={`/profile/${post.artistId}`}>
+						<Link href={`/profile/${review.reviewerId}`} className="hover:underline hover:text-primary">
 								<p className="font-semibold">
 									{user ? user.displayName : "display name"}
 								</p>
-							</Link> */}
-						<Link href="#">
+							</Link>
+						{/* <Link href="#">
 							<p className="font-semibold">{user?.displayName}</p>
-						</Link>
+						</Link> */}
 						<p className="text-xs text-gray-500">{`${new Date(review.createdAt).getDate()} ${month[new Date(review.createdAt).getMonth()]} ${new Date(review.createdAt).getFullYear()}`}</p>
 					</div>
 				</div>

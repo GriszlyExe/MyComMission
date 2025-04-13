@@ -16,7 +16,8 @@ export default function ReviewForm() {
 	const dispatch = useAppDispatch()
 
 	return (
-		<div className="card mx-4 border-2 border-primary bg-white p-4">
+		// <div className="card mx-4 border-2 rounded-md shadow-lg shadow-gray-400 border-none bg-white p-4">
+		<div className="card mx-4 border-2 rounded-md shadow-md border-none bg-white p-4"> 
 			<h1 className="mb-2 text-center text-lg font-bold">
 				Rate the Artist
 			</h1>
@@ -29,9 +30,9 @@ export default function ReviewForm() {
 						rating: values.rating,
 						description: values.review
 					}
-					const review = await createReview({ data })
+					const { review } = await createReview({ data })
 					// console.log(review)
-					dispatch(addReview(review))
+					dispatch(addReview(review));
 					actions.resetForm();
 				}}
 			>
@@ -39,7 +40,7 @@ export default function ReviewForm() {
 					<Form>
 						<div className="m-auto flex w-full flex-col gap-2">
 							<div className="flex flex-row gap-2">
-								<h2>Select a rating:</h2>
+								<h2>What's your rating </h2>
 								<div className="rating rating-half rating-md">
 									<Field
 										type="radio"
@@ -92,7 +93,7 @@ export default function ReviewForm() {
 							<button
 								type="submit"
 								disabled={isSubmitting}
-								className="rounded-md bg-black px-4 py-2 text-white hover:bg-gray-600 active:bg-black"
+								className="rounded-md bg-primary px-4 py-2 text-white hover:bg-accent active:bg-black"
 							>
 								{isSubmitting ? "Submitting..." : "Submit"}
 							</button>

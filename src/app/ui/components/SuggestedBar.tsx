@@ -6,7 +6,7 @@ import { MdStarRate } from "react-icons/md";
 
 const SuggestedArtistWidget = ({ artist }: { artist: User }) => {
 	return (
-		<div className="rounded-lg bg-secondary p-1 transition-transform duration-300 hover:scale-105">
+		<div className="rounded-lg bg-secondary p-[3px] shadow-md transition-transform duration-300 hover:scale-105">
 			<div className="flex flex-row items-center rounded-md bg-white">
 				{/* User profile */}
 				<div className="">

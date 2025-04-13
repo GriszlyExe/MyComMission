@@ -32,7 +32,7 @@ export default function Review() {
             {user.userId !== id && <ReviewForm />}
 			<div className="flex w-full flex-col items-center space-y-4 p-4">
 				{reviews.map((review) => (
-					<ReviewWidget key={review.reviewId} review={ review }/>	
+					<ReviewWidget key={`${review.reviewId}`} review={ review }/>	
 				))}
 			</div>
 		</div>

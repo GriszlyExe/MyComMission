@@ -80,7 +80,7 @@ export default function AdminLoginForm({
                                     Email
                                 </label>
                                 <Field
-                                    type="email"
+                                    type="input"
                                     name="email"
                                     placeholder="Enter your email"
                                     required

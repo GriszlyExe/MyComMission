@@ -19,7 +19,8 @@ const reviewSlice = createSlice({
             state.reviews = action.payload
         },
         addReview: (state, action: PayloadAction<Review>) => {
-            state.reviews.push(action.payload)
+            state.reviews.push(action.payload);
+            state.pageReviews.push(action.payload);
         },
         setPageReviews: (state, action: PayloadAction<Review[]>) => {
             state.pageReviews = action.payload;
