@@ -1,4 +1,4 @@
-import TopNav from "@/app/ui/global/nav-bar";
+import AdminNav from "@/app/ui/admin/nav-admin";
 import Search from "@/app/ui/global/search";
 import ShowInAdmin from "./ShowInAdmin";
 import PaginationBar from "@/app/ui/components/PaginationBar";
@@ -8,7 +8,7 @@ export default function ShowUserPage() {
 	return (
 		<>
 			<div className="mb-10 w-full flex-none">
-				<TopNav />
+				<AdminNav />
 			</div>
 			{/* large layout */}
 			<div className="hidden min-[1000px]:block">
