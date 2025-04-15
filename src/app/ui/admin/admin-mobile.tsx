@@ -1,18 +1,14 @@
 "use client";
 
 import {
-	Home01Icon,
-	PaintBoardIcon,
-	Settings01Icon,
-	Chatting01Icon,
+    UserListIcon,
+    RepositoryIcon,
 	Menu01Icon,
-	UserAccountIcon,
 } from "hugeicons-react";
 import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { useAppSelector } from "@/stores/hook";
 import { useRouter } from "next/navigation";
 
 export default function AdminNavMobile() {
@@ -28,10 +24,8 @@ export default function AdminNavMobile() {
     };
 
     const links = [
-        { name: "Home", href: "/home", icon: Home01Icon },
-        { name: "Artist", href: "/user", icon: PaintBoardIcon },
-        { name: "Chat", href: "/chat", icon: Chatting01Icon },
-        { name: "Setting", href: "/home/setting", icon: Settings01Icon },
+        { name: "Users", href: "/admin/user", icon: UserListIcon },
+        { name: "Reports", href: "/admin/report", icon: RepositoryIcon },
     ];
 
 	return (
