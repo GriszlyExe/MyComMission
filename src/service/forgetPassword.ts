@@ -1,19 +1,16 @@
 import axios from "axios";
-import Email from "next-auth/providers/email";
-
-const serverAddr = process.env.SERVER_ADDRESS || "http://localhost:12345";
+import { serverAddr } from ".";
 
 export const forgetPassword = async (email: string) => {
 
     try {
 
-        console.log(serverAddr)
         if (!serverAddr) {
             console.log(`Server address is not provided`);
             return;
         }
 
-        const resetPageRoute = "http://localhost:3000/new-password"
+        const resetPageRoute = `http://${window.location.hostname}:3000/new-password`
 
         const data = { resetPageRoute, email }
 

@@ -18,6 +18,7 @@ import {
     REGISTER
 } from "redux-persist"
 import storage from 'redux-persist/lib/storage';
+import { adminReducer } from "./features/adminSlice";
 
 export const resetState = createAction("resetState");
 
@@ -28,6 +29,7 @@ const appReducer = combineReducers({
     review: reviewReducer,
     chat: chatReducer,
     commission: commissionReducer,
+    admin: adminReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

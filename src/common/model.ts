@@ -106,3 +106,10 @@ export type Report = {
 	moderatorResponse?: string | null;
 	createdAt: Date;
 };
+
+export type Admin = {
+    adminId: string;
+    username: string;
+    createdAt: string;
+    updatedAt: string;
+}

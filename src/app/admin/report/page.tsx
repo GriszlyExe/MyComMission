@@ -1,3 +1,5 @@
+"use client";
+
 import TopNav from "@/app/ui/global/nav-bar";
 import Search from "@/app/ui/global/search";
 import ShowInAdmin from "./ShowInAdmin";

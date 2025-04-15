@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-
-const serverAddr = process.env.SERVER_ADDRESS;
+import { serverAddr } from ".";
 
 export const getUserInfo = async (userId: string) => {
 	try {

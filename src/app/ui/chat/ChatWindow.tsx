@@ -19,8 +19,8 @@ import { getUserInfo } from "@/service/userService";
 import { setLatestCommission } from "@/stores/features/commisionSlice";
 import { states } from "./commissionState";
 import { useMediaQuery } from "react-responsive";
-
-const socket = io(process.env.SERVER_ADDRESS);
+import { serverAddr } from "@/service";
+const socket = io(serverAddr);
 
 const ChatWindow = () => {
 	const containerRef = useRef<HTMLDivElement>(null);

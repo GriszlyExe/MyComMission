@@ -1,8 +1,5 @@
 import axios from "axios";
-
-const serverAddr = process.env.SERVER_ADDRESS;
-
-
+import { serverAddr } from ".";
 interface LoginSchema {
     email: string;
     password: string;

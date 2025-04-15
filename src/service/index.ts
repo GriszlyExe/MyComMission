@@ -1,1 +1,1 @@
-export const serverAddr = process.env.SERVER_ADDRESS;
+export const serverAddr = process.env.NEXT_PUBLIC_SERVER_ADDR;

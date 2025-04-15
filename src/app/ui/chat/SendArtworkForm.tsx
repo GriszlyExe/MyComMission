@@ -19,7 +19,6 @@ interface ModalProps {
     refresh: boolean
 }
 
-// const socket = io(process.env.SERVER_ADDRESS);
 
 export const SendArtworkForm = () => {
 

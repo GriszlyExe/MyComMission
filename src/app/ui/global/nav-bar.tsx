@@ -8,10 +8,10 @@ export default function TopNav() {
 	return (
 		<>
 			<div className="md:hidden mx-auto shadow-md">
-				<NavMobile/>
+				<NavMobile />
 			</div>
 			<div className="shadow-md hidden md:block">
-				<NavPc/>
+				<NavPc />
 			</div>
 		</>
 	);

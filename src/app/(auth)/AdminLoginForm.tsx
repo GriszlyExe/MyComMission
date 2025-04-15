@@ -14,6 +14,8 @@ import * as yup from "yup";
 import { useAppDispatch } from "@/stores/hook";
 import { setUser } from "@/stores/features/userSlice";
 import { login } from "@/stores/features/authSlice";
+import { adminLogin } from "@/service/admin";
+import { setAdmin } from "@/stores/features/adminSlice";
 
 type FormSchema = yup.InferType<typeof adminLoginSchema>;
 
@@ -26,14 +28,19 @@ export default function AdminLoginForm() {
         setShowPassword((prev) => !prev);
     };
 
-    // const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
     const handleSubmit = async (
         values: FormSchema,
         actions: FormikHelpers<FormSchema>,
     ) => {
         try {
-            console.log(values);
+            const { username, password } = values;
+            const admin = await adminLogin(username, password);
+
+            dispatch(setAdmin(admin));
+
+            router.push("/admin/report")
         } catch (err) {
             setError(true);
         }

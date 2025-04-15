@@ -1,25 +1,68 @@
-"use client"
+"use client";
 
 import "@/app/ui/global/globals.css";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "@/stores/store";
+import useAuthRedirect from "@/hooks/useAuthRedirect";
+import { useState } from "react";
+
+const LoadingSpinner = () => {
+	return (
+		<div
+			style={{
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				height: "100vh",
+			}}
+		>
+			<div
+				className="spinner"
+				style={{
+					width: "50px",
+					height: "50px",
+					border: "5px solid #ccc",
+					borderTop: "5px solid #000",
+					borderRadius: "50%",
+					animation: "spin 1s linear infinite",
+				}}
+			></div>
+			<style jsx>{`
+				@keyframes spin {
+					0% {
+						transform: rotate(0deg);
+					}
+					100% {
+						transform: rotate(360deg);
+					}
+				}
+			`}</style>
+		</div>
+	);
+};
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <head><title>MyCommision</title></head>
-      <body className={`antialiased`}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            {children}
-          </PersistGate>
-        </Provider>
-      </body>
-    </html>
-  );
+	const [allowed, setAllowed] = useState<boolean>(false);
+
+	useAuthRedirect(setAllowed);
+
+	return (
+		<html lang="en">
+			<head>
+				<title>MyCommision</title>
+			</head>
+			<body className={`antialiased`}>
+				<Provider store={store}>
+					<PersistGate loading={null} persistor={persistor}>
+						{allowed ? children : <LoadingSpinner />}
+					</PersistGate>
+				</Provider>
+			</body>
+		</html>
+	);
 }
