@@ -17,7 +17,7 @@ export default function ReportStatus({
 		switch (status) {
 			case "APPROVED":
 				return {
-					text: "Resolved",
+					text: "Approved",
 					className: "bg-success text-white hover:bg-green-800",
 				};
 			case "PENDING":
