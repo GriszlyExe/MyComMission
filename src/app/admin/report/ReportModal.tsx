@@ -17,7 +17,7 @@ export default function ReportModal({report}: {report: Report}) {
                     <h3 className="font-bold text:md md:text-lg mt-1 md:mt-0">Type: {report.reportType}</h3>
 
                     {/* Report Status */}
-                    <ReportStatus reportStatus={report.reportStatus}/>
+                    {/* <ReportStatus reportStatus={report.reportStatus}/> */}
 
                 </div>
 

@@ -1,33 +1,46 @@
+import { useState } from "react";
+
 export default function ReportStatus({
 	reportStatus,
 }: {
 	reportStatus: string;
 }) {
+	const [currentStatus, setCurrentStatus] = useState(reportStatus);
+
+	const toggleStatus = () => {
+		setCurrentStatus((prev) =>
+			prev === "APPROVED" ? "PENDING" : "APPROVED"
+		);
+	};
+
+	const getStatusProps = (status: string) => {
+		switch (status) {
+			case "APPROVED":
+				return {
+					text: "Resolved",
+					className: "bg-success text-white hover:bg-green-800",
+				};
+			case "PENDING":
+				return {
+					text: "Pending",
+					className: "bg-yellow-500 text-white hover:bg-yellow-600",
+				};
+			default:
+				return {
+					text: "Unknown",
+					className: "bg-gray-300 text-black",
+				};
+		}
+	};
+
+	const { text, className } = getStatusProps(currentStatus);
+
 	return (
-		<>
-			{reportStatus == "APPROVED" && (
-				<button className="btn btn-sm border-none bg-success text-white hover:bg-green-800">
-					Approved
-				</button>
-			)}
-
-			{reportStatus == "PENDING" && (
-				<button className="btn btn-sm border-none bg-yellow-500 text-white hover:bg-yellow-600">
-					Pending
-				</button>
-			)}
-
-			{reportStatus == "IN_REVIEW" && (
-				<button className="btn btn-sm border-none bg-blue-500 text-white hover:bg-blue-600">
-					In Review
-				</button>
-			)}
-
-			{reportStatus == "REJECTED" && (
-				<button className="btn btn-sm border-none bg-error text-white hover:bg-red-800">
-					Rejected
-				</button>
-			)}
-		</>
+		<button
+			className={`btn btn-sm border-none min-w-[85px] ${className}`}
+			onClick={toggleStatus}
+		>
+			{text}
+		</button>
 	);
 }
