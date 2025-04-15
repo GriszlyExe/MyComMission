@@ -10,14 +10,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import { adminLogout } from "@/service/admin";
+import { useAppDispatch } from "@/stores/hook";
+import { resetState } from "@/stores/store";
 
 export default function AdminNavMobile() {
     const router = useRouter();
     const pathname = usePathname();
 
+    const dispatch = useAppDispatch();
+
     const logout = async () => {
         try {
-            router.push("/");
+            await adminLogout();
+            dispatch(resetState());            
+            router.push("/admin/login");
         } catch (err) {
             console.error(err);
         }

@@ -16,8 +16,8 @@ const useAuthRedirect = (setAllowed: Dispatch<SetStateAction<boolean>>) => {
         const adminToken = Cookies.get('adminAuthToken');
         const token = Cookies.get('authToken');
 
-        console.log(`Admin token: ${adminToken}`);
-        console.log(`User token: ${token}`);
+        // console.log(`Admin token: ${adminToken}`);
+        // console.log(`User token: ${token}`);
 
         const protectedRoutes = ['/home', '/profile', '/chat'];
         const isAdminRoute = pathname.startsWith('/admin') && !pathname.startsWith('/admin/login');

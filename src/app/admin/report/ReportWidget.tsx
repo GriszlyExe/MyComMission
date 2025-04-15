@@ -14,7 +14,7 @@ export default function ReportWidget({ report }: { report: Report }) {
 						<div className="aspect-square w-14 overflow-hidden rounded-full p-[4px]">
 							<div className="h-full w-full overflow-hidden rounded-full bg-gray-300">
 								<img
-									src="/avatar.png"
+									src={report.reporter.profileUrl || "/default-profile-2.png"}
 									alt=""
 									width={60}
 									height={60}
@@ -25,7 +25,7 @@ export default function ReportWidget({ report }: { report: Report }) {
 					</div>
 
 					<div className="font-bold">
-						Hart Hagerty
+						{report.reporter.displayName}
 					</div>
 				</div>
 			</td>

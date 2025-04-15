@@ -3,31 +3,11 @@ import { Report } from "@/common/model";
 import { User } from "@/common/model";
 import ReportStatus from "./ReportStatus";
 
-const dummyUser: User = {
-    userId: "user_123456",
-    birthDate: "1995-08-21",
-    description: "Passionate digital artist who loves exploring abstract and surreal themes.",
-    location: "Bangkok, Thailand",
-    firstName: "Dummy",
-    lastName: "Example",
-    artistFlag: true,
-    email: "dummy@example.com",
-    displayName: "DummyArts",
-    phone: "0123456789",
-    profileUrl: "/default-profile-2.png",
-    age: 99,
-    pdfUrl: "https://example.com/portfolios/phuriphon_portfolio.pdf",
-    artistRate: 5.0,
-    enabled2FA: true,
-    createdAt: "2024-11-01T10:00:00Z",
-    updatedAt: "2025-04-10T08:30:00Z",
-};
-
-
 export default function ReportModal({report}: {report: Report}) {
-    let hasReportee = report.reporteeId
-    let hasPost = report.postId
-    let hasCommission = report.commissionId
+
+    let hasReportee = report.reporteeId;
+    let hasPost = report.postId;
+    let hasCommission = report.commissionId;
 
 	return (
 		<>
@@ -44,7 +24,7 @@ export default function ReportModal({report}: {report: Report}) {
                 {/* Reporter */}
                 <p className="py-4">Reporter:</p>
                 <div className="overflow-x-hidden">
-                    <ReportUserWidget key={'user.userId'} userInfo={dummyUser}/>
+                    <ReportUserWidget key={'user.userId'} userInfo={report.reporter}/>
                 </div>
                 
                 {/* Report Description */}
@@ -58,7 +38,7 @@ export default function ReportModal({report}: {report: Report}) {
                     <>
                         <p className="py-4">Reportee:</p>
                         <div className="overflow-x-hidden">
-                            <ReportUserWidget key={'user.userId'} userInfo={dummyUser}/>
+                            <ReportUserWidget key={`${report.reportId}-${report.reporterId}-report-${report.reporteeId}`} userInfo={report.reportee!}/>
                         </div>
                     </>
                 }
@@ -68,7 +48,7 @@ export default function ReportModal({report}: {report: Report}) {
                     <>
                         <p className="my-2">Post Id:</p>
                         <p className="border-2 rounded-md p-2">
-                            1ac3a3ed-dba9-4581-9c70-3225ce3a35b3
+                            {report.postId}
                         </p>
                     </>
                 }
@@ -78,7 +58,7 @@ export default function ReportModal({report}: {report: Report}) {
                     <>
                         <p className="my-2">Commission Id:</p>
                         <p className="border-2 rounded-md p-2">
-                            1ac3a3ed-dba9-4581-9c70-3225ce3a35b3
+                            {report.commissionId}
                         </p>
                     </>
                 }

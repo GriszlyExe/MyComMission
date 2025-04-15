@@ -1,7 +1,11 @@
+import { useAppSelector } from "@/stores/hook";
 import UserWidgetLarge from "./UserWidgetLarge";
 import UserWidgetSmall from "./UserWidgetSmall";
 
 export default function ShowInAdmin() {
+
+	const users = useAppSelector(state => state.admin.paginatedUsers)
+
 	return (
 		<>
 			{/* large table */}
@@ -16,11 +20,7 @@ export default function ShowInAdmin() {
 					</thead>
 					<tbody>
 						{/* all users */}
-						<UserWidgetLarge />
-						<UserWidgetLarge />
-						<UserWidgetLarge />
-						<UserWidgetLarge />
-						<UserWidgetLarge />
+						{users.map(user => <UserWidgetLarge key={`report-widget-${user.userId}`} user={user} />)}
 					</tbody>
 				</table>
 			</div>
@@ -35,11 +35,7 @@ export default function ShowInAdmin() {
 					</thead>
 					<tbody>
 						{/* all users */}
-						<UserWidgetSmall />
-						<UserWidgetSmall />
-						<UserWidgetSmall />
-						<UserWidgetSmall />
-						<UserWidgetSmall />
+						{users.map(user => <UserWidgetSmall key={`report-widget-${user.userId}`} user={user} />)}
 					</tbody>
 				</table>
 			</div>

@@ -15,7 +15,7 @@ import { useAppDispatch } from "@/stores/hook";
 import { setUser } from "@/stores/features/userSlice";
 import { login } from "@/stores/features/authSlice";
 import { adminLogin } from "@/service/admin";
-import { setAdmin } from "@/stores/features/adminSlice";
+import { setAdmin, updateTotalReportsPage, updateTotalUsersPage } from "@/stores/features/adminSlice";
 
 type FormSchema = yup.InferType<typeof adminLoginSchema>;
 
@@ -36,9 +36,14 @@ export default function AdminLoginForm() {
     ) => {
         try {
             const { username, password } = values;
-            const admin = await adminLogin(username, password);
+            const { admin, totalReports, totalUsers } = await adminLogin(username, password);
+
+            const totalReportsPage = Math.ceil(totalReports / 5);
+            const totalUsersPage = Math.ceil(totalUsers / 5);
 
             dispatch(setAdmin(admin));
+            dispatch(updateTotalReportsPage(totalReportsPage));
+            dispatch(updateTotalUsersPage(totalUsersPage));
 
             router.push("/admin/report")
         } catch (err) {

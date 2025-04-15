@@ -11,7 +11,7 @@ export type User = {
     phone: string;
     profileUrl: string | "/default-profile-2.png";
     age: number;
-    pdfUrl: string;
+    banFlag: boolean;
     artistRate: number;
     enabled2FA: boolean;
     createdAt: string;
@@ -105,6 +105,8 @@ export type Report = {
 	postId?: string | null; // UUID or null
 	moderatorResponse?: string | null;
 	createdAt: Date;
+    reporter: User;
+    reportee?: User;
 };
 
 export type Admin = {
