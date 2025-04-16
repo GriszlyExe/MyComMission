@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useContext } from "react";
+import { reportContext } from "./context";
+import { ReportStatus } from "@/common/model";
 
-const availableTags = ["Pending", "Resolved"];
+const availableTags: ReportStatus[] = ["PENDING", "APPROVED"];
 
 export default function StatusTags() {
-	const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-	const toggleTag = (tag: string) => {
-		setSelectedTag((prev) => (prev === tag ? null : tag));
+	const { reportStatus, setReportStatus } = useContext(reportContext);
+
+	const toggleTag = (tag: ReportStatus) => {
+		if (!setReportStatus) return;
+		setReportStatus(prev => prev === tag ? null : tag);
 	};
 
 	return (
@@ -20,7 +24,7 @@ export default function StatusTags() {
 						key={tag}
 						onClick={() => toggleTag(tag)}
 						className={`rounded-full border px-4 py-2 transition ${
-							selectedTag === tag
+							reportStatus === tag
 								? "border-accent bg-primary text-white"
 								: "border-secondary bg-white text-primary"
 						}`}

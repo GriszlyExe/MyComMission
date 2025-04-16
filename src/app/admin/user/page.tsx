@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import AdminNav from "@/app/ui/admin/nav-admin";
 import Search from "@/app/ui/global/search";
@@ -10,18 +10,30 @@ import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { useSearchParams } from "next/navigation";
 import { getPaginatedUsers } from "@/service/admin";
 import { setPaginatedUsers, updateTotalReportsPage, updateTotalUsersPage } from "@/stores/features/adminSlice";
+import { userReportContext } from "./context";
+import { setState } from "@/stores/features/commisionSlice";
+import { boolean } from "yup";
 
 export default function ShowUserPage() {
 
+	/* query params */
 	const searchParams = useSearchParams();
 	const page = searchParams.get("page") || "1";
+	const search = searchParams.get("search") || null;
+
 	const dispatch = useAppDispatch();
 
 	const totalUsersPage = useAppSelector(state => state.admin.totalUsersPage);
+	const [banStatus, setBanStatus] = useState<boolean | null>(null);
 
 	const fetchUsers = async (page: number) => {
 		
-		const { users, totalUsers, totalReports } = await getPaginatedUsers(page, 5);
+		const { users, totalUsers, totalReports } = await getPaginatedUsers({
+			page,
+			limit: 5,
+			search: search || "",
+			banFlag: banStatus ? banStatus : null,
+		});
 		// console.log(`Fetching users for page: ${page}`);
 		dispatch(setPaginatedUsers(users));
 		dispatch(updateTotalUsersPage(Math.ceil(totalUsers / 5)));
@@ -29,16 +41,19 @@ export default function ShowUserPage() {
 	}
 
 	useEffect(() => {
-		console.log(`Page changed to: ${page}`);
+		// console.log(`Page changed to: ${page}`);
+		// console.log(`Fetching users for page: ${page}`);
+		// console.log(`Search query: ${search}`);
+		// console.log(`Ban status: ${banStatus}`);
 		try {
 			fetchUsers(parseInt(page));
 		} catch (error) {
 			console.error("Error fetching users:", error);
 		}
-	}, [page]);
-
+	}, [page, search, banStatus]);
+	
 	return (
-		<>
+		 <userReportContext.Provider value={{ banStatus, setBanStatus }}>
 			<div className="mb-10 w-full flex-none">
 				<AdminNav />
 			</div>
@@ -94,6 +109,6 @@ export default function ShowUserPage() {
 					</div>
 				</div>
 			</div>
-		</>
+		</userReportContext.Provider>
 	);
 }
