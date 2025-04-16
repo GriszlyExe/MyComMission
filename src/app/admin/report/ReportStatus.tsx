@@ -7,10 +7,10 @@ export default function ReportStatus({
 }) {
 	const [currentStatus, setCurrentStatus] = useState(reportStatus);
 
-	const toggleStatus = () => {
-		setCurrentStatus((prev) =>
-			prev === "APPROVED" ? "PENDING" : "APPROVED"
-		);
+	const handleClick = () => {
+		if (currentStatus === "PENDING") {
+			setCurrentStatus("APPROVED");
+		}
 	};
 
 	const getStatusProps = (status: string) => {
@@ -38,7 +38,7 @@ export default function ReportStatus({
 	return (
 		<button
 			className={`btn btn-sm border-none min-w-[85px] ${className}`}
-			onClick={toggleStatus}
+			onClick={handleClick}
 		>
 			{text}
 		</button>
