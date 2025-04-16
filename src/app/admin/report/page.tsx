@@ -5,28 +5,36 @@ import Search from "@/app/ui/global/search";
 import ShowInAdmin from "./ShowInAdmin";
 import PaginationBar from "@/app/ui/components/PaginationBar";
 import StatusTags from "./StatusTags";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/stores/hook";
 import { getPaginatedReports } from "@/service/admin";
 import { setPaginatedReports, updateTotalReportsPage, updateTotalUsersPage } from "@/stores/features/adminSlice";
+import { reportContext } from "./context";
+import { ReportStatus } from "@/common/model";
 
 export default function ShowUserPage() {
+
 	const searchParams = useSearchParams();
 	const page = searchParams.get("page") || "1";
-
+	const searchKey = searchParams.get("search") || null;
+	const filterReportStatus = useContext(reportContext).reportStatus;
+	
+	const [reportStatus, setReportStatus] = useState<ReportStatus | null>(null);
+	
 	const totalReportsPage = useAppSelector(
 		(state) => state.admin.totalReportsPage,
 	);
 
 	const dispatch = useAppDispatch();
-
 	const fetchReports = async (page: number) => {
 		
-		const { reports, totalUsers, totalReports } = await getPaginatedReports(
+		const { reports, totalUsers, totalReports } = await getPaginatedReports({
 			page,
-			5,
-		);
+			limit: 5,
+			search: searchKey || "",
+			tag: reportStatus ? reportStatus : null,
+		});
 		// console.log(`Fetching users for page: ${page}`);
 		dispatch(setPaginatedReports(reports));
 		dispatch(updateTotalUsersPage(Math.ceil(totalUsers / 5)));
@@ -36,14 +44,17 @@ export default function ShowUserPage() {
 	useEffect(() => {
 		console.log(`Page changed to: ${page}`);
 		try {
+			// console.log(`Fetching reports for page: ${page}`);
+			// console.log(`Search key: ${searchKey}`);
+			// console.log(`Filter report status: ${reportStatus}`);
 			fetchReports(parseInt(page));
 		} catch (error) {
 			console.error("Error fetching users:", error);
 		}
-	}, [page]);
+	}, [page, searchKey, reportStatus]);
 
 	return (
-		<>
+		<reportContext.Provider value={{ reportStatus, setReportStatus }}>
 			<div className="mb-10 w-full flex-none">
 				<AdminNav />
 			</div>
@@ -80,6 +91,6 @@ export default function ShowUserPage() {
 					</div>
 				</div>
 			</div>
-		</>
+		</reportContext.Provider>
 	);
 }

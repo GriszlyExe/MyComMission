@@ -94,11 +94,13 @@ export type ChatRoom = {
     latestMessageType: string;
 }
 
+export type ReportStatus =  'PENDING' | 'IN_REVIEW' | 'REJECTED' | 'APPROVED';
+
 export type Report = {
 	reportId: string; // UUID
 	reporterId: string; // UUID
 	reportType: 'POST' | 'USER' | 'COMMISSION' | 'GENERAL';
-	reportStatus: 'PENDING' | 'IN_REVIEW' | 'REJECTED' | 'APPROVED';
+	reportStatus: ReportStatus;
 	reportDescription: string;
 	commissionId?: string | null; // UUID or null
 	reporteeId?: string | null; // UUID or null
