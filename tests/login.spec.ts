@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-const correctEmail = 'johndoe@sample.com';
-const correctPassword = 'John1234';
+const correctEmail = 'login@sample.com';
+const correctPassword = 'Login1234';
 const wrongEmail = 'wrong@wrong.com';
 const wrongPassword = 'wrongpass';
 const invalidEmail = 'invalidemail'; // Invalid email format

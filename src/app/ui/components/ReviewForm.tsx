@@ -6,6 +6,7 @@ import { createReview } from "@/service/reviewService";
 import { useParams } from "next/navigation";
 import { useAppDispatch } from "@/stores/hook";
 import { addReview } from "@/stores/features/reviewSlice";
+import { useState } from "react";
 
 const reviewSchema = yup.object().shape({
 	rating: yup.number().required("Rating is required"),
@@ -14,6 +15,7 @@ const reviewSchema = yup.object().shape({
 export default function ReviewForm() {
 	const { id } = useParams();
 	const dispatch = useAppDispatch()
+	const [showSubmitReview, setShowSubmitReview] = useState(false);
 
 	return (
 		// <div className="card mx-4 border-2 rounded-md shadow-lg shadow-gray-400 border-none bg-white p-4">
@@ -34,6 +36,11 @@ export default function ReviewForm() {
 					// console.log(review)
 					dispatch(addReview(review));
 					actions.resetForm();
+
+					setShowSubmitReview(true);
+					setTimeout(() => {
+					  setShowSubmitReview(false);
+					}, 3000);
 				}}
 			>
 				{({ isSubmitting, setFieldValue, values }) => (
@@ -90,6 +97,13 @@ export default function ReviewForm() {
 							/>
 						</div>
 						<div className="bottom-0 right-0 mt-4 flex justify-end">
+							{	showSubmitReview && 
+								<div className="toast z-30">
+									<div className="alert bg-green-500 text-white border-none">
+										<span>The review has been submitted</span>
+									</div>
+								</div>
+							}
 							<button
 								type="submit"
 								disabled={isSubmitting}
