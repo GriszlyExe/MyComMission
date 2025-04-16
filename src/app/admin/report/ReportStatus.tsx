@@ -1,17 +1,32 @@
+import { approveReport } from "@/service/admin";
+import { updateReportStatus } from "@/stores/features/adminSlice";
+import { useAppDispatch } from "@/stores/hook";
 import { useState } from "react";
 
 export default function ReportStatus({
 	reportStatus,
+	reportId,
 }: {
 	reportStatus: string;
-}) {
-	const [currentStatus, setCurrentStatus] = useState(reportStatus);
+	reportId: string;
+}) {	
 
-	const toggleStatus = () => {
-		setCurrentStatus((prev) =>
-			prev === "APPROVED" ? "PENDING" : "APPROVED"
-		);
-	};
+	// const toggleStatus = () => {
+	// 	setCurrentStatus((prev) =>
+	// 		prev === "APPROVED" ? "PENDING" : "APPROVED"
+	// 	);
+	// };
+
+	const dispatch = useAppDispatch();
+
+	const handleApproveReport = async () => {
+		try {
+			const { reportStatus } = await approveReport(reportId);
+			dispatch(updateReportStatus({ reportId, reportStatus }));
+		} catch (error) {
+			console.error("Error approving report:", error);
+		}
+	}
 
 	const getStatusProps = (status: string) => {
 		switch (status) {
@@ -33,12 +48,13 @@ export default function ReportStatus({
 		}
 	};
 
-	const { text, className } = getStatusProps(currentStatus);
+	const { text, className } = getStatusProps(reportStatus);
 
 	return (
 		<button
+			// disabled={reportStatus === "APPROVED"}
 			className={`btn btn-sm border-none min-w-[85px] ${className}`}
-			onClick={toggleStatus}
+			onClick={reportStatus === "APPROVED" ? handleApproveReport : null}
 		>
 			{text}
 		</button>

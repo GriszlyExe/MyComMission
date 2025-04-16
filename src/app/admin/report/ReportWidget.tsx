@@ -39,7 +39,7 @@ export default function ReportWidget({ report }: { report: Report }) {
 				</div>
 			</td>
 			<td>
-				<ReportStatus reportStatus={report.reportStatus}/>
+				<ReportStatus reportStatus={report.reportStatus} reportId={report.reportId}/>
 			</td>
 		</tr>
 	);

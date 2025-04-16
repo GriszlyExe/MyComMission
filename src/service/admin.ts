@@ -64,3 +64,13 @@ export const unbanUser = async (userId: string) => {
         throw error;
     }
 }
+
+export const approveReport = async (reportId: string) => {
+    try {
+        const { data: { report } } = await axios.patch(`${serverAddr}/admin/reports/${reportId}/resolve`, {}, { withCredentials: true });
+        const { reportStatus } = report;
+        return { reportId, reportStatus };
+    } catch (error) {
+        throw error;
+    }
+}
