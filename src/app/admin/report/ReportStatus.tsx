@@ -54,7 +54,7 @@ export default function ReportStatus({
 		<button
 			// disabled={reportStatus === "APPROVED"}
 			className={`btn btn-sm border-none min-w-[85px] ${className}`}
-			onClick={reportStatus === "APPROVED" ? handleApproveReport : null}
+			onClick={reportStatus === "APPROVED" ? handleApproveReport : () => {}}
 		>
 			{text}
 		</button>
