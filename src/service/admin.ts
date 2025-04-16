@@ -44,3 +44,23 @@ export const getPaginatedUsers = async (page: number, limit: number) => {
         throw error;
     }
 }
+
+export const banUser = async (userId: string) => {
+    try {
+        const { data: { user } } = await axios.patch(`${serverAddr}/admin/ban/${userId}`, {}, { withCredentials: true });
+        const { banFlag } = user;
+        return { userId, banFlag };
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const unbanUser = async (userId: string) => {
+    try {
+        const { data: { user } } = await axios.patch(`${serverAddr}/admin/unban/${userId}`, {}, { withCredentials: true });
+        const { banFlag } = user;
+        return { userId, banFlag };
+    } catch (error) {
+        throw error;
+    }
+}
