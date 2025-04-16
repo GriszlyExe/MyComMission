@@ -84,7 +84,6 @@ export default function LoginForm({
 									type="email"
 									name="email"
 									placeholder="Enter your email"
-									required
 									className={`input input-bordered w-full ${errors?.email && touched?.email ? "input-error" : "input-secondary"}`}
 								/>
 								<ErrorMessage
@@ -106,7 +105,6 @@ export default function LoginForm({
 										}
 										name="password"
 										placeholder="Enter password"
-										required
 										className={`input input-bordered w-full ${errors?.password && touched?.password ? "input-error" : "input-secondary"}`}
 									/>
 									<button
