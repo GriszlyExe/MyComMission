@@ -185,14 +185,14 @@ export default function EditAccountForm() {
 									<AccountFormikInput
 										label="First Name"
 										type="text"
-										name="firstNameMobile"
+										name="firstName"
 										errors={errors.firstName}
 										touched={touched.firstName}
 									/>
 									<AccountFormikInput
 										label="Last Name"
 										type="text"
-										name="lastNameMobile"
+										name="lastName"
 										errors={errors.lastName}
 										touched={touched.lastName}
 									/>
