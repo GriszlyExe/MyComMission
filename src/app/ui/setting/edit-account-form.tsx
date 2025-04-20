@@ -145,7 +145,7 @@ export default function EditAccountForm() {
 								errors={errors.displayName}
 								touched={touched.displayName}
 							/>
-							<div className="flex flex-col justify-between md:flex-row">
+							<div className="flex flex-col justify-between md:flex-row md:gap-3">
 								{/* Desktop Version - Visible only on desktop */}
 								<div className="hidden w-full flex-col gap-2 md:flex md:w-1/2">
 									<AccountFormikInput

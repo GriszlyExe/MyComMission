@@ -16,6 +16,7 @@ export default function ArtworkInChat({ message }: { message: Message }) {
 	// 	}
 	// 	return null;
 	// });
+	console.log(message);
 	const customerId = useAppSelector((state) => {
 		if (state.chat.activeRoom?.latestCommission) {
 			return state.chat.activeRoom.latestCommission.customerId;

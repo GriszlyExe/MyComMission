@@ -49,7 +49,7 @@ export default function RootLayout({
 }) {
 	const [allowed, setAllowed] = useState<boolean>(false);
 
-	useAuthRedirect(setAllowed);
+	// useAuthRedirect(setAllowed);
 
 	return (
 		<html lang="en">
@@ -59,7 +59,9 @@ export default function RootLayout({
 			<body className={`antialiased`}>
 				<Provider store={store}>
 					<PersistGate loading={null} persistor={persistor}>
-						{allowed ? children : <LoadingSpinner />}
+						{/* {allowed ? children : <LoadingSpinner />}
+						 */}
+						{children}
 					</PersistGate>
 				</Provider>
 			</body>
