@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Review Form Tests", () => {
+test.describe("User Review Test cases", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto("/login");
 		await page.fill('input[name="email"]', "user1@mycommission.com");
@@ -11,31 +11,50 @@ test.describe("Review Form Tests", () => {
 		await page.click('button:has-text("REVIEWS")');
 	});
 
-	test("Case 1: Submit without rating shows validation error", async ({
-		page,
-	}) => {
+	test("Case 1: No rating provided", async ({ page }) => {
 		await page.click('button[type="submit"]');
 		await expect(page.locator("p.text-error")).toHaveText(
 			"Rating is required",
 		);
 	});
 
-	test("Case 2: Submit with rating only (no description)", async ({
-		page,
-	}) => {
-		await page.click('input[name="rating"][value="4.5"]');
+	// Rating <= 0
+	test("Case 2: Rating is zero", async ({ page }) => {
+		const ratingZero = page.locator('input[name="rating"][value="0"]');
+		await expect(ratingZero).toBeDisabled();
+
+		await page.click('button[type="submit"]');
+		await expect(page.locator("p.text-error")).toHaveText(
+			"Rating is required",
+		);
+	});
+
+	// Rating exceeds max (e.g., 6)
+	test("Case 3: Rating exceeds allowed value (e.g. 6)", async ({ page }) => {
+		const ratingInput = page.locator('input[name="rating"][value="6"]');
+		await expect(ratingInput).toHaveCount(0); // Confirm it doesn't exist
+
+		await page.click('button[type="submit"]'); // Submit without valid rating
+		await expect(page.locator("p.text-error")).toHaveText(
+			"Rating is required",
+		);
+	});
+
+	test("Case 4: Valid rating, no description", async ({ page }) => {
+		await page.click('input[name="rating"][value="3.5"]');
+		await page.fill('textarea[name="review"]', "");
 		await page.click('button[type="submit"]');
 
 		// Wait for toast
 		await expect(page.locator("div.alert.bg-green-500")).toHaveText(
 			/The review has been submitted/,
 		);
-
-		const lastRatingText = page.locator("p.text-gray-800.text-sm").last();
-		await expect(lastRatingText).toHaveText("4.5 out of 5 stars");
+		await expect(page.locator("p.text-gray-800.text-sm").last()).toHaveText(
+			"3.5 out of 5 stars",
+		);
 	});
 
-	test("Case 3: Submit with rating and description", async ({ page }) => {
+	test("Case 5: Valid rating with description", async ({ page }) => {
 		await page.click('input[name="rating"][value="5"]');
 		await page.fill(
 			'textarea[name="review"]',
@@ -47,8 +66,8 @@ test.describe("Review Form Tests", () => {
 		await expect(page.locator("div.alert.bg-green-500")).toHaveText(
 			/The review has been submitted/,
 		);
-
-		const lastRatingText = page.locator("p.text-gray-800.text-sm").last();
-		await expect(lastRatingText).toHaveText("5 out of 5 stars");
+		await expect(page.locator("p.text-gray-800.text-sm").last()).toHaveText(
+			"5 out of 5 stars",
+		);
 	});
 });

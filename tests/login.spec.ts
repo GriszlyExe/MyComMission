@@ -9,7 +9,7 @@ const emptyPassword = "";
 const wrongPassword = "wrongpass";
 const correctPassword = "Mycommission";
 
-test.describe("Login form tests", () => {
+test.describe("User Login Test cases", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto("/login");
 	});
