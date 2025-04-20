@@ -38,6 +38,20 @@ const adminSlice = createSlice({
         },
         setPaginatedUsers: (state, action: PayloadAction<User[]>) => {
             state.paginatedUsers = action.payload;
+        },
+        updateBanFlag: (state, action: PayloadAction<{ userId: string; banFlag: boolean }>) => {
+            const { userId, banFlag } = action.payload;
+            const userIndex = state.paginatedUsers.findIndex(user => user.userId === userId);
+            if (userIndex !== -1) {
+                state.paginatedUsers[userIndex].banFlag = banFlag;
+            }
+        },
+        updateReportStatus: (state, action: PayloadAction<{ reportId: string; reportStatus: "APPROVED" }>) => {
+            const { reportId, reportStatus } = action.payload;
+            const reportIndex = state.paginatedReports.findIndex(report => report.reportId === reportId);
+            if (reportIndex !== -1) {
+                state.paginatedReports[reportIndex].reportStatus = reportStatus;
+            }
         }
     },
 });
@@ -48,6 +62,8 @@ export const {
     updateTotalReportsPage,
     updateTotalUsersPage,
     setPaginatedReports,
-    setPaginatedUsers
+    setPaginatedUsers,
+    updateBanFlag,
+    updateReportStatus,
 } = adminSlice.actions;
 export const adminReducer = adminSlice.reducer;

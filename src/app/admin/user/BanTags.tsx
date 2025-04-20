@@ -1,14 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { userReportContext } from "./context";
 
 const availableTags = ["Banned", "Unbanned"];
 
 export default function BanTags() {
-	const [selectedTag, setSelectedTag] = useState<string | null>(null);
+	// const [selectedTag, setSelectedTag] = useState<string | null>(null);
+	const { banStatus, setBanStatus } = useContext(userReportContext);
+	const selectedTag = banStatus ? "Banned" : banStatus === false ? "Unbanned" : null;
 
 	const toggleTag = (tag: string) => {
-		setSelectedTag((prev) => (prev === tag ? null : tag));
+		if (!setBanStatus) return;
+		setBanStatus((prev) => {
+			if (prev === null) return tag === "Banned" ? true : false;
+			if (prev && tag === "Unbanned") return false;
+			if (!prev && tag === "Banned") return true;
+			return null; // If both are selected, reset to null
+		});
 	};
 
 	return (
