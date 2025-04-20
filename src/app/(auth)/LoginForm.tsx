@@ -26,6 +26,7 @@ export default function LoginForm({
 	setEmail: Dispatch<SetStateAction<string>>;
 }) {
 	const [isError, setError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
 
@@ -56,6 +57,8 @@ export default function LoginForm({
 				toggleShowLogin();
 			}
 		} catch (err) {
+			const { response: { data: { message } } } = err as any;
+			setErrorMessage(message);
 			setError(true);
 		}
 	};
@@ -129,7 +132,7 @@ export default function LoginForm({
 							<div className="">
 								{isError && (
 									<span className="font-bold text-error">
-										Wrong email or password
+										{errorMessage}
 									</span>
 								)}
 							</div>

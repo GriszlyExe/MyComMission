@@ -64,6 +64,6 @@ export const {
     setPaginatedReports,
     setPaginatedUsers,
     updateBanFlag,
-    updateReportStatus,
+    updateReportStatus
 } = adminSlice.actions;
 export const adminReducer = adminSlice.reducer;
