@@ -201,14 +201,14 @@ export default function EditAccountForm() {
 									<AccountFormikInput
 										label="Birth Date"
 										type="date"
-										name="birthDateMobile"
+										name="birthDate"
 										errors={errors.birthDate}
 										touched={touched.birthDate}
 									/>
 									<AccountFormikInput
 										label="Phone Number"
 										type="tel"
-										name="phoneMobile"
+										name="phone"
 										errors={errors.phone}
 										touched={touched.phone}
 									/>
