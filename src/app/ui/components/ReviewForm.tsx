@@ -52,12 +52,13 @@ export default function ReviewForm() {
 									<Field
 										type="radio"
 										name="rating"
-										className="rating-hidden"
+										className="rating-hidden hover:cursor-default"
 										value={0}
 										checked={Number(values.rating) == 0}
 										onChange={() =>
 											setFieldValue("rating", 0)
 										}
+										disabled
 									/>
 									{[
 										0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5,
