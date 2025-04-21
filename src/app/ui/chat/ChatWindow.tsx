@@ -20,7 +20,6 @@ import { setLatestCommission } from "@/stores/features/commisionSlice";
 import { states } from "./commissionState";
 import { useMediaQuery } from "react-responsive";
 import { serverAddr } from "@/service";
-const socket = io(serverAddr);
 
 const ChatWindow = () => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -51,7 +50,7 @@ const ChatWindow = () => {
 		const fetchMessageChatroom = async () => {
 			if (activeRoomId !== undefined) {
 				const res = await getMessageChatroom(activeRoomId);
-				console.log(res);
+				// console.log(res);
 				const { messages, latestCommission } = res;
 				// console.log(messages);
 				const user = await getUserInfo(receiverId!);
@@ -68,6 +67,7 @@ const ChatWindow = () => {
 	}, [activeRoomId]);
 
 	useEffect(() => {
+		const socket = io(serverAddr);
 		socket.emit("joinRoom", {
 			senderId: loggedInUserId,
 			chatRoomId: activeRoomId,
@@ -93,6 +93,7 @@ const ChatWindow = () => {
 		});
 
 		return () => {
+			console.log(`Disconnecting socket`);
 			socket.off("receiveMessage");
 			socket.disconnect();
 		};
@@ -111,7 +112,7 @@ const ChatWindow = () => {
 				<div className="flex flex-col md:h-full">
 					<div
 						ref={containerRef}
-						className='flex flex-col-reverse overflow-y-auto overflow-x-hidden p-2 mt-1 h-full scrollbar-hidden'
+						className="mt-1 flex h-full flex-col-reverse overflow-y-auto overflow-x-hidden p-2 scrollbar-hidden"
 					>
 						{/* <MessageItem messageItem={{ ...messages[0], messageType: "IMAGE" }}/> */}
 						{receiver !== null &&

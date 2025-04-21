@@ -38,7 +38,7 @@ export default function ManageBoostedPost({ post, user }: BoostedPostProps) {
     }
     return (
         <div>
-            <div className="grid grid-cols-2 gap-2 shadow-md p-2 rounded-md"
+            <div className="grid grid-cols-2 gap-1 shadow-md p-2 rounded-md"
             >
                 {/* Image */}
                 {images.length > 0 && (
@@ -56,20 +56,30 @@ export default function ManageBoostedPost({ post, user }: BoostedPostProps) {
                                 src={images[0].preview || "/path/to/default/image.jpg"}
                                 alt="boosted post image"
                                 // className="h-full w-full object-cover transition-all duration-300 group-hover:opacity-75 group-hover:brightness-50 cursor-pointer"
-                                className="w-auto h-auto sm:h-full sm:w-full overflow-hidden rounded-sm border border-gray-300 object-cover"
+                                className="rounded-md w-auto h-auto sm:h-full sm:w-full overflow-hidden object-cover"
                             />
                             <InfoIcon className="absolute right-2 top-2 text-3xl text-white" />
                         </div>
                     </div>
                 )}
-                <div className="flex flex-col items-center gap-y-3">
+                <div className="flex flex-col items-center justify-center gap-y-3 p-4 bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg shadow-inner">
                     <button type="button"
-                        className="text-sm sm:text-base bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 p-3 rounded-3xl"
+                        className="text-sm sm:text-base text-white bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300 px-4 py-2 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
                         onClick={() => openCancelModal(true)}>
-                        <p className="text-blue-700">Cancel Boost</p>
+                        <p className="font-semibold">Cancel Boost</p>
                     </button>
-                    <div className="text-sm sm:text-base">{`Expires ${expiredDate}`}</div>
+                    
+                    <div className="text-sm sm:text-base text-gray-700 font-medium">{`Expires ${expiredDate}`}</div>
                 </div>
+                {/* <div className="flex flex-col items-center gap-y-3">
+                    <button type="button"
+                        className="text-sm text-white sm:text-base bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300 p-3 rounded-md hover:text-accent"
+                        onClick={() => openCancelModal(true)}>
+                        <p className="">Cancel Boost</p>
+                    </button>
+                    
+                    <div className="text-sm sm:text-base">{`Expires ${expiredDate}`}</div>
+                </div> */}
 
             </div>
 

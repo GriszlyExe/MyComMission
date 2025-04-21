@@ -23,31 +23,34 @@ export default function ChatOptions({ closeOption }: { closeOption: any }) {
 		(state) => state.chat.activeRoom!.latestCommission,
 	);
 
-	const isFinished = useAppSelector(state => {
+	const isFinished = useAppSelector((state) => {
 		const latestCommission = state.chat.activeRoom!.latestCommission;
-		return !latestCommission || (latestCommission && latestCommission.state === states.finished);
+		return (
+			!latestCommission ||
+			(latestCommission && latestCommission.state === states.finished)
+		);
 	});
 
-	const isCustomer = useAppSelector(state => {
+	const isCustomer = useAppSelector((state) => {
 		const latestCommission = state.chat.activeRoom!.latestCommission;
-		return isFinished || (loggedInUserId === latestCommission?.customerId);
+		return isFinished || loggedInUserId === latestCommission?.customerId;
 	});
 
-	const isArtist = useAppSelector(state => {
+	const isArtist = useAppSelector((state) => {
 		const latestCommission = state.chat.activeRoom!.latestCommission;
-		return isFinished || (loggedInUserId === latestCommission?.artistId);
+		return isFinished || loggedInUserId === latestCommission?.artistId;
 	});
 
 	const canCreateBrief = isFinished;
-	
-	const isBrief = useAppSelector(state => {
+
+	const isBrief = useAppSelector((state) => {
 		const latestCommission = state.chat.activeRoom!.latestCommission;
-		return latestCommission && (latestCommission.state === states.brief);
+		return latestCommission && latestCommission.state === states.brief;
 	});
-	
-	const isWorking = useAppSelector(state => {
+
+	const isWorking = useAppSelector((state) => {
 		const latestCommission = state.chat.activeRoom!.latestCommission;
-		return latestCommission && (latestCommission.state === states.working);
+		return latestCommission && latestCommission.state === states.working;
 	});
 
 	const [isReportOpen, setIsReportOpen] = useState(false);
@@ -68,8 +71,9 @@ export default function ChatOptions({ closeOption }: { closeOption: any }) {
 		if (chatRoomId) {
 			// console.log("chatroomId: ", chatRoomId);
 			const chatroom = await getChatroom(chatRoomId);
-			// console.log("chatroom: ", chatroom);
-			reportData.targetId = chatroom.latestCommission.commissionId;
+			const { commissions } = chatroom;
+			const latestCommission = commissions.at(-1);
+			reportData.targetId = latestCommission.commissionId;
 			await submitReport({ data: reportData });
 			closeOption();
 		} else {
@@ -81,20 +85,22 @@ export default function ChatOptions({ closeOption }: { closeOption: any }) {
 
 	return (
 		<div>
-			<div className="flex w-4/5 justify-around">
+			<div className="flex flex-row justify-between gap-10">
+
 				{/* @ts-ignore */}
-				{((isCustomer && isBrief) || isFinished)  && (
-					<OptionButton
-						onClick={() =>
-							// @ts-ignore
-							document.getElementById("brief-form").showModal()
-						}
-					>
-						<TextSelect size={24} />{" "}
-						<span>
-							{canCreateBrief ? "Create Brief" : "Edit Brief"}
-						</span>
-					</OptionButton>
+					
+				{((isCustomer && isBrief) || isFinished) && (
+						<OptionButton
+							onClick={() =>
+								// @ts-ignore
+								document.getElementById("brief-form").showModal()
+							}
+						>
+							<TextSelect size={24} />{" "}
+							<span>
+								{canCreateBrief ? "Create Brief" : "Edit Brief"}
+							</span>
+						</OptionButton>
 				)}
 				{/* <OptionButton onClick={() => openForm('PostponeForm')}>
                     <AlarmClockIcon size={24} /> <span>Postpone</span>
@@ -102,26 +108,31 @@ export default function ChatOptions({ closeOption }: { closeOption: any }) {
 
 				{isWorking && isArtist && (
 					<OptionButton
-						// @ts-ignore 
-						onClick={() => document.getElementById(`artwork-form-${latestCommission?.commissionId}`)?.showModal()}
+						// @ts-ignore
+						onClick={() =>	document.getElementById(`artwork-form-${latestCommission?.commissionId}`,)?.showModal()
+						}
 					>
 						<SendIcon size={24} /> <span>Send Artwork</span>
 					</OptionButton>
 				)}
-				{latestCommission && <OptionButton onClick={() => setIsReportOpen(true)}>
-					<BadgeAlert size={24} /> <span>Report</span>
-				</OptionButton>}
+
+				{latestCommission && (
+					<OptionButton onClick={() => setIsReportOpen(true)}>
+						<BadgeAlert size={24} /> <span>Report</span>
+					</OptionButton>
+				)}
+
 				{/* Report Popup */}
-				<ReportPopup
-					isOpen={isReportOpen}
-					onClose={() => setIsReportOpen(false)}
-					onSubmit={handleReportSubmit}
-					title="Report This Commission"
-					targetId=""
-					targetType="COMMISSION"
-				/>
-				<BriefForm />
 			</div>
+			<ReportPopup
+				isOpen={isReportOpen}
+				onClose={() => setIsReportOpen(false)}
+				onSubmit={handleReportSubmit}
+				title="Report This Commission"
+				targetId=""
+				targetType="COMMISSION"
+			/>
+			<BriefForm />
 			<SendArtworkForm />
 			{/* <PostponeForm id='PostponeForm' /> */}
 		</div>

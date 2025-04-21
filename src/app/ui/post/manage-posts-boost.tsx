@@ -9,6 +9,7 @@ import PostBoostingButton from "./post-boosting-button";
 import { Post } from "@/common/model";
 
 export default function ManagePostsBoosting() {
+
     const dispatch = useAppDispatch();
     const [posts, setPosts] = useState<Post[]>()
     const loggedInUser = useAppSelector((state) => state.user.user!);
@@ -21,13 +22,14 @@ export default function ManagePostsBoosting() {
             setPosts(data)
         });
     }, []);
-    console.log("boosted", posts);
+
+    // console.log("boosted", posts);
 
     return (
         <div className="mt-1 max-h-[720px] sm:max-h-[460px] overflow-y-auto overflow-x-hidden scrollbar-hidden rounded-md">
             {/* <div className="  flex flex-row justify-between bg-gray-200 p-2"> */}
             <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-white p-3">
-                <h1 className="font-bold">Active Boosted Posts</h1>
+                <h1 className="text-2xl text-accent font-semibold">Active Boosted Posts</h1>
                 <PostBoostingButton />
             </div>
             <div className="grid gap-2">
