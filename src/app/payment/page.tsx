@@ -15,9 +15,10 @@ import { createPaymentIntentService, createQRPayment } from "@/service/payment";
 import { useAppSelector } from "@/stores/hook";
 import { states } from "../ui/chat/commissionState";
 import { clipText, formatDate } from "@/utils/helper";
+import { stripePublicKey } from "./stripeKey";
 
 const stripePromise = loadStripe(
-	process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+	stripePublicKey,
 );
 
 export default function PaymentPage() {

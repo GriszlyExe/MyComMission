@@ -13,9 +13,10 @@ import {
 } from "@stripe/react-stripe-js";
 import { createPaymentIntentService, createQRPayment } from "@/service/payment";
 import { useAppSelector } from "@/stores/hook";
+import { stripePublicKey } from "../stripeKey";
 
 const stripePromise = loadStripe(
-	process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+	stripePublicKey,
 );
 
 export default function PaymentPage() {
