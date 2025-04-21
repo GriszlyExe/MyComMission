@@ -74,8 +74,8 @@ export default function EditAccountForm() {
 	};
 
 	return (
-		<div className="flex min-h-screen items-center justify-center">
-			<div className="m-auto w-full max-w-lg rounded-md bg-white p-6 shadow-sm">
+		<div className="flex min-h-screen items-center">
+			<div className="w-full max-w-lg rounded-md bg-white p-6 shadow-sm">
 				<Formik
 					initialValues={initialValues}
 					validationSchema={accountSchema}
