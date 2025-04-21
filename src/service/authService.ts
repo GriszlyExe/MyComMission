@@ -3,6 +3,7 @@ import { serverAddr } from ".";
 interface LoginSchema {
     email: string;
     password: string;
+    rememberMe: boolean;
 }
 
 interface TwoFASchema {
@@ -37,7 +38,7 @@ export const register = async (data: any) => {
 }
 
 
-export const loginService = async ({ email, password }: LoginSchema) => {
+export const loginService = async ({ email, password, rememberMe }: LoginSchema) => {
 
     try {
 
@@ -49,6 +50,7 @@ export const loginService = async ({ email, password }: LoginSchema) => {
             data: {
                 email,
                 password,
+                rememberMe,
             },
         };
 

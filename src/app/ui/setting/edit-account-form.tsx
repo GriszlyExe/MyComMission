@@ -84,9 +84,9 @@ export default function EditAccountForm() {
 					{({ isSubmitting, errors, touched, setFieldValue }) => (
 						<Form className="space-y-2" autoComplete="off">
 							<div className="flex flex-col items-center">
-								<label className="mb-2 block text-sm font-bold text-gray-700">
+								{/* <label className="mb-2 block text-sm font-bold text-gray-700">
 									Profile Picture
-								</label>
+								</label> */}
 								<div className="h-24 w-24 overflow-hidden rounded-full border border-gray-300">
 									<img
 										src={
@@ -99,8 +99,8 @@ export default function EditAccountForm() {
 										height={100}
 									/>
 								</div>
-								<fieldset className="fieldset flex flex-col">
-									<legend className="fieldset-legend font-semibold">
+								<fieldset className="fieldset flex flex-col ">
+									<legend className="fieldset-legend font-semibold text-primary-content">
 										Pick a file
 									</legend>
 									<input
@@ -131,7 +131,7 @@ export default function EditAccountForm() {
 												reader.readAsDataURL(file);
 											}
 										}}
-										className="file-input file-input-primary ml-0 max-h-10 max-w-60 pl-0"
+										className="file-input file-input-accent ml-0 max-h-10 max-w-60 pl-0"
 									/>
 									<label className="fieldset-label font-semibold">
 										Max size 2MB

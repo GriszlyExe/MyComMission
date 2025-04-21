@@ -16,21 +16,28 @@ const useAuthRedirect = (setAllowed: Dispatch<SetStateAction<boolean>>) => {
         const adminToken = Cookies.get('adminAuthToken');
         const token = Cookies.get('authToken');
 
-        console.log(`Admin token: ${adminToken}`);
-        console.log(`User token: ${token}`);
+        // console.log(`Admin token: ${adminToken}`);
+        // console.log(`User token: ${token}`);
 
         const protectedRoutes = ['/home', '/profile', '/chat'];
+        const unprotectedRoutes = ['/login', '/'];
+
         const isAdminRoute = pathname.startsWith('/admin') && !pathname.startsWith('/admin/login');
         const isProtectedRoute = protectedRoutes.some((route) =>
             pathname.startsWith(route)
         );
-
+        const isUnprotectedRoute = unprotectedRoutes.some((route) =>
+            pathname.startsWith(route)
+        );
         if (isAdminRoute && !adminToken) {
-            console.log(`No admin token found, Redirecting to root...`);
+            // console.log(`No admin token found, Redirecting to root...`);
             router.replace('/');
         } else if (isProtectedRoute && !token) {
-            console.log('No token found, Redirecting to login...');
+            // console.log('No token found, Redirecting to login...');
             router.replace('/login');
+        } else if (isUnprotectedRoute && token) {
+            // console.log('Token found, Redirecting to home...');
+            router.replace('/home');
         } else {
             setAllowed(true);
         }

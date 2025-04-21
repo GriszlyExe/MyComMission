@@ -41,10 +41,11 @@ export default function LoginForm({
 		actions: FormikHelpers<FormSchema>,
 	) => {
 		try {
-			const { email, password } = values;
+			const { email, password, rememberMe } = values;
 			const { user, token } = await loginService({
 				email,
 				password,
+				rememberMe,
 			});
 
 			if (token) {
@@ -72,7 +73,7 @@ export default function LoginForm({
 					</span>
 				</h1>
 				<Formik
-					initialValues={{ email: "", password: "" }}
+					initialValues={{ email: "", password: "", rememberMe: false }}
 					validationSchema={loginSchema}
 					onSubmit={handleSubmit}
 				>
@@ -158,7 +159,7 @@ export default function LoginForm({
 								<button
 									type="submit"
 									disabled={isSubmitting}
-									className={`w-full rounded px-4 py-3 text-white font-bold focus:outline-none hover:text-primary ${
+									className={`w-full rounded px-4 py-3 text-white font-bold focus:outline-none hover:text-accent hover:text-lg ${
 										isSubmitting
 											? "cursor-not-allowed bg-gray-400"
 											: "bg-gradient-to-r from-primary-content to-secondary-content hover:from-base-200 hover:to-base-300"

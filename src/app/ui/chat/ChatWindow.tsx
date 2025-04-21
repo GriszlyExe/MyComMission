@@ -94,6 +94,7 @@ const ChatWindow = () => {
 
 		return () => {
 			socket.off("receiveMessage");
+			socket.disconnect();
 		};
 	}, [loggedInUserId, activeRoomId]);
 
