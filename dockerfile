@@ -1,28 +1,26 @@
-
-FROM node:23.11-alpine AS builder
+FROM node:23.11-slim AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
-COPY tsconfig.json ./
+COPY package.json ./
 
-RUN npm i
+RUN npm i --omit=dev
 
 COPY . .
 
 RUN npm run build
 
-FROM node:23.11-alpine AS runner
+FROM node:23.11-slim AS runner
+
+ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm i --omit=dev
+COPY --from=builder /app/node_modules ./node_modules
 
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./
+COPY --from=builder /app/package.json ./package.json
 
 EXPOSE 3000
 
