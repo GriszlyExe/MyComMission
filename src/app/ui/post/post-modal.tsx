@@ -100,11 +100,11 @@ export default function PostModal({
 							control={control}
 							render={({ field }) => (
 								<FileUpload
-									selectedFiles={field.value!.filter(
+									value={field.value!.filter(
 										(fpv) =>
 											fpv !== null && fpv !== undefined,
 									)}
-									setSelectedFiles={field.onChange}
+									onChange={field.onChange}
 								/>
 							)}
 						/>

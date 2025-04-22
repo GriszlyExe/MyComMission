@@ -145,7 +145,7 @@ export default function EditAccountForm() {
 								errors={errors.displayName}
 								touched={touched.displayName}
 							/>
-							<div className="flex flex-col justify-between md:flex-row">
+							<div className="flex flex-col justify-between md:flex-row md:gap-3">
 								{/* Desktop Version - Visible only on desktop */}
 								<div className="hidden w-full flex-col gap-2 md:flex md:w-1/2">
 									<AccountFormikInput
@@ -185,14 +185,14 @@ export default function EditAccountForm() {
 									<AccountFormikInput
 										label="First Name"
 										type="text"
-										name="firstNameMobile"
+										name="firstName"
 										errors={errors.firstName}
 										touched={touched.firstName}
 									/>
 									<AccountFormikInput
 										label="Last Name"
 										type="text"
-										name="lastNameMobile"
+										name="lastName"
 										errors={errors.lastName}
 										touched={touched.lastName}
 									/>
@@ -201,14 +201,14 @@ export default function EditAccountForm() {
 									<AccountFormikInput
 										label="Birth Date"
 										type="date"
-										name="birthDateMobile"
+										name="birthDate"
 										errors={errors.birthDate}
 										touched={touched.birthDate}
 									/>
 									<AccountFormikInput
 										label="Phone Number"
 										type="tel"
-										name="phoneMobile"
+										name="phone"
 										errors={errors.phone}
 										touched={touched.phone}
 									/>

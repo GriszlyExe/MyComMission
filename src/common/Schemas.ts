@@ -110,9 +110,9 @@ export const twoFactorCode = yup.object().shape({
 
 
 export const accountSchema = yup.object().shape({
-    firstName: yup.string().required("First name is required"),
+    firstName: yup.string().max(72, "First name cannot be longer than 72 characters").required("First name is required"),
 
-    lastName: yup.string().required("Last name is required"),
+    lastName: yup.string().max(72, "Last name cannot be longer than 72 characters").required("Last name is required"),
 
     birthDate: yup
         .date()
@@ -124,7 +124,7 @@ export const accountSchema = yup.object().shape({
         .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
         .required("Phone number is required"),
 
-    displayName: yup.string().required("Display name is required"),
+    displayName: yup.string().max(72, "Display name cannot be longer than 72 characters").required("Display name is required"),
 
     email: yup
         .string()
@@ -139,6 +139,6 @@ export const accountSchema = yup.object().shape({
 })
 
 export const postSchema = yup.object().shape({
-    postDescription: yup.string().required("Description is required"),
+    postDescription: yup.string().max(2048, "Description is too long").required("Description is required"),
     postTags: yup.array().of(yup.string()).min(1, "Please select at least one tag").required(),
     images: yup.array().of(yup.mixed<FilePreview>()).min(1, "Please upload at least one image").required("Images are required"),});
