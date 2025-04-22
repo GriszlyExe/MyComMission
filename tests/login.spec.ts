@@ -8,6 +8,8 @@ const correctEmail = "user1@mycommission.com";
 const emptyPassword = "";
 const wrongPassword = "wrongpass";
 const correctPassword = "Mycommission";
+const bannedEmail = "banned@domain.com";
+const bannedPassword = "Bannedpass"
 
 test.describe("User Login Test cases", () => {
 	test.beforeEach(async ({ page }) => {
@@ -87,4 +89,14 @@ test.describe("User Login Test cases", () => {
 		await expect(errors.nth(0)).toHaveText("Email is required");
 		await expect(errors.nth(1)).toHaveText("Password is required");
 	});
+
+	test("Cast 9: The user is banned", async ({ page }) => {
+		await page.fill('input[name="email"]', bannedEmail);
+		await page.fill('input[name="password"]', bannedPassword);
+		await page.click('button:has-text("Sign In")');
+
+		await expect(page.locator("span.text-error")).toHaveText(
+			"User is banned!",
+		);
+	})
 });
